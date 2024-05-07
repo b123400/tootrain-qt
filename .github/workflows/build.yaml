@@ -1,0 +1,120 @@
+name: Build
+run-name: Build
+on:
+  push:
+    branches:
+      - '*'
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+jobs:
+  # build-linux:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - name: Install Qt
+  #     # Installs the Qt SDK
+  #     uses: jurplel/install-qt-action@v3
+  #     with:
+  #       version: '6.7.0'
+  #       # host: 'windows'
+  #       # target: 'desktop'
+  #       # arch: 'win64_msvc2019_64'
+
+  #   - name: Configure CMake
+  #     # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+  #     # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+  #     run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+  #   - name: Build
+  #     # Build your program with the given configuration
+  #     run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+  #   - name: Install
+  #     run: |
+  #       cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="$(pwd)/bin"
+  #       tar -cvf bin.tar bin
+
+  #   - uses: actions/upload-artifact@v4
+  #     with:
+  #       name: linux
+  #       path: |
+  #         ${{github.workspace}}/build
+  #         ${{github.workspace}}/bin.tar
+  #       retention-days: 7
+
+  build-mac:
+    runs-on: macos-14
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Qt
+      # Installs the Qt SDK
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.7.0'
+        # host: 'windows'
+        # target: 'desktop'
+        # arch: 'win64_msvc2019_64'
+
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Install
+      run: |
+        cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="$(pwd)/bin"
+        chmod +x ./bin/tootrain-qt.app/Contents/MacOS/tootrain-qt
+        macdeployqt './bin/tootrain-qt.app' '-appstore-compliant' '-always-overwrite'
+        tar -cvf bin.tar ./bin
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: osx
+        path: |
+          ${{github.workspace}}/build
+          ${{github.workspace}}/bin.tar
+        retention-days: 7
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Qt
+      # Installs the Qt SDK
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.7.0'
+        # host: 'windows'
+        # target: 'desktop'
+        # arch: 'win64_msvc2019_64'
+
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: |
+        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="./bin"
+        windeployqt '.\bin\bin\tootrain-qt.exe'
+
+    # - name: Build
+    #   run: |
+    #     cd ${{github.workspace}}
+    #     mkdir build
+    #     cd build
+    #     qt-cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../bin ..
+    #     ninja
+    #     ninja install
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: win
+        path: |
+          ${{github.workspace}}/build
+          ${{github.workspace}}/bin
+        retention-days: 7

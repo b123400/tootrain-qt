@@ -64,6 +64,14 @@ install(TARGETS tootrain-qt
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+# qt_generate_deploy_app_script(
+    # TARGET tootrain-qt
+    # OUTPUT_SCRIPT deploy_script
+    # NO_UNSUPPORTED_PLATFORM_ERROR
+# )
+# message(deploy_script)
+# install(SCRIPT ${deploy_script})
+
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(tootrain-qt)
 endif()

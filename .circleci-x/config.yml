@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  my-job:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: arm.medium
+    steps:
+      # - run: uname -a
+      # - run: echo "Hello, Arm!"
+      - checkout
+      - run: |
+          sudo apt update
+          sudo apt install -y qtcreator libglx-dev libgl1-mesa-dev qt6-base-dev qt6-tools-dev
+          cmake -B ./build -DCMAKE_BUILD_TYPE=Release
+          cmake --build ./build --config Release
+          cmake --install ./build --config Release --prefix="$(pwd)/bin"
+workflows:
+  build:
+    jobs:
+      - my-job
