@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QLabel>
 #include <QPropertyAnimation>
+#include "mastodonoauthwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -37,6 +38,9 @@ int main(int argc, char *argv[])
     anim->setStartValue(QPoint(600, 0));
     anim->setEndValue(QPoint(0, 0));
     anim->start();
+
+    MastodonOauthWindow oauthWindow;
+    oauthWindow.show();
 
     return a.exec();
 }

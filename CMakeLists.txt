@@ -24,6 +24,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(tootrain-qt
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        mastodonoauthwindow.h mastodonoauthwindow.cpp mastodonoauthwindow.ui
         mastodon/client.h mastodon/client.cpp
         mastodon/app.h mastodon/app.cpp
     )
