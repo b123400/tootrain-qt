@@ -19,8 +19,6 @@ public:
     explicit MastodonOauthWindow(QWidget *parent = nullptr);
     ~MastodonOauthWindow();
 
-    QNetworkReply *requestHotThreads();
-
 public slots:
     void myaccept();
     void grant();
@@ -31,7 +29,7 @@ signals:
 
 private:
     Ui::MastodonOauthWindow *ui;
-    QOAuth2AuthorizationCodeFlow oauth2;
+    QOAuth2AuthorizationCodeFlow *oauth2;
     MastodonApp *app;
 
     void updateTokenParams(QAbstractOAuth::Stage stage, QMultiMap<QString, QVariant>* parameters);

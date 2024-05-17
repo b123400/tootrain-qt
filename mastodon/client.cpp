@@ -40,13 +40,10 @@ void MastodonClient ::createApp(QUrl host, std::function<void (MastodonApp*)> ca
         });
 }
 
-void MastodonClient::verifyCredentials(MastodonApp *app, QString accessToken, std::function<void (MastodonAccount*)> callback) {
+void MastodonClient::verifyCredentials(MastodonApp *app, std::function<void (MastodonAccount*)> callback) {
     QUrl url = QUrl(app->baseUrl);
     url.setPath("/api/v1/accounts/verify_credentials");
-    QNetworkRequest request(url);
-    request.setRawHeader("Authorization", ("Bearer " + accessToken).toLocal8Bit());
-
-    QNetworkReply *reply = networkManager->get(request);
+    auto reply = app->oauth2->get(url);
     connect(reply, &QNetworkReply::finished, this, [=]()
             {
                 // TODO: handle error

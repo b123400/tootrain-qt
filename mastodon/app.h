@@ -1,9 +1,10 @@
 #ifndef MASTODONAPP_H
 #define MASTODONAPP_H
 
+#include <QDateTime>
 #include <QObject>
 #include <QUrl>
-
+#include <QtNetworkAuth/qoauth2authorizationcodeflow.h>
 
 class MastodonApp : public QObject
 {
@@ -16,6 +17,8 @@ public:
     QString clientSecret;
     QString redirectUri;
     QUrl baseUrl;
+
+    QOAuth2AuthorizationCodeFlow *oauth2;
 
 signals:
 };

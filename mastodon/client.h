@@ -13,7 +13,7 @@ public:
     static MastodonClient &shared() {static MastodonClient client; return client;}
 
     void createApp(QUrl host, std::function<void (MastodonApp*)> callback);
-    void verifyCredentials(MastodonApp *app, QString accessToken, std::function<void (MastodonAccount*)> callback);
+    void verifyCredentials(MastodonApp *app, std::function<void (MastodonAccount*)> callback);
 
 signals:
 
