@@ -4,21 +4,25 @@
 #include "QtNetwork/qnetworkaccessmanager.h"
 #include <QObject>
 #include "app.h"
+#include "account.h"
 
-namespace Mastodon {
-class Client : public QObject
+class MastodonClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit Client(QObject *parent = nullptr);
+    static MastodonClient &shared() {static MastodonClient client; return client;}
 
-    void createApp(QUrl host, std::function<void (App*)> callback);
+    void createApp(QUrl host, std::function<void (MastodonApp*)> callback);
+    void verifyCredentials(MastodonApp *app, QString accessToken, std::function<void (MastodonAccount*)> callback);
 
 signals:
 
 public slots:
 
+private:
+    explicit MastodonClient (QObject *parent = nullptr);
+
+    QNetworkAccessManager *networkManager;
 };
-}
 
 #endif // MASTODONCLIENT_H

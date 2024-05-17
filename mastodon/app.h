@@ -1,22 +1,23 @@
-#ifndef APP_H
-#define APP_H
+#ifndef MASTODONAPP_H
+#define MASTODONAPP_H
 
 #include <QObject>
+#include <QUrl>
 
-namespace Mastodon {
-class App : public QObject
+
+class MastodonApp : public QObject
 {
     Q_OBJECT
 public:
-    explicit App(QObject *parent = nullptr);
+    explicit MastodonApp(QObject *parent = nullptr);
+    MastodonApp(QJsonObject json, QUrl baseUrl, QObject *parent = nullptr);
 
     QString clientId;
     QString clientSecret;
     QString redirectUri;
-
-    App(QJsonObject json, QObject *parent = nullptr);
+    QUrl baseUrl;
 
 signals:
 };
-}
-#endif // APP_H
+
+#endif // MASTODONAPP_H
