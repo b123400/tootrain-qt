@@ -1,5 +1,7 @@
 #include "settingwindow.h"
 #include "ui_settingwindow.h"
+#include "settingmanager.h"
+#include "mastodon/client.h"
 
 SettingWindow::SettingWindow(QWidget *parent)
     : QWidget(parent)
@@ -7,8 +9,9 @@ SettingWindow::SettingWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(ui->addAccountButton, &QAbstractButton::clicked, this, &SettingWindow::addAccountButtonClicked);
-    connect(ui->deleteAccountButton, &QAbstractButton::clicked, this, &SettingWindow::deleteAccountButtonClicked);
+    connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
+    connect(ui->testButton, &QAbstractButton::clicked, this, &SettingWindow::testProfile);
+    loadAccount();
 }
 
 SettingWindow::~SettingWindow()
@@ -16,16 +19,29 @@ SettingWindow::~SettingWindow()
     delete ui;
 }
 
-void SettingWindow::addAccountButtonClicked() {
-    this->mastodonOAuthWindow = new MastodonOauthWindow(this);
-    connect(this->mastodonOAuthWindow, &QDialog::finished, this, &SettingWindow::mastodonAccountFinished);
-    connect(this->mastodonOAuthWindow, &MastodonOauthWindow::authenticated, this, &SettingWindow::mastodonAccountAuthenticated);
-    this->mastodonOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
-    this->mastodonOAuthWindow->show();
+void SettingWindow::loadAccount() {
+    auto accounts = SettingManager::shared().getAccounts();
+    if (accounts.size()) {
+        currentAccount = accounts.at(0);
+        ui->currentAccountName->setText("Account: " + currentAccount->username);
+        ui->loginButton->setText("Logout");
+    } else {
+        ui->currentAccountName->setText("Not logged in");
+        ui->loginButton->setText("Login");
+    }
 }
 
-void SettingWindow::deleteAccountButtonClicked() {
-
+void SettingWindow::loginButtonClicked() {
+    if (currentAccount) {
+        SettingManager::shared().clearAccounts();
+        loadAccount();
+    } else {
+        this->mastodonOAuthWindow = new MastodonOauthWindow(this);
+        connect(this->mastodonOAuthWindow, &QDialog::finished, this, &SettingWindow::mastodonAccountFinished);
+        connect(this->mastodonOAuthWindow, &MastodonOauthWindow::authenticated, this, &SettingWindow::mastodonAccountAuthenticated);
+        this->mastodonOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
+        this->mastodonOAuthWindow->show();
+    }
 }
 
 void SettingWindow::mastodonAccountFinished() {
@@ -34,4 +50,16 @@ void SettingWindow::mastodonAccountFinished() {
 
 void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *account) {
     qDebug() << account->username;
+    QList<Account*> list;
+    list.append(account);
+    SettingManager::shared().saveAccounts(list);
+    loadAccount();
+}
+
+void SettingWindow::testProfile() {
+    if (!currentAccount) return;
+    MastodonAccount *ma = (MastodonAccount*)currentAccount;
+    MastodonClient::shared().verifyCredentials(ma->app, [=](MastodonAccount* account){
+        qDebug() << "OK:" << account->username;
+    });
 }

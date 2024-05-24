@@ -18,15 +18,19 @@ public:
     ~SettingWindow();
 
 public slots:
-    void addAccountButtonClicked();
-    void deleteAccountButtonClicked();
+    void loginButtonClicked();
     void mastodonAccountFinished();
     void mastodonAccountAuthenticated(MastodonAccount *account);
+
+    void testProfile();
 
 private:
     Ui::SettingWindow *ui;
 
-    MastodonOauthWindow *mastodonOAuthWindow;
+    MastodonOauthWindow *mastodonOAuthWindow = nullptr;
+    Account *currentAccount = nullptr;
+
+    void loadAccount();
 };
 
 #endif // SETTINGWINDOW_H
