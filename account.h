@@ -9,6 +9,9 @@ class Account : public QObject
 public:
     explicit Account(QObject *parent = nullptr);
 
+    // The uuid that is only used in tootrain
+    QString uuid;
+
     QString displayName;
     QString username;
     QString id;

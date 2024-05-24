@@ -18,6 +18,7 @@ void SettingManager::saveAccounts(QList<Account*> accounts) {
         settings.setArrayIndex(i);
 
         Account *a = accounts[i];
+        settings.setValue("uuid", a->uuid);
         settings.setValue("displayName", a->displayName);
         settings.setValue("username", a->username);
         settings.setValue("id", a->id);
@@ -56,6 +57,7 @@ QList<Account*> SettingManager::getAccounts() {
             app->redirectUri = settings.value("redirectUri").toString();
             app->baseUrl = settings.value("baseUrl").toUrl();
         }
+        account->uuid = settings.value("uuid").toString();
         account->displayName = settings.value("displayName").toString();
         account->username = settings.value("username").toString();
         account->id = settings.value("id").toString();

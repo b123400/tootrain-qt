@@ -14,7 +14,8 @@ public:
 
     MastodonAccount(QJsonObject json, QObject *parent = nullptr);
 
-    MastodonApp *app;
+    // Only available for accounts from settings, not available for other users
+    MastodonApp *app = nullptr;
 
 signals:
 };
