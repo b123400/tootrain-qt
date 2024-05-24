@@ -1,3 +1,6 @@
+#include <QNetworkRequest>
+#include <QUrl>
+
 #include "settingwindow.h"
 #include "ui_settingwindow.h"
 #include "settingmanager.h"
@@ -12,6 +15,10 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
     connect(ui->testButton, &QAbstractButton::clicked, this, &SettingWindow::testProfile);
     loadAccount();
+
+    connect(&webSocket, &QWebSocket::connected, this, &SettingWindow::onConnected);
+    connect(&webSocket, &QWebSocket::textMessageReceived, this, &SettingWindow::onTextMessageReceived);
+    connect(&webSocket, &QWebSocket::errorOccurred, this, &SettingWindow::errorOccurred);
 }
 
 SettingWindow::~SettingWindow()
@@ -59,7 +66,24 @@ void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *account) {
 void SettingWindow::testProfile() {
     if (!currentAccount) return;
     MastodonAccount *ma = (MastodonAccount*)currentAccount;
-    MastodonClient::shared().verifyCredentials(ma->app, [=](MastodonAccount* account){
-        qDebug() << "OK:" << account->username;
-    });
+    // MastodonClient::shared().verifyCredentials(ma->app, [=](MastodonAccount* account){
+    //     qDebug() << "OK:" << account->username;
+    // });
+    qDebug() << "access token: " << ma->app->oauth2->token();
+    QUrl url = QUrl("wss://mastodon.hk/api/v1/streaming?access_token=" + ma->app->oauth2->token() + "&stream=public");
+    QNetworkRequest request = QNetworkRequest(url);
+    // request.setRawHeader("Authorization", ("Bearer " + ma->app->oauth2->token()).toLocal8Bit().toBase64());
+    webSocket.open(request);
+}
+
+void SettingWindow::onTextMessageReceived(QString message) {
+    qDebug() << "message: " << message;
+}
+
+void SettingWindow::onConnected() {
+    qDebug() << "connected! ";
+}
+
+void SettingWindow::errorOccurred(QAbstractSocket::SocketError error) {
+    qDebug() << "error";
 }
