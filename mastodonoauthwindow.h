@@ -25,7 +25,7 @@ public slots:
     void granted();
     void oauthError(const QAbstractOAuth::Error err);
 signals:
-    void authenticated(Account *account);
+    void authenticated(MastodonAccount *account);
 
 private:
     Ui::MastodonOauthWindow *ui;

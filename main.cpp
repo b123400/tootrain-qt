@@ -39,8 +39,8 @@ int main(int argc, char *argv[])
     anim->setEndValue(QPoint(0, 0));
     anim->start();
 
-    MastodonOauthWindow oauthWindow;
-    oauthWindow.show();
+    // MastodonOauthWindow oauthWindow;
+    // oauthWindow.show();
 
     return a.exec();
 }

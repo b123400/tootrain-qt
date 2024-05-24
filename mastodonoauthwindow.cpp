@@ -70,11 +70,11 @@ void MastodonOauthWindow::granted() {
         account->app = app;
         app->setParent(account);
         authenticated(account);
+        close();
     });
 
     auto okButton = ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok);
     okButton->setEnabled(false);
-    // close();
 }
 
 void MastodonOauthWindow::oauthError(const QAbstractOAuth::Error err) {
