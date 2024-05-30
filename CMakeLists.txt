@@ -33,6 +33,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         settingwindow.h settingwindow.cpp settingwindow.ui
         settingwindow.h settingwindow.cpp settingwindow.ui
         settingmanager.h settingmanager.cpp
+        mastodon/status.h mastodon/status.cpp
+        mastodon/streamevent.h mastodon/streamevent.cpp
+        status.h
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET tootrain-qt APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
