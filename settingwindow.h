@@ -2,7 +2,6 @@
 #define SETTINGWINDOW_H
 
 #include <QWidget>
-#include <QWebSocket>
 
 #include "mastodonoauthwindow.h"
 
@@ -24,17 +23,12 @@ public slots:
     void mastodonAccountAuthenticated(MastodonAccount *account);
 
     void testProfile();
-    void onTextMessageReceived(QString message);
-    void onConnected();
-    void errorOccurred(QAbstractSocket::SocketError error);
 
 private:
     Ui::SettingWindow *ui;
 
     MastodonOauthWindow *mastodonOAuthWindow = nullptr;
     Account *currentAccount = nullptr;
-
-    QWebSocket webSocket;
 
     void loadAccount();
 };

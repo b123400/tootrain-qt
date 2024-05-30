@@ -2,6 +2,7 @@
 #define ACCOUNT_H
 
 #include <QObject>
+#include <QUrl>
 
 class Account : public QObject
 {
@@ -16,6 +17,8 @@ public:
     QString username;
     QString id;
     QString avatarUrl;
+
+    virtual QUrl getWebSocketUrl() = 0;
 
 signals:
 };
