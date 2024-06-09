@@ -5,7 +5,7 @@ on:
     branches:
       - '*'
 env:
-  BUILD_TYPE: Release
+  BUILD_TYPE: Debug
 jobs:
   # build-linux:
   #   runs-on: ubuntu-latest
