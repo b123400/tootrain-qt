@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include <QWebSocket>
+#include <QQueue>
 
 #include "settingwindow.h"
 #include "status.h"
+#include "animationstate.h"
 
 class MainWindow : public QMainWindow
 {
@@ -16,6 +18,7 @@ public:
     ~MainWindow();
 
     void showStatus(Status *status);
+    int yForNewStatus(QSize statusSize);
 
 public slots:
     void preferencesTriggered(bool check);
@@ -26,6 +29,8 @@ public slots:
 
 private:
     SettingWindow *settingWindow = nullptr;
+
+    QQueue<AnimationState*> animationStates;
 
     QWebSocket webSocket;
     void startStreaming();
