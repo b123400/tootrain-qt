@@ -12,6 +12,7 @@
 #include "settingwindow.h"
 #include "settingmanager.h"
 #include "mastodon/streamevent.h"
+#include "dummystatus.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -65,7 +66,9 @@ void MainWindow::onWebSocketTextMessageReceived(QString message) {
 
 void MainWindow::onWebSocketConnected() {
     qDebug() << "connected";
-
+    auto s = new DummyStatus("Hello Fediverse", this);
+    showStatus(s);
+    delete s;
 }
 
 void MainWindow::onWebSocketErrorOccurred(QAbstractSocket::SocketError error){
