@@ -52,6 +52,8 @@ void MainWindow::startStreaming() {
         QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
         webSocket.open(request);
     }
+    // temp
+    this->preferencesTriggered(false);
 }
 
 void MainWindow::onWebSocketTextMessageReceived(QString message) {
