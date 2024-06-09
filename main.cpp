@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QPropertyAnimation>
 #include <QGraphicsDropShadowEffect>
+#include <QScreen>
 
 #include "mastodonoauthwindow.h"
 
@@ -12,11 +13,14 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-
+    // TODO: support multiple screen
+    QScreen *screen = QGuiApplication::primaryScreen();
     w.setAttribute(Qt::WA_NoSystemBackground, true);
     w.setAttribute(Qt::WA_OpaquePaintEvent, false);
     w.setAttribute(Qt::WA_TranslucentBackground, true);
-    // w.setWindowOpacity(1);
+
+    // w.setWindowOpacity(0.5);
+
     w.setWindowFlags(w.windowFlags()
                      | Qt::WindowDoesNotAcceptFocus
                      | Qt::WindowTransparentForInput
@@ -40,9 +44,10 @@ int main(int argc, char *argv[])
     // effect->setColor(Qt::black);
 
     // label->setGraphicsEffect(effect);
-
-    w.resize(600, 400);
-    // w.show();
+    auto geometry = screen->availableGeometry();
+    w.setGeometry(geometry);
+    // w.resize(geometry .height(), geometry .height());
+    w.show();
 
     // QPropertyAnimation *anim = new QPropertyAnimation(label, "pos", &w);
     // anim->setDuration(10000);
