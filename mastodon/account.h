@@ -17,6 +17,8 @@ public:
     // Only available for accounts from settings, not available for other users
     MastodonApp *app = nullptr;
 
+    QUrl getWebSocketUrl();
+
 signals:
 };
 

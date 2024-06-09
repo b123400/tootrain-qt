@@ -1,3 +1,6 @@
+#include <QNetworkRequest>
+#include <QUrl>
+
 #include "settingwindow.h"
 #include "ui_settingwindow.h"
 #include "settingmanager.h"
@@ -25,7 +28,13 @@ void SettingWindow::loadAccount() {
         currentAccount = accounts.at(0);
         ui->currentAccountName->setText("Account: " + currentAccount->username);
         ui->loginButton->setText("Logout");
+        // We only take the first one, and discard to rest
+        currentAccount->setParent(this);
+        // for (int i = 1; i < accounts.size(); i++) {
+        //     delete accounts.at(i);
+        // }
     } else {
+        currentAccount = nullptr;
         ui->currentAccountName->setText("Not logged in");
         ui->loginButton->setText("Login");
     }
@@ -33,6 +42,7 @@ void SettingWindow::loadAccount() {
 
 void SettingWindow::loginButtonClicked() {
     if (currentAccount) {
+        delete currentAccount;
         SettingManager::shared().clearAccounts();
         loadAccount();
     } else {
