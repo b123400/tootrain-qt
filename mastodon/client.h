@@ -22,7 +22,7 @@ public slots:
 private:
     explicit MastodonClient (QObject *parent = nullptr);
 
-    QNetworkAccessManager *networkManager;
+    QNetworkAccessManager *networkManager = nullptr;
 };
 
 #endif // MASTODONCLIENT_H

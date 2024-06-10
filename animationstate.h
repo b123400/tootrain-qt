@@ -11,8 +11,8 @@ class AnimationState : public QObject
 public:
     explicit AnimationState(QObject *parent = nullptr);
 
-    QPropertyAnimation *animation;
-    QLabel *target;
+    QPropertyAnimation *animation = nullptr;
+    QLabel *target = nullptr;
 
 signals:
 };
