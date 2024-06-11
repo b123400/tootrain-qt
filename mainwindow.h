@@ -26,6 +26,7 @@ public slots:
     void onWebSocketConnected();
     void onWebSocketErrorOccurred(QAbstractSocket::SocketError error);
     void onAnimationFinish();
+    void onRepaintTimer();
 
 private:
     SettingWindow *settingWindow = nullptr;

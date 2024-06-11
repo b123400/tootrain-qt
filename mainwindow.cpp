@@ -9,6 +9,8 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QTextDocument>
+#include <QTimer>
+#include <QtSystemDetection>
 
 #include "settingwindow.h"
 #include "settingmanager.h"
@@ -29,6 +31,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&webSocket, &QWebSocket::errorOccurred, this, &MainWindow::onWebSocketErrorOccurred);
 
     startStreaming();
+
+#ifdef Q_OS_WIN
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::onRepaintTimer);
+    timer->start(17); // 60fps
+#endif
 }
 
 MainWindow::~MainWindow() {}
@@ -38,6 +46,10 @@ void MainWindow::preferencesTriggered(bool checked) {
         this->settingWindow = new SettingWindow();
     }
     this->settingWindow->show();
+}
+
+void MainWindow::onRepaintTimer() {
+    this->repaint();
 }
 
 void MainWindow::startStreaming() {
