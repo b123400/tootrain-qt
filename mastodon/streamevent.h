@@ -13,7 +13,7 @@ public:
     static bool isValid(QJsonObject json);
 
     QString type;
-    MastodonStatus *status;
+    MastodonStatus *status = nullptr;
 
 
 signals:

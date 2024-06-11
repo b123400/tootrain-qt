@@ -18,7 +18,7 @@ public:
     QString redirectUri;
     QUrl baseUrl;
 
-    QOAuth2AuthorizationCodeFlow *oauth2;
+    QOAuth2AuthorizationCodeFlow *oauth2 = nullptr;
 
 signals:
 };

@@ -9,6 +9,8 @@
 #include <QThread>
 #include <QCoreApplication>
 #include <QTextDocument>
+#include <QTimer>
+#include <QtSystemDetection>
 
 #include "settingwindow.h"
 #include "settingmanager.h"
@@ -18,17 +20,26 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+// TODO: sth like a tray icon for accessing preference window on windows
+#ifdef Q_OS_APPLE
     QMenuBar *menubar = this->menuBar();
     QMenu *fileMenu = menubar->addMenu("File");
     QAction *preferenceAction = fileMenu->addAction("Preferences");
     preferenceAction->setMenuRole(QAction::PreferencesRole);
     connect(preferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
+#endif
 
     connect(&webSocket, &QWebSocket::connected, this, &MainWindow::onWebSocketConnected);
     connect(&webSocket, &QWebSocket::textMessageReceived, this, &MainWindow::onWebSocketTextMessageReceived);
     connect(&webSocket, &QWebSocket::errorOccurred, this, &MainWindow::onWebSocketErrorOccurred);
 
     startStreaming();
+
+#ifdef Q_OS_WIN
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::onRepaintTimer);
+    timer->start(17); // 60fps
+#endif
 }
 
 MainWindow::~MainWindow() {}
@@ -38,6 +49,10 @@ void MainWindow::preferencesTriggered(bool checked) {
         this->settingWindow = new SettingWindow();
     }
     this->settingWindow->show();
+}
+
+void MainWindow::onRepaintTimer() {
+    this->repaint();
 }
 
 void MainWindow::startStreaming() {

@@ -14,7 +14,7 @@ public:
 
     QString id;
     QString content;
-    MastodonAccount *account;
+    MastodonAccount *account = nullptr;
 
     QString getText();
 

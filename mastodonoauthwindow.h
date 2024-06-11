@@ -29,8 +29,8 @@ signals:
 
 private:
     Ui::MastodonOauthWindow *ui;
-    QOAuth2AuthorizationCodeFlow *oauth2;
-    MastodonApp *app;
+    QOAuth2AuthorizationCodeFlow *oauth2 = nullptr;
+    MastodonApp *app = nullptr;
 
     void updateTokenParams(QAbstractOAuth::Stage stage, QMultiMap<QString, QVariant>* parameters);
 };
