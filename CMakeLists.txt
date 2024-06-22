@@ -39,6 +39,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         dummystatus.h dummystatus.cpp
         animationstate.h animationstate.cpp
     )
+
+    qt_add_resources(tootrain-qt "app_images"
+        FILES
+            images/icon_128.png
+    )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET tootrain-qt APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)

@@ -11,6 +11,7 @@
 #include <QTextDocument>
 #include <QTimer>
 #include <QtSystemDetection>
+#include <QSystemTrayIcon>
 
 #include "settingwindow.h"
 #include "settingmanager.h"
@@ -29,6 +30,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(preferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
 #endif
 
+    QSystemTrayIcon *trayIcon = new QSystemTrayIcon();
+    QIcon icon = QIcon(":/images/icon_128.png");
+    trayIcon->setIcon(icon);
+    QMenu *trayMenu = new QMenu(this);
+    trayIcon->setContextMenu(trayMenu);
+    QAction *trayPreferenceAction = trayMenu->addAction("Preferences...");
+    trayPreferenceAction->setMenuRole(QAction::NoRole);
+    connect(trayPreferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
+    trayIcon->show();
+
     connect(&webSocket, &QWebSocket::connected, this, &MainWindow::onWebSocketConnected);
     connect(&webSocket, &QWebSocket::textMessageReceived, this, &MainWindow::onWebSocketTextMessageReceived);
     connect(&webSocket, &QWebSocket::errorOccurred, this, &MainWindow::onWebSocketErrorOccurred);
@@ -41,6 +52,9 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::onRepaintTimer);
     timer->start(17); // 60fps
+
+    // TODO: Show preference window in system tray
+    this->preferencesTriggered(false);
 #endif
 }
 
@@ -69,8 +83,6 @@ void MainWindow::startStreaming() {
         QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
         webSocket.open(request);
     }
-    // temp
-    this->preferencesTriggered(false);
 }
 
 void MainWindow::stopStreaming() {
