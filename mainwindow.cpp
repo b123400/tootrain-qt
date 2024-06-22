@@ -21,7 +21,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-// TODO: sth like a tray icon for accessing preference window on windows
 #ifdef Q_OS_APPLE
     QMenuBar *menubar = this->menuBar();
     QMenu *fileMenu = menubar->addMenu("File");
@@ -51,13 +50,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     startStreaming();
 
+    auto accounts = SettingManager::shared().getAccounts();
+    if (!accounts.size()) {
+        this->preferencesTriggered(false);
+    }
+
 #ifdef Q_OS_WIN
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::onRepaintTimer);
     timer->start(17); // 60fps
-
-    // TODO: Show preference window in system tray
-    this->preferencesTriggered(false);
 #endif
 }
 
