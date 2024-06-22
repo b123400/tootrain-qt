@@ -38,6 +38,9 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *trayPreferenceAction = trayMenu->addAction("Preferences...");
     trayPreferenceAction->setMenuRole(QAction::NoRole);
     connect(trayPreferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
+    QAction *trayQuitAction = trayMenu->addAction("Quit");
+    trayQuitAction->setMenuRole(QAction::NoRole);
+    connect(trayQuitAction, &QAction::triggered, QCoreApplication::instance(), &QCoreApplication::quit);
     trayIcon->show();
 
     connect(&webSocket, &QWebSocket::connected, this, &MainWindow::onWebSocketConnected);
