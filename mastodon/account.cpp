@@ -29,3 +29,10 @@ QUrl MastodonAccount::getWebSocketUrl() {
     qDebug() << "stream url: " << url;
     return url;
 }
+
+QString MastodonAccount::fullUsername() {
+    if (!this->app) {
+        return username;
+    }
+    return username + "@" + this->app->baseUrl.host();
+}

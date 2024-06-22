@@ -19,7 +19,7 @@ public:
     QString avatarUrl;
 
     virtual QUrl getWebSocketUrl() = 0;
-
+    virtual QString fullUsername() = 0;
 signals:
 };
 

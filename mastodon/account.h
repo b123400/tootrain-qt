@@ -18,6 +18,7 @@ public:
     MastodonApp *app = nullptr;
 
     QUrl getWebSocketUrl();
+    QString fullUsername();
 
 signals:
 };

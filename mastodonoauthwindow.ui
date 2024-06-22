@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Login to Mastodon</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>

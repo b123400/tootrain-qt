@@ -15,6 +15,9 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
     connect(ui->testButton, &QAbstractButton::clicked, this, &SettingWindow::testProfile);
     loadAccount();
+
+    // Only for debug
+    ui->testButton->hide();
 }
 
 SettingWindow::~SettingWindow()
@@ -26,13 +29,9 @@ void SettingWindow::loadAccount() {
     auto accounts = SettingManager::shared().getAccounts();
     if (accounts.size()) {
         currentAccount = accounts.at(0);
-        ui->currentAccountName->setText("Account: " + currentAccount->username);
+        ui->currentAccountName->setText("Account: " + currentAccount->fullUsername());
         ui->loginButton->setText("Logout");
-        // We only take the first one, and discard to rest
         currentAccount->setParent(this);
-        // for (int i = 1; i < accounts.size(); i++) {
-        //     delete accounts.at(i);
-        // }
     } else {
         currentAccount = nullptr;
         ui->currentAccountName->setText("Not logged in");
@@ -60,6 +59,7 @@ void SettingWindow::mastodonAccountFinished() {
 
 void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *account) {
     qDebug() << account->username;
+    // TODO: Support multiple accounts
     QList<Account*> list;
     list.append(account);
     SettingManager::shared().saveAccounts(list);
