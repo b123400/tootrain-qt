@@ -24,9 +24,11 @@ public slots:
     void preferencesTriggered(bool check);
     void onWebSocketTextMessageReceived(QString message);
     void onWebSocketConnected();
+    void onWebSocketDisconnected();
     void onWebSocketErrorOccurred(QAbstractSocket::SocketError error);
     void onAnimationFinish();
     void onRepaintTimer();
+    void onCurrentAccountChanged();
 
 private:
     SettingWindow *settingWindow = nullptr;
@@ -35,5 +37,6 @@ private:
 
     QWebSocket webSocket;
     void startStreaming();
+    void stopStreaming();
 };
 #endif // MAINWINDOW_H

@@ -34,6 +34,9 @@ void SettingManager::saveAccounts(QList<Account*> accounts) {
         }
     }
     settings.endArray();
+    // Assumption: Only 1 account at a time
+    // TODO: Support multiple accounts
+    this->currentAccountChanged();
 }
 
 QList<Account*> SettingManager::getAccounts() {
@@ -71,4 +74,5 @@ QList<Account*> SettingManager::getAccounts() {
 
 void SettingManager::clearAccounts() {
     settings.remove("accounts");
+    this->currentAccountChanged();
 }

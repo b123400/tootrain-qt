@@ -32,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&webSocket, &QWebSocket::connected, this, &MainWindow::onWebSocketConnected);
     connect(&webSocket, &QWebSocket::textMessageReceived, this, &MainWindow::onWebSocketTextMessageReceived);
     connect(&webSocket, &QWebSocket::errorOccurred, this, &MainWindow::onWebSocketErrorOccurred);
+    connect(&webSocket, &QWebSocket::disconnected, this, &MainWindow::onWebSocketDisconnected);
+    connect(&SettingManager::shared(), &SettingManager::currentAccountChanged, this, &MainWindow::onCurrentAccountChanged);
 
     startStreaming();
 
@@ -71,6 +73,11 @@ void MainWindow::startStreaming() {
     this->preferencesTriggered(false);
 }
 
+void MainWindow::stopStreaming() {
+    if (!webSocket.isValid()) return;
+    webSocket.close();
+}
+
 void MainWindow::onWebSocketTextMessageReceived(QString message) {
     // qDebug() << "message: " << message;
     QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
@@ -85,13 +92,25 @@ void MainWindow::onWebSocketTextMessageReceived(QString message) {
 
 void MainWindow::onWebSocketConnected() {
     qDebug() << "connected";
-    auto s = new DummyStatus("Hello Fediverse", this);
+    auto s = new DummyStatus("Stream connected", this);
+    showStatus(s);
+    delete s;
+}
+
+void MainWindow::onWebSocketDisconnected() {
+    qDebug() << "disconnected";
+    auto s = new DummyStatus("Stream disconnected", this);
     showStatus(s);
     delete s;
 }
 
 void MainWindow::onWebSocketErrorOccurred(QAbstractSocket::SocketError error){
     qDebug() << "error";
+}
+
+void MainWindow::onCurrentAccountChanged() {
+    this->stopStreaming();
+    this->startStreaming();
 }
 
 void MainWindow::showStatus(Status *status) {
@@ -117,7 +136,6 @@ void MainWindow::showStatus(Status *status) {
 
     label->adjustSize();
     int y = yForNewStatus(label->size());
-    qDebug() << "y for status: " << y;
     if (y < 0) {
         qDebug() << "Too much on screen, not showing this status";
         return;

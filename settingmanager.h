@@ -20,6 +20,7 @@ private:
     QSettings settings = QSettings("TootRain-qt", "Star Runner");
 
 signals:
+    void currentAccountChanged();
 };
 
 #endif // SETTINGMANAGER_H
