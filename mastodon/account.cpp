@@ -23,7 +23,7 @@ QUrl MastodonAccount::getWebSocketUrl() {
     // TODO: other streams
     url.setPath("/api/v1/streaming");
     QUrlQuery query;
-    query.addQueryItem("stream", "public");
+    query.addQueryItem("stream", "user");
     query.addQueryItem("access_token", accessToken);
     url.setQuery(query);
     qDebug() << "stream url: " << url;
