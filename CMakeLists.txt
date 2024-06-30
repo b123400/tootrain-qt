@@ -22,6 +22,12 @@ set(PROJECT_SOURCES
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/images/icon.rc")
+    set(MACOSX_BUNDLE_ICON_FILE icon_128.icns)
+    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/images/icon_128.icns")
+    set_source_files_properties(${app_icon_macos} PROPERTIES
+           MACOSX_PACKAGE_LOCATION "Resources")
+
     qt_add_executable(tootrain-qt
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
@@ -38,6 +44,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         status.h
         dummystatus.h dummystatus.cpp
         animationstate.h animationstate.cpp
+        ${app_icon_resource_windows}
+        ${app_icon_macos}
+        images/icon.rc
     )
 
     qt_add_resources(tootrain-qt "app_images"
