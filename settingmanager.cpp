@@ -36,7 +36,7 @@ void SettingManager::saveAccounts(QList<Account*> accounts) {
     settings.endArray();
     // Assumption: Only 1 account at a time
     // TODO: Support multiple accounts
-    this->currentAccountChanged();
+    emit this->currentAccountChanged();
 }
 
 QList<Account*> SettingManager::getAccounts() {
@@ -74,5 +74,36 @@ QList<Account*> SettingManager::getAccounts() {
 
 void SettingManager::clearAccounts() {
     settings.remove("accounts");
-    this->currentAccountChanged();
+    emit this->currentAccountChanged();
+}
+
+void SettingManager::setScreen(QScreen *screen) {
+    auto serialNumber = screen->serialNumber();
+    if (!serialNumber.isEmpty()) {
+        settings.setValue("screenSerialNumber", serialNumber);
+    } else {
+        // On some platform QT doesn't support serial number
+        auto screens = QGuiApplication::screens();
+        int index = screens.indexOf(screen);
+        settings.setValue("screenNumber", index);
+    }
+    emit this->currentScreenChanged();
+}
+
+QScreen *SettingManager::getScreen() {
+    auto screens = QGuiApplication::screens();
+    QString serialNumber = settings.value("screenSerialNumber", "").toString();
+    if (!serialNumber.isEmpty()) {
+        for (auto screen : screens) {
+            if (screen->serialNumber() == serialNumber) {
+                return screen;
+            }
+        }
+    }
+    bool hasScreenNumber = false;
+    int screenNumber = settings.value("screenNumber").toInt(&hasScreenNumber);
+    if (hasScreenNumber || screenNumber < screens.length()) {
+        return screens[screenNumber];
+    }
+    return QGuiApplication::primaryScreen();
 }
