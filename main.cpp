@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
     MainWindow w;
 
     // TODO: support multiple screen
-    QScreen *screen = QGuiApplication::primaryScreen();
     w.setAttribute(Qt::WA_NoSystemBackground, true);
     w.setAttribute(Qt::WA_OpaquePaintEvent, false);
     w.setAttribute(Qt::WA_TranslucentBackground, true);
@@ -30,8 +29,6 @@ int main(int argc, char *argv[])
                      | Qt::FramelessWindowHint
                      );
 
-    auto geometry = screen->availableGeometry();
-    w.setGeometry(geometry);
     // w.resize(geometry .height(), geometry .height());
     w.show();
 

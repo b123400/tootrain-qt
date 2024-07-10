@@ -12,6 +12,8 @@
 #include <QTimer>
 #include <QtSystemDetection>
 #include <QSystemTrayIcon>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "settingwindow.h"
 #include "settingmanager.h"
@@ -48,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&webSocket, &QWebSocket::disconnected, this, &MainWindow::onWebSocketDisconnected);
     connect(&SettingManager::shared(), &SettingManager::currentAccountChanged, this, &MainWindow::onCurrentAccountChanged);
 
+    connect(&SettingManager::shared(), &SettingManager::currentScreenChanged, this, &MainWindow::onCurrentScreenChanged);
+    moveToScreen();
+
     startStreaming();
 
     auto accounts = SettingManager::shared().getAccounts();
@@ -73,6 +78,14 @@ void MainWindow::preferencesTriggered(bool checked) {
 
 void MainWindow::onRepaintTimer() {
     this->repaint();
+}
+
+void MainWindow::moveToScreen() {
+    QScreen *theScreen = SettingManager::shared().getScreen();
+    this->setScreen(theScreen);
+    auto geometry = theScreen->availableGeometry();
+    setGeometry(geometry);
+    show();
 }
 
 void MainWindow::startStreaming() {
@@ -127,6 +140,10 @@ void MainWindow::onWebSocketErrorOccurred(QAbstractSocket::SocketError error){
 void MainWindow::onCurrentAccountChanged() {
     this->stopStreaming();
     this->startStreaming();
+}
+
+void MainWindow::onCurrentScreenChanged() {
+    moveToScreen();
 }
 
 void MainWindow::showStatus(Status *status) {

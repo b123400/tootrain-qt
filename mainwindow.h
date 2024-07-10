@@ -29,11 +29,14 @@ public slots:
     void onAnimationFinish();
     void onRepaintTimer();
     void onCurrentAccountChanged();
+    void onCurrentScreenChanged();
 
 private:
     SettingWindow *settingWindow = nullptr;
 
     QQueue<AnimationState*> animationStates;
+
+    void moveToScreen();
 
     QWebSocket webSocket;
     void startStreaming();
