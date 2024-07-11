@@ -144,6 +144,9 @@ void MainWindow::onCurrentAccountChanged() {
 
 void MainWindow::onCurrentScreenChanged() {
     moveToScreen();
+    auto s = new DummyStatus("This screen is selected", this);
+    showStatus(s);
+    delete s;
 }
 
 void MainWindow::showStatus(Status *status) {

@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
     // w.resize(geometry .height(), geometry .height());
     w.show();
+    w.moveToScreen();
 
     return a.exec();
 }

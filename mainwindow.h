@@ -19,6 +19,7 @@ public:
 
     void showStatus(Status *status);
     int yForNewStatus(QSize statusSize);
+    void moveToScreen();
 
 public slots:
     void preferencesTriggered(bool check);
@@ -35,8 +36,6 @@ private:
     SettingWindow *settingWindow = nullptr;
 
     QQueue<AnimationState*> animationStates;
-
-    void moveToScreen();
 
     QWebSocket webSocket;
     void startStreaming();
