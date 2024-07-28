@@ -19,3 +19,11 @@ bool DummyStatus::isEmojisReady() {
 void DummyStatus::downloadEmojis() {
 
 }
+
+QList<RichTextComponent*> DummyStatus::richTextcomponents() {
+    RichTextComponent *c = new RichTextComponent(this);
+    c->text = this->message;
+    auto list = QList<RichTextComponent*>();
+    list.append(c);
+    return list;
+}

@@ -5,6 +5,7 @@
 #include "account.h"
 #include "../status.h"
 #include "emoji.h"
+#include "../richtextcomponent.h"
 
 class MastodonStatus : public QObject, public Status
 {
@@ -19,9 +20,12 @@ public:
     QList<MastodonEmoji*> emojis;
 
     QString getText();
+    QList<RichTextComponent*> richTextcomponents();
+
     bool isEmojisReady();
     void downloadEmojis();
 
+    QString getPlainText();
 
 signals:
 };

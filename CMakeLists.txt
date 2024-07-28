@@ -48,6 +48,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${app_icon_macos}
         images/icon.rc
         mastodon/emoji.h mastodon/emoji.cpp
+        richtextcomponent.h richtextcomponent.cpp
         statusemoji.h
         imagemanager.h imagemanager.cpp
         statusimageloader.h statusimageloader.cpp

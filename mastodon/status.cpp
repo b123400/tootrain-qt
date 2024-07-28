@@ -1,5 +1,6 @@
 #include "status.h"
 #include <QJsonArray>
+#include <QTextDocument>
 
 MastodonStatus::MastodonStatus( QObject *parent)
     : QObject{parent}
@@ -21,6 +22,56 @@ MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): QObject{paren
 
 QString MastodonStatus::getText() {
     return this->content;
+}
+
+QString MastodonStatus::getPlainText() {
+    QTextDocument document;
+    document.setHtml(this->content);
+    return document.toPlainText();
+}
+
+QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
+    // TODO: Truncate long status
+    // TODO: Make it always single line
+
+    static QRegularExpression regex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
+    QString plainTextContent = this->getPlainText();
+    QList<RichTextComponent*> list;
+    auto globalMatch = regex.globalMatch(plainTextContent);
+    int lastStart = 0;
+    while (globalMatch.hasNext()) {
+        QRegularExpressionMatch match = globalMatch.next();
+        QString matchedShortCode = match.captured(1);
+        qDebug() << "matchedShortCode " << matchedShortCode;
+
+        qsizetype start = match.capturedStart();
+        qsizetype end = match.capturedEnd();
+        qDebug() << "start " << start;
+        qDebug() << "end " << end;
+        QString before = plainTextContent.sliced(0, start);
+        QString after = plainTextContent.sliced(end);
+        qDebug() << "before " << before;
+        qDebug() << "after " << after;
+
+        auto textRtc = new RichTextComponent(this);
+        textRtc->text = before;
+        list.append(textRtc);
+
+        for (auto emoji : emojis) {
+            if (emoji->shortCode == matchedShortCode) {
+                auto emojiRtc = new RichTextComponent(this);
+                emojiRtc->emoji = emoji;
+                list.append(emojiRtc);
+                break;
+            }
+        }
+
+        lastStart = end;
+    }
+    auto textRtc = new RichTextComponent(this);
+    textRtc->text = plainTextContent.sliced(lastStart);
+    list.append(textRtc);
+    return list;
 }
 
 bool MastodonStatus::isEmojisReady() {
