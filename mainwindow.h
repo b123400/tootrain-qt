@@ -31,6 +31,7 @@ public slots:
     void onRepaintTimer();
     void onCurrentAccountChanged();
     void onCurrentScreenChanged();
+    void onStatusEmojisLoaded(Status *status);
 
 private:
     SettingWindow *settingWindow = nullptr;

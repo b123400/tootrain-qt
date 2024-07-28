@@ -19,6 +19,11 @@
 #include "settingmanager.h"
 #include "mastodon/streamevent.h"
 #include "dummystatus.h"
+#include "statusimageloader.h"
+#include <QApplication>
+
+#include <QMovie>
+#include <QTextBlock>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -58,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent)
     trayQuitAction->setMenuRole(QAction::NoRole);
     connect(trayQuitAction, &QAction::triggered, QCoreApplication::instance(), &QCoreApplication::quit);
     trayIcon->show();
+
+    connect(&StatusImageLoader::shared(), &StatusImageLoader::statusIsReady, this, &MainWindow::onStatusEmojisLoaded);
 
     connect(&webSocket, &QWebSocket::connected, this, &MainWindow::onWebSocketConnected);
     connect(&webSocket, &QWebSocket::textMessageReceived, this, &MainWindow::onWebSocketTextMessageReceived);
@@ -122,6 +129,11 @@ void MainWindow::stopStreaming() {
     webSocket.close();
 }
 
+void MainWindow::onStatusEmojisLoaded(Status *status) {
+    showStatus(status);
+    // delete status;
+}
+
 void MainWindow::onWebSocketTextMessageReceived(QString message) {
     // qDebug() << "message: " << message;
     QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
@@ -129,7 +141,8 @@ void MainWindow::onWebSocketTextMessageReceived(QString message) {
     if (MastodonStreamEvent::isValid(jsonReply)) {
         MastodonStreamEvent *se = new MastodonStreamEvent(jsonReply, this);
         qDebug() << "status: " << se;
-        showStatus(se->status);
+        StatusImageLoader::shared().loadEmojisForStatus(se->status);
+        se->status->setParent(this);
         delete se;
     }
 }
@@ -165,46 +178,21 @@ void MainWindow::onCurrentScreenChanged() {
 }
 
 void MainWindow::showStatus(Status *status) {
-    QLabel *label = new QLabel(this);
+    QWidget *baseWidget = new QWidget(this);
 
-    // TODO: Instead of just removing the format, we may leave the URL as is
-    // Or maybe just detect the URL ourselves
-    QTextDocument document;
-    document.setHtml(status->getText());
-    QString plainText = document.toPlainText();
-    plainText = plainText.replace("\n", " ");
-    // TODO: set it in config
-    if (plainText.length() > 50) {
-        plainText = plainText.first(50);
-    }
+    QHBoxLayout *box = new QHBoxLayout(baseWidget);
+    box->setContentsMargins(0,0,0,0);
+    baseWidget->setLayout(box);
 
-    label->setText(plainText);
-
-    QFont font = label->font();
-    font.setPixelSize(40);
-    font.setWeight(QFont::Weight::Bold);
-    label->setFont(font);
-
-    label->adjustSize();
-    int y = yForNewStatus(label->size());
-    if (y < 0) {
-        qDebug() << "Too much on screen, not showing this status";
-        return;
-    }
-
-    label->setTextFormat(Qt::TextFormat::PlainText);
-
-    QPalette sample_palette;
-    sample_palette.setColor(QPalette::WindowText, Qt::white);
-
+    QPalette palette;
+    palette.setColor(QPalette::WindowText, Qt::white);
     // To debug with background colour:
-    // sample_palette.setColor(QPalette::Window, Qt::black);
+    // palette.setColor(QPalette::Window, Qt::red);
     // label->setAutoFillBackground(true);
 
-    label->setPalette(sample_palette);
-
-    label->show();
-    this->show();
+    QFont font = QApplication::font();
+    font.setPixelSize(40);
+    font.setWeight(QFont::Weight::Bold);
 
     QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
     effect->setBlurRadius(20);
@@ -212,19 +200,57 @@ void MainWindow::showStatus(Status *status) {
     effect->setYOffset(1);
     effect->setColor(QColor(0, 0, 0, 255));
 
-    label->setGraphicsEffect(effect);
+    auto components = status->richTextcomponents();
+    for (auto component : components) {
+        if (component->emoji) {
+            // TODO: Limit height
+            QLabel *label = new QLabel(this);
+            QMovie *mv = new QMovie(component->emoji->getPath());
+            mv->start();
+            label->setMovie(mv);
+            label->adjustSize();
+            label->show();
+            box->addWidget(label);
+            label->setGraphicsEffect(effect);
+        } else if (component->text.length()) {
+            QLabel *label = new QLabel(this);
+            label->setPalette(palette);
+            label->setFont(font);
+            label->setText(component->text);
+            label->setTextFormat(Qt::TextFormat::PlainText);
+            label->adjustSize();
+            label->show();
+            box->addWidget(label);
+            label->setGraphicsEffect(effect);
+        }
+    }
 
+    // TODO: set truncate limit in config
+    // if (plainText.length() > 50) {
+    //     plainText = plainText.first(50);
+    // }
 
-    QPropertyAnimation *anim = new QPropertyAnimation(label, "pos", this);
+    baseWidget->adjustSize();
+
+    int y = yForNewStatus(baseWidget->size());
+    if (y < 0) {
+        qDebug() << "Too much on screen, not showing this status";
+        return;
+    }
+
+    baseWidget->show();
+    this->show();
+
+    QPropertyAnimation *anim = new QPropertyAnimation(baseWidget, "pos", this);
     anim->setDuration(10000);
     anim->setStartValue(QPoint(this->geometry().width(), y));
-    anim->setEndValue(QPoint(-label->width(), y));
+    anim->setEndValue(QPoint(-baseWidget->width(), y));
     anim->start();
 
     connect(anim, &QAbstractAnimation::finished, this, &MainWindow::onAnimationFinish);
 
     AnimationState *as = new AnimationState(this);
-    as->target = label;
+    as->target = baseWidget;
     as->animation = anim;
     this->animationStates.enqueue(as);
 }

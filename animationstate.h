@@ -12,7 +12,7 @@ public:
     explicit AnimationState(QObject *parent = nullptr);
 
     QPropertyAnimation *animation = nullptr;
-    QLabel *target = nullptr;
+    QWidget *target = nullptr;
 
 signals:
 };
