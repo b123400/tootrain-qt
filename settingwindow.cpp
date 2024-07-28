@@ -2,9 +2,11 @@
 #include <QUrl>
 
 #include "settingwindow.h"
+#include "QtGui/qscreen.h"
 #include "ui_settingwindow.h"
 #include "settingmanager.h"
 #include "mastodon/client.h"
+#include <QGuiApplication>
 
 SettingWindow::SettingWindow(QWidget *parent)
     : QWidget(parent)
@@ -15,6 +17,9 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
     connect(ui->testButton, &QAbstractButton::clicked, this, &SettingWindow::testProfile);
     loadAccount();
+    loadScreens();
+
+    connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
     // Only for debug
     ui->testButton->hide();
@@ -36,6 +41,30 @@ void SettingWindow::loadAccount() {
         currentAccount = nullptr;
         ui->currentAccountName->setText("Not logged in");
         ui->loginButton->setText("Login");
+    }
+}
+
+void SettingWindow::loadScreens() {
+    QScreen *selectedScreen = SettingManager::shared().getScreen();
+    ui->screenComboBox->clear();
+    auto screens = QGuiApplication::screens();
+    int i = 0;
+    int currentIndex = -1;
+    for (auto screen : screens) {
+        auto geometry = screen->geometry();
+        ui->screenComboBox->addItem(
+            screen->name() + " " + QString::number(geometry.width()) + "x" + QString::number(geometry.height()),
+            i
+            );
+        if (screen == selectedScreen) {
+            currentIndex = i;
+        }
+        i++;
+    }
+    if (currentIndex >= 0) {
+        ui->screenComboBox->setCurrentIndex(currentIndex);
+    } else {
+        ui->screenComboBox->setCurrentIndex(0);
     }
 }
 
@@ -72,4 +101,13 @@ void SettingWindow::testProfile() {
     MastodonClient::shared().verifyCredentials(ma->app, [=](MastodonAccount* account){
         qDebug() << "OK:" << account->username;
     });
+}
+
+void SettingWindow::screenIndexChanged(int index) {
+    bool getIndexOk = false;
+    int screenNumber = ui->screenComboBox->itemData(index).toInt(&getIndexOk);
+    if (getIndexOk) {
+        auto screens = QGuiApplication::screens();
+        SettingManager::shared().setScreen(screens[screenNumber]);
+    }
 }

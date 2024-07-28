@@ -19,6 +19,7 @@ public:
 
     void showStatus(Status *status);
     int yForNewStatus(QSize statusSize);
+    void moveToScreen();
 
 public slots:
     void preferencesTriggered(bool check);
@@ -29,6 +30,7 @@ public slots:
     void onAnimationFinish();
     void onRepaintTimer();
     void onCurrentAccountChanged();
+    void onCurrentScreenChanged();
 
 private:
     SettingWindow *settingWindow = nullptr;

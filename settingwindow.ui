@@ -43,13 +43,23 @@
    <property name="geometry">
     <rect>
      <x>18</x>
-     <y>110</y>
+     <y>200</y>
      <width>141</width>
      <height>32</height>
     </rect>
    </property>
    <property name="text">
     <string>Test get profile</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="screenComboBox">
+   <property name="geometry">
+    <rect>
+     <x>12</x>
+     <y>90</y>
+     <width>191</width>
+     <height>32</height>
+    </rect>
    </property>
   </widget>
  </widget>

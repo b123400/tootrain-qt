@@ -23,6 +23,7 @@ public slots:
     void mastodonAccountAuthenticated(MastodonAccount *account);
 
     void testProfile();
+    void screenIndexChanged(int index);
 
 private:
     Ui::SettingWindow *ui;
@@ -31,6 +32,7 @@ private:
     Account *currentAccount = nullptr;
 
     void loadAccount();
+    void loadScreens();
 };
 
 #endif // SETTINGWINDOW_H

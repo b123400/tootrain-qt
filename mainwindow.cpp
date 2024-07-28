@@ -12,6 +12,8 @@
 #include <QTimer>
 #include <QtSystemDetection>
 #include <QSystemTrayIcon>
+#include <QScreen>
+#include <QGuiApplication>
 
 #include "settingwindow.h"
 #include "settingmanager.h"
@@ -28,6 +30,21 @@ MainWindow::MainWindow(QWidget *parent)
     preferenceAction->setMenuRole(QAction::PreferencesRole);
     connect(preferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
 #endif
+
+    setAttribute(Qt::WA_NoSystemBackground, true);
+    setAttribute(Qt::WA_OpaquePaintEvent, false);
+    setAttribute(Qt::WA_TranslucentBackground, true);
+
+    // setWindowOpacity(0.5);
+
+    setWindowFlags(this->windowFlags()
+                | Qt::WindowDoesNotAcceptFocus
+                | Qt::WindowTransparentForInput
+                | Qt::X11BypassWindowManagerHint
+                | Qt::WindowStaysOnTopHint
+                | Qt::NoDropShadowWindowHint
+                | Qt::FramelessWindowHint
+                );
 
     QSystemTrayIcon *trayIcon = new QSystemTrayIcon();
     QIcon icon = QIcon(":/images/icon_128.png");
@@ -47,6 +64,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&webSocket, &QWebSocket::errorOccurred, this, &MainWindow::onWebSocketErrorOccurred);
     connect(&webSocket, &QWebSocket::disconnected, this, &MainWindow::onWebSocketDisconnected);
     connect(&SettingManager::shared(), &SettingManager::currentAccountChanged, this, &MainWindow::onCurrentAccountChanged);
+
+    connect(&SettingManager::shared(), &SettingManager::currentScreenChanged, this, &MainWindow::onCurrentScreenChanged);
+    moveToScreen();
 
     startStreaming();
 
@@ -73,6 +93,14 @@ void MainWindow::preferencesTriggered(bool checked) {
 
 void MainWindow::onRepaintTimer() {
     this->repaint();
+}
+
+void MainWindow::moveToScreen() {
+    QScreen *theScreen = SettingManager::shared().getScreen();
+    this->setScreen(theScreen);
+    auto geometry = theScreen->availableGeometry();
+    setGeometry(geometry);
+    show();
 }
 
 void MainWindow::startStreaming() {
@@ -127,6 +155,13 @@ void MainWindow::onWebSocketErrorOccurred(QAbstractSocket::SocketError error){
 void MainWindow::onCurrentAccountChanged() {
     this->stopStreaming();
     this->startStreaming();
+}
+
+void MainWindow::onCurrentScreenChanged() {
+    moveToScreen();
+    auto s = new DummyStatus("This screen is selected", this);
+    showStatus(s);
+    delete s;
 }
 
 void MainWindow::showStatus(Status *status) {

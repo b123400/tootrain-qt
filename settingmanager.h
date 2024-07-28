@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSettings>
+#include <QScreen>
 #include "account.h"
 
 class SettingManager : public QObject
@@ -16,11 +17,15 @@ public:
     QList<Account*> getAccounts();
     void clearAccounts();
 
+    void setScreen(QScreen *screen);
+    QScreen *getScreen();
+
 private:
     QSettings settings = QSettings("TootRain-qt", "Star Runner");
 
 signals:
     void currentAccountChanged();
+    void currentScreenChanged();
 };
 
 #endif // SETTINGMANAGER_H
