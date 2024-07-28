@@ -1,4 +1,5 @@
 #include "status.h"
+#include <QJsonArray>
 
 MastodonStatus::MastodonStatus( QObject *parent)
     : QObject{parent}
@@ -9,6 +10,13 @@ MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): QObject{paren
     id = json["id"].toString();
     content = json["content"].toString();
     account = new MastodonAccount(json["account"].toObject(), this);
+
+    if (json.contains("emojis")) {
+        auto emojis = json["emojis"].toArray();
+        for (auto emoji : emojis) {
+            this->emojis.append(new MastodonEmoji(emoji.toObject(), this));
+        }
+    }
 }
 
 QString MastodonStatus::getText() {

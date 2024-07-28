@@ -4,6 +4,7 @@
 #include <QObject>
 #include "account.h"
 #include "../status.h"
+#include "emoji.h"
 
 class MastodonStatus : public QObject, public Status
 {
@@ -15,6 +16,7 @@ public:
     QString id;
     QString content;
     MastodonAccount *account = nullptr;
+    QList<MastodonEmoji*> emojis;
 
     QString getText();
 
