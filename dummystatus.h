@@ -12,6 +12,8 @@ public:
 
     QString getText();
 
+    bool isEmojisReady();
+    void downloadEmojis();
 private:
     QString message;
 

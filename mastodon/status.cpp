@@ -22,3 +22,18 @@ MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): QObject{paren
 QString MastodonStatus::getText() {
     return this->content;
 }
+
+bool MastodonStatus::isEmojisReady() {
+    for (auto emoji : emojis) {
+        if (!emoji->isReady()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void MastodonStatus::downloadEmojis() {
+    for (auto emoji : emojis) {
+        emoji->download();
+    }
+}

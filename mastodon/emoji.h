@@ -20,6 +20,8 @@ public:
     QUrl getUrl();
     QString getPath();
 
+    bool isReady();
+    void download();
 
 signals:
 };

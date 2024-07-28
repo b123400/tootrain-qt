@@ -19,6 +19,9 @@ public:
     QList<MastodonEmoji*> emojis;
 
     QString getText();
+    bool isEmojisReady();
+    void downloadEmojis();
+
 
 signals:
 };

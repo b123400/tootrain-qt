@@ -1,4 +1,5 @@
 #include "emoji.h"
+#include "../imagemanager.h"
 
 MastodonEmoji::MastodonEmoji(QObject *parent)
     : QObject{parent}
@@ -19,4 +20,12 @@ QUrl MastodonEmoji::getUrl() {
 
 QString MastodonEmoji::getPath() {
     return ImageManager::shared().pathForUrl(this->url);
+}
+
+bool MastodonEmoji::isReady() {
+    return ImageManager::shared().isReady(this->url);
+}
+
+void MastodonEmoji::download() {
+    ImageManager::shared().download(this->url);
 }

@@ -11,3 +11,11 @@ DummyStatus::DummyStatus(QString message, QObject *parent)
 QString DummyStatus::getText() {
     return this->message;
 }
+
+bool DummyStatus::isEmojisReady() {
+    return true;
+}
+
+void DummyStatus::downloadEmojis() {
+
+}
