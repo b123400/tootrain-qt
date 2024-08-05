@@ -182,6 +182,7 @@ void MainWindow::showStatus(Status *status) {
 
     QHBoxLayout *box = new QHBoxLayout(baseWidget);
     box->setContentsMargins(0,0,0,0);
+    box->setSpacing(0);
     baseWidget->setLayout(box);
 
     QPalette palette;
@@ -190,8 +191,9 @@ void MainWindow::showStatus(Status *status) {
     // palette.setColor(QPalette::Window, Qt::red);
     // label->setAutoFillBackground(true);
 
+    int fontSize = 40;
     QFont font = QApplication::font();
-    font.setPixelSize(40);
+    font.setPixelSize(fontSize);
     font.setWeight(QFont::Weight::Bold);
 
     QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
@@ -199,16 +201,21 @@ void MainWindow::showStatus(Status *status) {
     effect->setXOffset(0);
     effect->setYOffset(1);
     effect->setColor(QColor(0, 0, 0, 255));
+    qsizetype characterCount = 0;
+    qsizetype characterCountLimit = 50;
 
     auto components = status->richTextcomponents();
     for (auto component : components) {
         if (component->emoji) {
-            // TODO: Limit height
             QLabel *label = new QLabel(this);
             QMovie *mv = new QMovie(component->emoji->getPath());
             mv->start();
+            label->setScaledContents(true);
             label->setMovie(mv);
+            label->setMargin(0);
             label->adjustSize();
+            qDebug() << "label size: " << label->size();
+            label->setFixedSize(label->width() * fontSize / label->height(), fontSize);
             label->show();
             box->addWidget(label);
             label->setGraphicsEffect(effect);
