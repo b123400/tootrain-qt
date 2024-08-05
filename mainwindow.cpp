@@ -196,11 +196,6 @@ void MainWindow::showStatus(Status *status) {
     font.setPixelSize(fontSize);
     font.setWeight(QFont::Weight::Bold);
 
-    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
-    effect->setBlurRadius(20);
-    effect->setXOffset(0);
-    effect->setYOffset(1);
-    effect->setColor(QColor(0, 0, 0, 255));
     qsizetype characterCount = 0;
     qsizetype characterCountLimit = 50;
 
@@ -218,8 +213,13 @@ void MainWindow::showStatus(Status *status) {
             label->setFixedSize(label->width() * fontSize / label->height(), fontSize);
             label->show();
             box->addWidget(label);
-            label->setGraphicsEffect(effect);
         } else if (component->text.length()) {
+            QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+            effect->setBlurRadius(20);
+            effect->setXOffset(0);
+            effect->setYOffset(1);
+            effect->setColor(QColor(0, 0, 0, 255));
+
             qsizetype thisLength = component->text.length();
             QString text;
             if (characterCount + thisLength <= characterCountLimit) {
