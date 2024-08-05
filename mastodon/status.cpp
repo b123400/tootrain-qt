@@ -42,19 +42,14 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
     while (globalMatch.hasNext()) {
         QRegularExpressionMatch match = globalMatch.next();
         QString matchedShortCode = match.captured(1);
-        qDebug() << "matchedShortCode " << matchedShortCode;
 
         qsizetype start = match.capturedStart();
         qsizetype end = match.capturedEnd();
-        qDebug() << "start " << start;
-        qDebug() << "end " << end;
         QString before = plainTextContent.sliced(0, start);
         QString after = plainTextContent.sliced(end);
-        qDebug() << "before " << before;
-        qDebug() << "after " << after;
 
         auto textRtc = new RichTextComponent(this);
-        textRtc->text = before;
+        textRtc->text = before.remove(QChar('\n'));
         list.append(textRtc);
 
         for (auto emoji : emojis) {
@@ -69,7 +64,7 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
         lastStart = end;
     }
     auto textRtc = new RichTextComponent(this);
-    textRtc->text = plainTextContent.sliced(lastStart);
+    textRtc->text = plainTextContent.sliced(lastStart).remove(QChar('\n'));
     list.append(textRtc);
     return list;
 }
