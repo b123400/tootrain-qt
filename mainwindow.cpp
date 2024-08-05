@@ -220,15 +220,31 @@ void MainWindow::showStatus(Status *status) {
             box->addWidget(label);
             label->setGraphicsEffect(effect);
         } else if (component->text.length()) {
+            qsizetype thisLength = component->text.length();
+            QString text;
+            if (characterCount + thisLength <= characterCountLimit) {
+                text = component->text;
+                characterCount += thisLength;
+            } else {
+                qsizetype charLeft = characterCountLimit - characterCount;
+                text = component->text.sliced(0, charLeft);
+                characterCount = characterCountLimit;
+            }
+
             QLabel *label = new QLabel(this);
             label->setPalette(palette);
             label->setFont(font);
-            label->setText(component->text);
+            label->setMargin(0);
+            label->setText(text);
             label->setTextFormat(Qt::TextFormat::PlainText);
             label->adjustSize();
             label->show();
             box->addWidget(label);
             label->setGraphicsEffect(effect);
+
+            if (characterCount >= characterCountLimit) {
+                break;
+            }
         }
     }
 
