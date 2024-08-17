@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>TootRain</Name>
+    <Version>1.0.0</Version>
+    <Title>TootRain Installer</Title>
+    <Publisher>b123400</Publisher>
+    <StartMenuDir>TootRain</StartMenuDir>
+    <TargetDir>@ApplicationsDir@/TootRainQt</TargetDir>
+</Installer>
