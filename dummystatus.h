@@ -12,6 +12,10 @@ public:
 
     QString getText();
 
+    bool isEmojisReady();
+    void downloadEmojis();
+    QList<RichTextComponent*> richTextcomponents();
+
 private:
     QString message;
 
