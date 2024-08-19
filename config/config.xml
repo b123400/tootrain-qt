@@ -6,4 +6,9 @@
     <Publisher>b123400</Publisher>
     <StartMenuDir>TootRain</StartMenuDir>
     <TargetDir>@ApplicationsDir@/TootRainQt</TargetDir>
+    <RemoteRepositories>
+        <Repository>
+            <Url>https://b123400.net/tootrain/qt-packages/</Url>
+        </Repository>
+    </RemoteRepositories>
 </Installer>
