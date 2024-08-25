@@ -62,6 +62,32 @@
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="checkButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>130</y>
+     <width>179</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Check for Updates</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="updateButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>160</y>
+     <width>179</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Update</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
