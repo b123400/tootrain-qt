@@ -26,8 +26,7 @@ public slots:
     void testProfile();
     void screenIndexChanged(int index);
 
-    void checkForUpdate();
-    void runUpdate();
+    void checkOrUpdateClicked();
     void checkFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void updateFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void updateCheckErrored(QProcess::ProcessError error);
@@ -44,6 +43,9 @@ private:
     void loadScreens();
 
     QString maintenanceToolPath();
+    void checkForUpdate();
+    void runUpdate();
+    bool hasNewVersion;
 };
 
 #endif // SETTINGWINDOW_H
