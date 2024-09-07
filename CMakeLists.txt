@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS NetworkAuth)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS WebSockets)
@@ -19,7 +20,27 @@ set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
+        mastodonoauthwindow.h mastodonoauthwindow.cpp mastodonoauthwindow.ui
+        mastodon/client.h mastodon/client.cpp
+        mastodon/app.h mastodon/app.cpp
+        account.h account.cpp
+        mastodon/account.h mastodon/account.cpp
+        settingwindow.h settingwindow.cpp settingwindow.ui
+        settingmanager.h settingmanager.cpp
+        mastodon/status.h mastodon/status.cpp
+        mastodon/streamevent.h mastodon/streamevent.cpp
+        status.h
+        dummystatus.h dummystatus.cpp
+        animationstate.h animationstate.cpp
+        images/icon.rc
+        mastodon/emoji.h mastodon/emoji.cpp
+        richtextcomponent.h richtextcomponent.cpp
+        statusemoji.h
+        imagemanager.h imagemanager.cpp
+        statusimageloader.h statusimageloader.cpp
 )
+
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/images/icon.rc")
@@ -31,34 +52,29 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(tootrain-qt
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        mastodonoauthwindow.h mastodonoauthwindow.cpp mastodonoauthwindow.ui
-        mastodon/client.h mastodon/client.cpp
-        mastodon/app.h mastodon/app.cpp
-        account.h account.cpp
-        mastodon/account.h mastodon/account.cpp
-        settingwindow.h settingwindow.cpp settingwindow.ui
-        settingwindow.h settingwindow.cpp settingwindow.ui
-        settingmanager.h settingmanager.cpp
-        mastodon/status.h mastodon/status.cpp
-        mastodon/streamevent.h mastodon/streamevent.cpp
-        status.h
-        dummystatus.h dummystatus.cpp
-        animationstate.h animationstate.cpp
         ${app_icon_resource_windows}
         ${app_icon_macos}
-        images/icon.rc
-        mastodon/emoji.h mastodon/emoji.cpp
-        richtextcomponent.h richtextcomponent.cpp
-        statusemoji.h
-        imagemanager.h imagemanager.cpp
-        statusimageloader.h statusimageloader.cpp
-
     )
+    qt_add_translations(
+        tootrain-qt
+        QM_FILES_OUTPUT_VARIABLE qm_files
+    )
+    add_dependencies(tootrain-qt update_translations)
 
     qt_add_resources(tootrain-qt "app_images"
         FILES
             images/icon_128.png
     )
+
+    set_source_files_properties(${qm_files} PROPERTIES
+           MACOSX_PACKAGE_LOCATION "Resources")
+
+    qt_add_resources(tootrain-qt "translations"
+        PREFIX "/i18n"
+        BASE "${CMAKE_CURRENT_BINARY_DIR}"
+        FILES "${qm_files}"
+    )
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET tootrain-qt APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
