@@ -43,13 +43,14 @@ void SettingWindow::loadAccount() {
     auto accounts = SettingManager::shared().getAccounts();
     if (accounts.size()) {
         currentAccount = accounts.at(0);
-        ui->currentAccountName->setText("Account: " + currentAccount->fullUsername());
-        ui->loginButton->setText("Logout");
+        ui->currentAccountName->setText(tr("Account: ") + currentAccount->fullUsername());
+        QString aaa = tr("Logout");
+        ui->loginButton->setText(tr("Logout"));
         currentAccount->setParent(this);
     } else {
         currentAccount = nullptr;
-        ui->currentAccountName->setText("Not logged in");
-        ui->loginButton->setText("Login");
+        ui->currentAccountName->setText(tr("Not logged in"));
+        ui->loginButton->setText(tr("Login"));
     }
 }
 
@@ -143,7 +144,7 @@ void SettingWindow::checkOrUpdateClicked() {
 
 void SettingWindow::checkForUpdate() {
     if (hasNewVersion) return;
-    ui->updateStatusLabel->setText("Checking for update...");
+    ui->updateStatusLabel->setText(tr("Checking for update..."));
     ui->checkOrUpdateButton->setEnabled(false);
     QString maintenanceToolPath = this->maintenanceToolPath();
     QString myPath = QCoreApplication::applicationDirPath();
@@ -161,10 +162,10 @@ void SettingWindow::checkFinished(int exitCode, QProcess::ExitStatus exitStatus)
     ui->checkOrUpdateButton->setEnabled(true);
 
     if (hasNewVersion) {
-        ui->updateStatusLabel->setText("New version available");
-        ui->checkOrUpdateButton->setText("Click here to update");
+        ui->updateStatusLabel->setText(tr("New version available"));
+        ui->checkOrUpdateButton->setText(tr("Click here to update"));
     } else {
-        ui->updateStatusLabel->setText("No update available");
+        ui->updateStatusLabel->setText(tr("No update available"));
     }
     // QMessageBox msgBox;
     // msgBox.setText("Status: " + QString::number(exitCode));
@@ -201,7 +202,7 @@ void SettingWindow::updateCheckErrored(QProcess::ProcessError error) {
 
 void SettingWindow::runUpdate() {
     if (!hasNewVersion) return;
-    ui->updateStatusLabel->setText("Updating...");
+    ui->updateStatusLabel->setText(tr("Updating..."));
     ui->checkOrUpdateButton->setEnabled(false);
     QString maintenanceToolPath = this->maintenanceToolPath();
     QString myPath = QCoreApplication::applicationDirPath();
@@ -212,7 +213,7 @@ void SettingWindow::runUpdate() {
 }
 
 void SettingWindow::updateFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    ui->updateStatusLabel->setText("Restarting...");
+    ui->updateStatusLabel->setText(tr("Restarting..."));
     qint64 pid;
     auto started = QProcess::startDetached(QCoreApplication::applicationFilePath(), {}, "", &pid);
     qDebug() << "started:" << started << " pid:" << pid;
