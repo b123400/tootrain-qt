@@ -68,7 +68,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
     set_source_files_properties(${qm_files} PROPERTIES
            MACOSX_PACKAGE_LOCATION "Resources")
-
+   qt_add_lrelease(
+       TS_FILES tootrain-qt_ja.ts tootrain-qt_en.ts
+       QM_FILES_OUTPUT_VARIABLE qm_files)
     qt_add_resources(tootrain-qt "translations"
         PREFIX "/i18n"
         BASE "${CMAKE_CURRENT_BINARY_DIR}"

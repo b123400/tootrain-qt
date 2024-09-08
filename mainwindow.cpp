@@ -149,14 +149,14 @@ void MainWindow::onWebSocketTextMessageReceived(QString message) {
 
 void MainWindow::onWebSocketConnected() {
     qDebug() << "connected";
-    auto s = new DummyStatus("Stream connected", this);
+    auto s = new DummyStatus(tr("Stream connected"), this);
     showStatus(s);
     delete s;
 }
 
 void MainWindow::onWebSocketDisconnected() {
     qDebug() << "disconnected";
-    auto s = new DummyStatus("Stream disconnected", this);
+    auto s = new DummyStatus(tr("Stream disconnected"), this);
     showStatus(s);
     delete s;
 }

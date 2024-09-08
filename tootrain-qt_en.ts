@@ -23,6 +23,16 @@
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="mainwindow.cpp" line="152"/>
+        <source>Stream connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="159"/>
+        <source>Stream disconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MastodonOauthWindow</name>
@@ -46,29 +56,29 @@
 <context>
     <name>SettingWindow</name>
     <message>
-        <location filename="settingwindow.ui" line="14"/>
+        <location filename="settingwindow.ui" line="32"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.ui" line="26"/>
+        <location filename="settingwindow.ui" line="44"/>
         <location filename="settingwindow.cpp" line="53"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.ui" line="39"/>
-        <location filename="settingwindow.ui" line="88"/>
+        <location filename="settingwindow.ui" line="57"/>
+        <location filename="settingwindow.ui" line="106"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.ui" line="52"/>
+        <location filename="settingwindow.ui" line="70"/>
         <source>Test get profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.ui" line="75"/>
+        <location filename="settingwindow.ui" line="93"/>
         <source>Check for Update</source>
         <translation type="unfinished"></translation>
     </message>
