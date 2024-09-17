@@ -38,7 +38,7 @@ Component.prototype.createOperations = function()
 
     if (systemInfo.productType === "windows") {
         component.addOperation("CreateShortcut", "@TargetDir@/bin/tootrain-qt.exe", "@StartMenuDir@/TootRain.lnk",
-            "workingDirectory=@TargetDir@", "iconPath=%SystemRoot%/system32/SHELL32.dll",
-            "iconId=2", "description=Open TootRain");
+            "workingDirectory=@TargetDir@", "iconPath=@TargetDir@/bin/tootrain-qt.exe",
+            "description=Open TootRain");
     }
 }

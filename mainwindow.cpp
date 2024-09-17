@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
                 );
 
     QSystemTrayIcon *trayIcon = new QSystemTrayIcon();
-    QIcon icon = QIcon(":/images/icon_128.png");
+    QIcon icon = QIcon(":/images/16x16.png");
     trayIcon->setIcon(icon);
     QMenu *trayMenu = new QMenu(this);
     trayIcon->setContextMenu(trayMenu);

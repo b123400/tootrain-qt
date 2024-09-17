@@ -44,8 +44,8 @@ qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     set(app_icon_resource_windows "${CMAKE_CURRENT_SOURCE_DIR}/images/icon.rc")
-    set(MACOSX_BUNDLE_ICON_FILE icon_128.icns)
-    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/images/icon_128.icns")
+    set(MACOSX_BUNDLE_ICON_FILE 1024x1024.icns)
+    set(app_icon_macos "${CMAKE_CURRENT_SOURCE_DIR}/images/1024x1024.icns")
     set_source_files_properties(${app_icon_macos} PROPERTIES
            MACOSX_PACKAGE_LOCATION "Resources")
 
@@ -63,19 +63,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
     qt_add_resources(tootrain-qt "app_images"
         FILES
-            images/icon_128.png
+            images/32x32.png
+            images/16x16.png
     )
 
     set_source_files_properties(${qm_files} PROPERTIES
            MACOSX_PACKAGE_LOCATION "Resources")
-   qt_add_lrelease(
-       TS_FILES tootrain-qt_ja.ts tootrain-qt_en.ts
-       QM_FILES_OUTPUT_VARIABLE qm_files)
-    qt_add_resources(tootrain-qt "translations"
-        PREFIX "/i18n"
-        BASE "${CMAKE_CURRENT_BINARY_DIR}"
-        FILES "${qm_files}"
-    )
 
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET tootrain-qt APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
