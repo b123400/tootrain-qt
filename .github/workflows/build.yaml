@@ -49,6 +49,8 @@ jobs:
       with:
         version: '6.7.0'
         modules: 'qtnetworkauth qtwebsockets'
+        tools: 'tools_ifw'
+        add-tools-to-path: true
 
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -83,7 +85,8 @@ jobs:
         target: 'desktop'
         arch: 'win64_msvc2019_64'
         modules: 'qtnetworkauth qtwebsockets'
-        tools: 'tools_opensslv3_x64'
+        tools: 'tools_ifw tools_opensslv3_x64'
+        add-tools-to-path: true
 
     - name: Build
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -104,8 +107,14 @@ jobs:
         cp "$env:IQTA_TOOLS\OpenSSLv3\Win_x64\bin\libssl-3-x64.dll" '.\bin\bin\'
         cp "$env:IQTA_TOOLS\OpenSSLv3\Win_x64\bin\libcrypto-3-x64.dll" '.\bin\bin\'
 
+        mkdir "${{github.workspace}}\packages\net.b123400.tootrainqt\data\"
+        cp -R .\bin\bin "${{github.workspace}}\packages\net.b123400.tootrainqt\data\"
+        ../Qt/Tools/QtInstallerFramework/4.7/bin/binarycreator.exe -c config/config.xml -p packages Installer.exe
+
     - uses: actions/upload-artifact@v4
       with:
         name: win
-        path: ${{github.workspace}}/bin
+        path: |
+          ${{github.workspace}}/bin
+          Installer.exe
         retention-days: 7
