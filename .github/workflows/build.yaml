@@ -96,7 +96,7 @@ jobs:
       run: |
         tree /A /F "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
 
-        tree /A /F "$env:IQTA_TOOLS"
+        # tree /A /F "$env:IQTA_TOOLS"
         # tree /A /F "D:\a\tootrain-qt\Qt\6.7.0\msvc2019_64"
 
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
@@ -104,6 +104,7 @@ jobs:
         cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="./bin"
         windeployqt --release '.\bin\bin\tootrain-qt.exe'
 
+        cp "${{github.workspace}}/build/tootrain-qt_ja.qm" "${{github.workspace}}/bin/bin"
         cp "$env:IQTA_TOOLS\OpenSSLv3\Win_x64\bin\libssl-3-x64.dll" '.\bin\bin\'
         cp "$env:IQTA_TOOLS\OpenSSLv3\Win_x64\bin\libcrypto-3-x64.dll" '.\bin\bin\'
 

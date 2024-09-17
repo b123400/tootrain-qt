@@ -30,8 +30,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
 #ifdef Q_OS_APPLE
     QMenuBar *menubar = this->menuBar();
-    QMenu *fileMenu = menubar->addMenu("File");
-    QAction *preferenceAction = fileMenu->addAction("Preferences");
+    QMenu *fileMenu = menubar->addMenu(tr("File"));
+    QAction *preferenceAction = fileMenu->addAction(tr("Preferences"));
     preferenceAction->setMenuRole(QAction::PreferencesRole);
     connect(preferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
 #endif
@@ -56,10 +56,10 @@ MainWindow::MainWindow(QWidget *parent)
     trayIcon->setIcon(icon);
     QMenu *trayMenu = new QMenu(this);
     trayIcon->setContextMenu(trayMenu);
-    QAction *trayPreferenceAction = trayMenu->addAction("Preferences...");
+    QAction *trayPreferenceAction = trayMenu->addAction(tr("Preferences..."));
     trayPreferenceAction->setMenuRole(QAction::NoRole);
     connect(trayPreferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
-    QAction *trayQuitAction = trayMenu->addAction("Quit");
+    QAction *trayQuitAction = trayMenu->addAction(tr("Quit"));
     trayQuitAction->setMenuRole(QAction::NoRole);
     connect(trayQuitAction, &QAction::triggered, QCoreApplication::instance(), &QCoreApplication::quit);
     trayIcon->show();
@@ -149,14 +149,14 @@ void MainWindow::onWebSocketTextMessageReceived(QString message) {
 
 void MainWindow::onWebSocketConnected() {
     qDebug() << "connected";
-    auto s = new DummyStatus("Stream connected", this);
+    auto s = new DummyStatus(tr("Stream connected"), this);
     showStatus(s);
     delete s;
 }
 
 void MainWindow::onWebSocketDisconnected() {
     qDebug() << "disconnected";
-    auto s = new DummyStatus("Stream disconnected", this);
+    auto s = new DummyStatus(tr("Stream disconnected"), this);
     showStatus(s);
     delete s;
 }
