@@ -31,9 +31,6 @@ QString MastodonStatus::getPlainText() {
 }
 
 QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
-    // TODO: Truncate long status
-    // TODO: Make it always single line
-
     static QRegularExpression regex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
     QString plainTextContent = this->getPlainText();
     QList<RichTextComponent*> list;
@@ -45,7 +42,7 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
 
         qsizetype start = match.capturedStart();
         qsizetype end = match.capturedEnd();
-        QString before = plainTextContent.sliced(0, start);
+        QString before = plainTextContent.sliced(lastStart, start - lastStart);
         QString after = plainTextContent.sliced(end);
 
         auto textRtc = new RichTextComponent(this);
