@@ -33,6 +33,7 @@ public slots:
     void onCurrentAccountChanged();
     void onCurrentScreenChanged();
     void onStatusEmojisLoaded(Status *status);
+    void onReconnectTimer();
 
 private:
     SettingWindow *settingWindow = nullptr;
@@ -42,5 +43,7 @@ private:
     QWebSocket webSocket;
     void startStreaming();
     void stopStreaming();
+    void reconnectAfterAWhile();
+    bool scheduledReconnect;
 };
 #endif // MAINWINDOW_H

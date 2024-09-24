@@ -14,6 +14,7 @@
 #include <QSystemTrayIcon>
 #include <QScreen>
 #include <QGuiApplication>
+#include <QMessageBox>
 
 #include "settingwindow.h"
 #include "settingmanager.h"
@@ -111,7 +112,7 @@ void MainWindow::onRepaintTimer() {
 }
 
 void MainWindow::onPingTimer() {
-    if (!webSocket.isValid()) return;
+    if (webSocket.state() != QAbstractSocket::SocketState::ConnectedState ) return;
     webSocket.ping();
 }
 
@@ -138,7 +139,6 @@ void MainWindow::startStreaming() {
 }
 
 void MainWindow::stopStreaming() {
-    if (!webSocket.isValid()) return;
     webSocket.close();
 }
 
@@ -172,10 +172,78 @@ void MainWindow::onWebSocketDisconnected() {
     auto s = new DummyStatus(tr("Stream disconnected"), this);
     showStatus(s);
     delete s;
+    reconnectAfterAWhile();
+}
+
+QString printSocketError(QAbstractSocket::SocketError error) {
+    switch (error) {
+    case QAbstractSocket::SocketError::ConnectionRefusedError:
+        return "ConnectionRefusedError";
+    case QAbstractSocket::SocketError::RemoteHostClosedError:
+        return "RemoteHostClosedError";
+    case QAbstractSocket::SocketError::HostNotFoundError:
+        return "HostNotFoundError";
+    case QAbstractSocket::SocketError::SocketAccessError:
+        return "SocketAccessError";
+    case QAbstractSocket::SocketError::SocketResourceError:
+        return "SocketResourceError";
+    case QAbstractSocket::SocketError::SocketTimeoutError:
+        return "SocketTimeoutError";
+    case QAbstractSocket::SocketError::DatagramTooLargeError:
+        return "DatagramTooLargeError";
+    case QAbstractSocket::SocketError::NetworkError:
+        return "NetworkError";
+    case QAbstractSocket::SocketError::AddressInUseError:
+        return "AddressInUseError";
+    case QAbstractSocket::SocketError::SocketAddressNotAvailableError:
+        return "SocketAddressNotAvailableError";
+    case QAbstractSocket::SocketError::UnsupportedSocketOperationError:
+        return "UnsupportedSocketOperationError";
+    case QAbstractSocket::SocketError::UnfinishedSocketOperationError:
+        return "UnfinishedSocketOperationError";
+    case QAbstractSocket::SocketError::ProxyAuthenticationRequiredError:
+        return "ProxyAuthenticationRequiredError";
+    case QAbstractSocket::SocketError::SslHandshakeFailedError:
+        return "SslHandshakeFailedError";
+    case QAbstractSocket::SocketError::ProxyConnectionRefusedError:
+        return "ProxyConnectionRefusedError";
+    case QAbstractSocket::SocketError::ProxyConnectionClosedError:
+        return "ProxyConnectionClosedError";
+    case QAbstractSocket::SocketError::ProxyConnectionTimeoutError:
+        return "ProxyConnectionTimeoutError";
+    case QAbstractSocket::SocketError::ProxyNotFoundError:
+        return "ProxyNotFoundError";
+    case QAbstractSocket::SocketError::ProxyProtocolError:
+        return "ProxyProtocolError";
+    case QAbstractSocket::SocketError::OperationError:
+        return "OperationError";
+    case QAbstractSocket::SocketError::SslInternalError:
+        return "SslInternalError";
+    case QAbstractSocket::SocketError::SslInvalidUserDataError:
+        return "SslInvalidUserDataError";
+    case QAbstractSocket::SocketError::TemporaryError:
+        return "TemporaryError";
+    case QAbstractSocket::SocketError::UnknownSocketError:
+        return "UnknownSocketError";
+    }
 }
 
 void MainWindow::onWebSocketErrorOccurred(QAbstractSocket::SocketError error){
-    qDebug() << "error";
+    QString errorMessage = printSocketError(error);
+    qDebug() << "error" << errorMessage;
+    reconnectAfterAWhile();
+}
+
+void MainWindow::reconnectAfterAWhile() {
+    if (scheduledReconnect) return;
+    scheduledReconnect = true;
+    stopStreaming();
+    QTimer::singleShot(10000, this, &MainWindow::onReconnectTimer);
+}
+
+void MainWindow::onReconnectTimer() {
+    scheduledReconnect = false;
+    this->startStreaming();
 }
 
 void MainWindow::onCurrentAccountChanged() {
