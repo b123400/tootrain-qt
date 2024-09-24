@@ -18,7 +18,7 @@ MastodonOauthWindow::MastodonOauthWindow(QWidget *parent)
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &MastodonOauthWindow::myaccept);
 
-    auto replyHandler = new QOAuthHttpServerReplyHandler(12340, this);
+    auto replyHandler = new QOAuthHttpServerReplyHandler(QHostAddress("127.0.0.1"), 12340, this);
     oauth2->setReplyHandler(replyHandler);
     oauth2->setScope("read write");
 
