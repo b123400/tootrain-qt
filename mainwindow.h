@@ -29,6 +29,7 @@ public slots:
     void onWebSocketErrorOccurred(QAbstractSocket::SocketError error);
     void onAnimationFinish();
     void onRepaintTimer();
+    void onPingTimer();
     void onCurrentAccountChanged();
     void onCurrentScreenChanged();
     void onStatusEmojisLoaded(Status *status);

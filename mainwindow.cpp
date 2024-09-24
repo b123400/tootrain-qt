@@ -70,6 +70,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&webSocket, &QWebSocket::textMessageReceived, this, &MainWindow::onWebSocketTextMessageReceived);
     connect(&webSocket, &QWebSocket::errorOccurred, this, &MainWindow::onWebSocketErrorOccurred);
     connect(&webSocket, &QWebSocket::disconnected, this, &MainWindow::onWebSocketDisconnected);
+
+    QTimer *pingTimer = new QTimer(this);
+    connect(pingTimer, &QTimer::timeout, this, &MainWindow::onPingTimer);
+    pingTimer->start(60000);
+
     connect(&SettingManager::shared(), &SettingManager::currentAccountChanged, this, &MainWindow::onCurrentAccountChanged);
 
     connect(&SettingManager::shared(), &SettingManager::currentScreenChanged, this, &MainWindow::onCurrentScreenChanged);
@@ -102,6 +107,11 @@ void MainWindow::onRepaintTimer() {
     this->repaint();
 }
 
+void MainWindow::onPingTimer() {
+    if (!webSocket.isValid()) return;
+    webSocket.ping();
+}
+
 void MainWindow::moveToScreen() {
     QScreen *theScreen = SettingManager::shared().getScreen();
     this->setScreen(theScreen);
@@ -115,9 +125,6 @@ void MainWindow::startStreaming() {
     if (accounts.size()) {
         // Only take the first one
         auto account = accounts.at(0);
-        // for (int i = 1; i < accounts.size(); i++) {
-        //     delete accounts.at(i);
-        // }
 
         QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
         webSocket.open(request);
