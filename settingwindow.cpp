@@ -52,6 +52,9 @@ void SettingWindow::loadAccount() {
         ui->currentAccountName->setText(tr("Not logged in"));
         ui->loginButton->setText(tr("Login"));
     }
+    for (auto a : accounts) {
+        delete a;
+    }
 }
 
 void SettingWindow::loadScreens() {
@@ -110,6 +113,7 @@ void SettingWindow::testProfile() {
     MastodonAccount *ma = (MastodonAccount*)currentAccount;
     MastodonClient::shared().verifyCredentials(ma->app, [=](MastodonAccount* account){
         qDebug() << "OK:" << account->username;
+        delete account;
     });
 }
 

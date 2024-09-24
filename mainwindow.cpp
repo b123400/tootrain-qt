@@ -86,6 +86,9 @@ MainWindow::MainWindow(QWidget *parent)
     if (!accounts.size()) {
         this->preferencesTriggered(false);
     }
+    for (auto a : accounts) {
+        delete a;
+    }
 
 #ifdef Q_OS_WIN
     QTimer *timer = new QTimer(this);
@@ -128,6 +131,9 @@ void MainWindow::startStreaming() {
 
         QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
         webSocket.open(request);
+        for (auto a : accounts) {
+            delete a;
+        }
     }
 }
 
@@ -205,12 +211,14 @@ void MainWindow::showStatus(Status *status) {
 
     qsizetype characterCount = 0;
     qsizetype characterCountLimit = 50;
+    AnimationState *as = new AnimationState(this);
 
     auto components = status->richTextcomponents();
     for (auto component : components) {
         if (component->emoji) {
             QLabel *label = new QLabel(this);
             QMovie *mv = new QMovie(component->emoji->getPath());
+            mv->setParent(as);
             mv->start();
             label->setScaledContents(true);
             label->setMovie(mv);
@@ -221,7 +229,7 @@ void MainWindow::showStatus(Status *status) {
             label->show();
             box->addWidget(label);
         } else if (component->text.length()) {
-            QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect;
+            QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect(as);
             effect->setBlurRadius(20);
             effect->setXOffset(0);
             effect->setYOffset(1);
@@ -255,16 +263,12 @@ void MainWindow::showStatus(Status *status) {
         }
     }
 
-    // TODO: set truncate limit in config
-    // if (plainText.length() > 50) {
-    //     plainText = plainText.first(50);
-    // }
-
     baseWidget->adjustSize();
 
     int y = yForNewStatus(baseWidget->size());
     if (y < 0) {
         qDebug() << "Too much on screen, not showing this status";
+        delete as;
         return;
     }
 
@@ -279,7 +283,6 @@ void MainWindow::showStatus(Status *status) {
 
     connect(anim, &QAbstractAnimation::finished, this, &MainWindow::onAnimationFinish);
 
-    AnimationState *as = new AnimationState(this);
     as->target = baseWidget;
     as->animation = anim;
     this->animationStates.enqueue(as);
