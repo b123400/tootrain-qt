@@ -247,8 +247,7 @@ void MainWindow::onReconnectTimer() {
 }
 
 void MainWindow::onCurrentAccountChanged() {
-    this->stopStreaming();
-    this->startStreaming();
+    reconnectAfterAWhile();
 }
 
 void MainWindow::onCurrentScreenChanged() {
