@@ -87,7 +87,8 @@
     </message>
     <message>
         <location filename="mastodon/mastodonsettingwindow.ui" line="206"/>
-        <source>All public posts known to the server. Analogous to the federated timeline.</source>
+        <source>All public posts from the federated timeline.</source>
+        <oldsource>All public posts known to the server. Analogous to the federated timeline.</oldsource>
         <translation>全ての投稿、他のサーバーの投稿も含む</translation>
     </message>
     <message>
@@ -107,12 +108,14 @@
     </message>
     <message>
         <location filename="mastodon/mastodonsettingwindow.ui" line="294"/>
-        <source>All public posts using a certain hashtag, originating from this server.</source>
+        <source>Public posts with a certain hashtag, from this server.</source>
+        <oldsource>All public posts using a certain hashtag, originating from this server.</oldsource>
         <translation>ある特定のハッシュタグの、このサーバーからの投稿</translation>
     </message>
     <message>
         <location filename="mastodon/mastodonsettingwindow.ui" line="316"/>
-        <source>Events related to the current user, such as home feed updates and notifications.</source>
+        <source>Home feed updates and notifications.</source>
+        <oldsource>Events related to the current user, such as home feed updates and notifications.</oldsource>
         <translation>ユーザーに関する更新、タイムラインの投稿と通知を含む</translation>
     </message>
     <message>
