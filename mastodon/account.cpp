@@ -51,10 +51,21 @@ QUrl MastodonAccount::getWebSocketUrl() {
     qDebug() << "access token: " << accessToken;
     QUrl url = QUrl(this->app->baseUrl);
     url.setScheme("wss");
-    // TODO: other streams
     url.setPath("/api/v1/streaming");
     QUrlQuery query;
-    query.addQueryItem("stream", "user");
+    query.addQueryItem("stream", this->queryParamForSource(this->source));
+    switch (this->source) {
+    case Hashtag:
+    case HashtagLocal:
+        query.addQueryItem("tag", this->hashtag);
+        break;
+    case List:
+        query.addQueryItem("list", this->listId);
+        break;
+    default:
+        break;
+    }
+
     query.addQueryItem("access_token", accessToken);
     url.setQuery(query);
     qDebug() << "stream url: " << url;
@@ -81,4 +92,27 @@ void MastodonAccount::saveToSettings(QSettings *settings) {
     settings->setValue("hashtag", this->hashtag);
     settings->setValue("listId", this->listId);
     settings->setValue("listName", this->listName);
+}
+
+QString MastodonAccount::queryParamForSource(Source source) {
+    switch (source) {
+    case Public:
+        return "public";
+    case PublicLocal:
+        return "public:local";
+    case PublicRemote:
+        return "public:remote";
+    case Hashtag:
+        return "hashtag";
+    case HashtagLocal:
+        return "hashtag:local";
+    case User:
+        return "user";
+    case UserNotification:
+        return "user:notification";
+    case List:
+        return "list";
+    case Direct:
+        return "direct";
+    }
 }

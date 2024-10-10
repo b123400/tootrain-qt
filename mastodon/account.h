@@ -40,7 +40,7 @@ public:
     void saveToSettings(QSettings *settings) override;
 
 private:
-    QString sourceForSource(Source source);
+    QString queryParamForSource(Source source);
 
 signals:
 };
