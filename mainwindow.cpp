@@ -168,11 +168,13 @@ void MainWindow::onWebSocketConnected() {
 }
 
 void MainWindow::onWebSocketDisconnected() {
-    qDebug() << "disconnected";
+    auto closeCode = webSocket.closeCode();
     auto s = new DummyStatus(tr("Stream disconnected"), this);
     showStatus(s);
     delete s;
-    reconnectAfterAWhile();
+    if (closeCode != QWebSocketProtocol::CloseCodeNormal) {
+        reconnect(true);
+    }
 }
 
 QString printSocketError(QAbstractSocket::SocketError error) {
@@ -231,10 +233,16 @@ QString printSocketError(QAbstractSocket::SocketError error) {
 void MainWindow::onWebSocketErrorOccurred(QAbstractSocket::SocketError error){
     QString errorMessage = printSocketError(error);
     qDebug() << "error" << errorMessage;
-    reconnectAfterAWhile();
+    reconnect(true);
 }
 
-void MainWindow::reconnectAfterAWhile() {
+void MainWindow::reconnect(bool afterAWhile) {
+    if (!afterAWhile) {
+        stopStreaming();
+        startStreaming();
+        scheduledReconnect = false;
+        return;
+    }
     if (scheduledReconnect) return;
     scheduledReconnect = true;
     stopStreaming();
@@ -242,12 +250,13 @@ void MainWindow::reconnectAfterAWhile() {
 }
 
 void MainWindow::onReconnectTimer() {
+    if (!scheduledReconnect) return;
     scheduledReconnect = false;
     this->startStreaming();
 }
 
 void MainWindow::onCurrentAccountChanged() {
-    reconnectAfterAWhile();
+    reconnect(false);
 }
 
 void MainWindow::onCurrentScreenChanged() {
