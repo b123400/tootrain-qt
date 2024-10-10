@@ -86,52 +86,52 @@
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="233"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="206"/>
         <source>All public posts known to the server. Analogous to the federated timeline.</source>
         <translation>全ての投稿、他のサーバーの投稿も含む</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="282"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="228"/>
         <source>All public posts originating from this server</source>
         <translation>このサーバーからの全ての投稿</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="331"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="250"/>
         <source>All public posts originating from other servers.</source>
         <translation>他のサーバーからの全ての投稿</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="380"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="272"/>
         <source>All public posts using a certain hashtag.</source>
         <translation>ある特定のハッシュタグの、全ての公開投稿</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="429"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="294"/>
         <source>All public posts using a certain hashtag, originating from this server.</source>
         <translation>ある特定のハッシュタグの、このサーバーからの投稿</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="478"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="316"/>
         <source>Events related to the current user, such as home feed updates and notifications.</source>
         <translation>ユーザーに関する更新、タイムラインの投稿と通知を含む</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="527"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="338"/>
         <source>Notifications for the current user.</source>
         <translation>このユーザーへの通知</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="576"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="360"/>
         <source>Updates to a specific list.</source>
         <translation>指定されたリストの投稿</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="592"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="376"/>
         <source>Direct</source>
         <translation>ダイレクトメッセージ</translation>
     </message>
     <message>
-        <location filename="mastodon/mastodonsettingwindow.ui" line="638"/>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="400"/>
         <source>Updates to direct conversations.</source>
         <translation>ダイレクトメッセージの投稿</translation>
     </message>

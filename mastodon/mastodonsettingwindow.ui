@@ -202,33 +202,6 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
-   </property>
    <property name="text">
     <string>All public posts known to the server. Analogous to the federated timeline.</string>
    </property>
@@ -250,33 +223,6 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
-   </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
    </property>
    <property name="text">
     <string>All public posts originating from this server</string>
@@ -300,33 +246,6 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
-   </property>
    <property name="text">
     <string>All public posts originating from other servers.</string>
    </property>
@@ -348,33 +267,6 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
-   </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
    </property>
    <property name="text">
     <string>All public posts using a certain hashtag.</string>
@@ -398,33 +290,6 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
-   </property>
    <property name="text">
     <string>All public posts using a certain hashtag, originating from this server.</string>
    </property>
@@ -446,33 +311,6 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
-   </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
    </property>
    <property name="text">
     <string>Events related to the current user, such as home feed updates and notifications.</string>
@@ -496,33 +334,6 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
-   </property>
    <property name="text">
     <string>Notifications for the current user.</string>
    </property>
@@ -544,33 +355,6 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
-   </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
    </property>
    <property name="text">
     <string>Updates to a specific list.</string>
@@ -607,32 +391,10 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="palette">
-    <palette>
-     <active>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </active>
-     <inactive>
-      <colorrole role="WindowText">
-       <brush brushstyle="SolidPattern">
-        <color alpha="128">
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </brush>
-      </colorrole>
-     </inactive>
-     <disabled/>
-    </palette>
+   <property name="font">
+    <font>
+     <family>.AppleSystemUIFont</family>
+    </font>
    </property>
    <property name="text">
     <string>Updates to direct conversations.</string>
