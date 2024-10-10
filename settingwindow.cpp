@@ -83,6 +83,7 @@ void SettingWindow::loadScreens() {
 void SettingWindow::loginButtonClicked() {
     if (currentAccount) {
         delete currentAccount;
+        currentAccount = nullptr;
         SettingManager::shared().clearAccounts();
         loadAccount();
     } else {

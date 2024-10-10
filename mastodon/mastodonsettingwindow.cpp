@@ -1,12 +1,12 @@
 #include "mastodonsettingwindow.h"
 #include "ui_mastodonsettingwindow.h"
+#include "client.h"
 
 MastodonSettingWindow::MastodonSettingWindow(MastodonAccount*account, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::MastodonSettingWindow)
 {
     this->account = account;
-    this->account->setParent(this);
     ui->setupUi(this);
 
     connect(ui->publicButton, &QAbstractButton::clicked, this, &MastodonSettingWindow::sourceButtonClicked);
@@ -44,9 +44,9 @@ void MastodonSettingWindow::updateUiFromSettings() {
     ui->listButton->setChecked(ma->source == MastodonAccount::Source::List);
     ui->directButton->setChecked(ma->source == MastodonAccount::Source::Direct);
 
-    ui->hashtagLineEdit->setText(ma->hashtag);
+    currentHashtag = ma->hashtag;
+    currentListId = ma->listId;
     updateButtonState();
-    // TODO: List
     updateLists();
 }
 
@@ -65,11 +65,19 @@ void MastodonSettingWindow::hashtagLocalChanged() {
 }
 
 void MastodonSettingWindow::listSelected(int index) {
-    updateButtonState();
+    if (index < 0 || index >= this->lists.length()) return;
+    MastodonList *list = this->lists.at(index);
+    currentListId = list->id;
 }
 
 void MastodonSettingWindow::updateLists() {
-    // TODO;
+    MastodonClient::shared().fetchLists(this->account->app, [=](QList<MastodonList*> lists) {
+        this->lists = lists;
+        for (auto l : lists) {
+            l->setParent(this);
+        }
+        updateButtonState();
+    });
 }
 
 void MastodonSettingWindow::updateButtonState() {
@@ -89,7 +97,22 @@ void MastodonSettingWindow::updateButtonState() {
     if (ui->hashtagLocalButton->isChecked() && currentHashtag.isEmpty()) {
         isOkEnabled = false;
     }
-    // TODO: List
+    ui->listComboBox->clear();
+    int i = 0;
+    int selectedIndex = -1;
+    for (auto list : this->lists) {
+        ui->listComboBox->addItem(list->title, list->id);
+        if (list->id == currentListId) {
+            selectedIndex = i;
+        }
+        i++;
+    }
+    if (selectedIndex >= 0 && !currentListId.isEmpty()) {
+        ui->listComboBox->setCurrentIndex(selectedIndex);
+    } else {
+        isOkEnabled = false;
+    }
+
     ui->okButton->setEnabled(isOkEnabled);
 }
 
@@ -117,9 +140,9 @@ void MastodonSettingWindow::okClicked() {
     } else if (ui->userNotificationButton->isChecked()) {
         this->account->source = MastodonAccount::Source::UserNotification;
 
-    } else if (ui->listButton->isChecked()) {
-        // TODO: List
+    } else if (ui->listButton->isChecked() && !currentListId.isEmpty()) {
         this->account->source = MastodonAccount::Source::List;
+        this->account->listId = currentListId;
 
     } else if (ui->directButton->isChecked()) {
         this->account->source = MastodonAccount::Source::Direct;

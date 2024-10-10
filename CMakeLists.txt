@@ -55,6 +55,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         ${app_icon_resource_windows}
         ${app_icon_macos}
+        mastodon/mastodonlist.h mastodon/mastodonlist.cpp
     )
     qt_add_translations(
         tootrain-qt

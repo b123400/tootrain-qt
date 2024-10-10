@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "account.h"
+#include "mastodonlist.h"
 
 namespace Ui {
 class MastodonSettingWindow;
@@ -31,6 +32,8 @@ private:
     Ui::MastodonSettingWindow *ui;
     MastodonAccount *account;
     QString currentHashtag;
+    QString currentListId;
+    QList<MastodonList*> lists;
 
     void updateUiFromSettings();
     void updateButtonState();
