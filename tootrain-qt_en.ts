@@ -4,32 +4,32 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.cpp" line="33"/>
+        <location filename="mainwindow.cpp" line="34"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="34"/>
+        <location filename="mainwindow.cpp" line="35"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="59"/>
+        <location filename="mainwindow.cpp" line="60"/>
         <source>Preferences...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="62"/>
+        <location filename="mainwindow.cpp" line="63"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="152"/>
+        <location filename="mainwindow.cpp" line="165"/>
         <source>Stream connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="159"/>
+        <location filename="mainwindow.cpp" line="172"/>
         <source>Stream disconnected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -54,6 +54,114 @@
     </message>
 </context>
 <context>
+    <name>MastodonSettingWindow</name>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="145"/>
+        <source>Public</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="158"/>
+        <source>Public Local</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="57"/>
+        <source>Public Remote</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="106"/>
+        <source>Hashtag</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="171"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="187"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="233"/>
+        <source>All public posts known to the server. Analogous to the federated timeline.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="282"/>
+        <source>All public posts originating from this server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="331"/>
+        <source>All public posts originating from other servers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="380"/>
+        <source>All public posts using a certain hashtag.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="429"/>
+        <source>All public posts using a certain hashtag, originating from this server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="478"/>
+        <source>Events related to the current user, such as home feed updates and notifications.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="527"/>
+        <source>Notifications for the current user.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="576"/>
+        <source>Updates to a specific list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="592"/>
+        <source>Direct</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="638"/>
+        <source>Updates to direct conversations.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="83"/>
+        <source>Hashtag Local</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="32"/>
+        <source>Mastodon Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="132"/>
+        <source>User</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="119"/>
+        <source>User Notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mastodon/mastodonsettingwindow.ui" line="70"/>
+        <source>List</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingWindow</name>
     <message>
         <location filename="settingwindow.ui" line="32"/>
@@ -62,7 +170,7 @@
     </message>
     <message>
         <location filename="settingwindow.ui" line="44"/>
-        <location filename="settingwindow.cpp" line="53"/>
+        <location filename="settingwindow.cpp" line="54"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
@@ -83,48 +191,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="46"/>
-        <source>Account: </source>
+        <location filename="settingwindow.ui" line="119"/>
+        <source>Configure...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="settingwindow.cpp" line="47"/>
+        <source>Account: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="settingwindow.cpp" line="48"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="52"/>
+        <location filename="settingwindow.cpp" line="53"/>
         <source>Not logged in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="147"/>
+        <location filename="settingwindow.cpp" line="178"/>
         <source>Checking for update...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="165"/>
+        <location filename="settingwindow.cpp" line="196"/>
         <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="166"/>
+        <location filename="settingwindow.cpp" line="197"/>
         <source>Click here to update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="168"/>
+        <location filename="settingwindow.cpp" line="199"/>
         <source>No update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="205"/>
+        <location filename="settingwindow.cpp" line="236"/>
         <source>Updating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="217"/>
+        <location filename="settingwindow.cpp" line="247"/>
         <source>Restarting...</source>
         <translation type="unfinished"></translation>
     </message>
