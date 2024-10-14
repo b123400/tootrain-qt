@@ -78,3 +78,12 @@ QScreen *SettingManager::getScreen() {
     }
     return QGuiApplication::primaryScreen();
 }
+
+void SettingManager::setShowUserAvatar(bool showUserAvatar) {
+
+}
+
+bool SettingManager::showUserAvatar() {
+    // TODO
+    return true;
+}

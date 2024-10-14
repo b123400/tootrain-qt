@@ -20,6 +20,9 @@ public:
     void setScreen(QScreen *screen);
     QScreen *getScreen();
 
+    void setShowUserAvatar(bool showUserAvatar);
+    bool showUserAvatar();
+
 private:
     QSettings settings = QSettings("TootRain-qt", "Star Runner");
 

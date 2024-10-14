@@ -39,6 +39,8 @@ set(PROJECT_SOURCES
         imagemanager.h imagemanager.cpp
         statusimageloader.h statusimageloader.cpp
         mastodon/mastodonsettingwindow.h mastodon/mastodonsettingwindow.cpp mastodon/mastodonsettingwindow.ui
+        mastodon/mastodonlist.h mastodon/mastodonlist.cpp
+        urlemoji.h urlemoji.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
@@ -55,7 +57,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         ${app_icon_resource_windows}
         ${app_icon_macos}
-        mastodon/mastodonlist.h mastodon/mastodonlist.cpp
     )
     qt_add_translations(
         tootrain-qt
