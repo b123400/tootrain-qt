@@ -24,8 +24,13 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(&checkProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
     connect(&updateProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
+    connect(ui->showAvatarCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::showAvatarCheckBoxChanged);
+
     loadAccount();
     loadScreens();
+    ui->showAvatarCheckBox->setCheckState(
+        SettingManager::shared().showUserAvatar() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked
+    );
 
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
@@ -151,6 +156,10 @@ void SettingWindow::screenIndexChanged(int index) {
         auto screens = QGuiApplication::screens();
         SettingManager::shared().setScreen(screens[screenNumber]);
     }
+}
+
+void SettingWindow::showAvatarCheckBoxChanged(Qt::CheckState checkState) {
+    SettingManager::shared().setShowUserAvatar(checkState == Qt::CheckState::Checked);
 }
 
 QString SettingWindow::maintenanceToolPath() {

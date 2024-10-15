@@ -80,10 +80,10 @@ QScreen *SettingManager::getScreen() {
 }
 
 void SettingManager::setShowUserAvatar(bool showUserAvatar) {
-
+    settings.setValue("showUserAvatar", showUserAvatar);
 }
 
 bool SettingManager::showUserAvatar() {
-    // TODO
-    return true;
+    bool showUserAvatar = settings.value("showUserAvatar", true).toBool();
+    return showUserAvatar;
 }

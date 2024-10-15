@@ -29,6 +29,7 @@ public slots:
 
     void testProfile();
     void screenIndexChanged(int index);
+    void showAvatarCheckBoxChanged(Qt::CheckState checkState);
 
     void checkOrUpdateClicked();
     void checkFinished(int exitCode, QProcess::ExitStatus exitStatus);
