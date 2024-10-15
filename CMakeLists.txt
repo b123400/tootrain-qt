@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(tootrain-qt VERSION 0.1 LANGUAGES CXX)
+project(tootrain-qt VERSION 0.7.2 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -41,6 +41,7 @@ set(PROJECT_SOURCES
         mastodon/mastodonsettingwindow.h mastodon/mastodonsettingwindow.cpp mastodon/mastodonsettingwindow.ui
         mastodon/mastodonlist.h mastodon/mastodonlist.cpp
         urlemoji.h urlemoji.cpp
+        aboutdialog.h aboutdialog.cpp aboutdialog.ui
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)

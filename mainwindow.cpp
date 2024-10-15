@@ -15,16 +15,16 @@
 #include <QScreen>
 #include <QGuiApplication>
 #include <QMessageBox>
+#include <QMovie>
+#include <QTextBlock>
 
 #include "settingwindow.h"
 #include "settingmanager.h"
 #include "mastodon/streamevent.h"
 #include "dummystatus.h"
 #include "statusimageloader.h"
+#include "aboutdialog.h"
 #include <QApplication>
-
-#include <QMovie>
-#include <QTextBlock>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *preferenceAction = fileMenu->addAction(tr("Preferences"));
     preferenceAction->setMenuRole(QAction::PreferencesRole);
     connect(preferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
+
+    QAction *aboutAction = fileMenu->addAction(tr("About..."));
+    aboutAction->setMenuRole(QAction::AboutRole);
+    connect(aboutAction, &QAction::triggered, this, &MainWindow::aboutDialogClicked);
 #endif
 
     setAttribute(Qt::WA_NoSystemBackground, true);
@@ -60,6 +64,11 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *trayPreferenceAction = trayMenu->addAction(tr("Preferences..."));
     trayPreferenceAction->setMenuRole(QAction::NoRole);
     connect(trayPreferenceAction, &QAction::triggered, this, &MainWindow::preferencesTriggered);
+
+    QAction *trayAboutAction = trayMenu->addAction(tr("About..."));
+    trayAboutAction->setMenuRole(QAction::NoRole);
+    connect(trayAboutAction, &QAction::triggered, this, &MainWindow::aboutDialogClicked);
+
     QAction *trayQuitAction = trayMenu->addAction(tr("Quit"));
     trayQuitAction->setMenuRole(QAction::NoRole);
     connect(trayQuitAction, &QAction::triggered, QCoreApplication::instance(), &QCoreApplication::quit);
@@ -105,6 +114,11 @@ void MainWindow::preferencesTriggered(bool checked) {
         this->settingWindow = new SettingWindow();
     }
     this->settingWindow->show();
+}
+
+void MainWindow::aboutDialogClicked(bool check) {
+    auto ad = new AboutDialog(this);
+    ad->exec();
 }
 
 void MainWindow::onRepaintTimer() {
