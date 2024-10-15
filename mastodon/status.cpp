@@ -1,6 +1,7 @@
 #include "status.h"
 #include <QJsonArray>
 #include <QTextDocument>
+#include "../settingmanager.h"
 
 MastodonStatus::MastodonStatus( QObject *parent)
     : QObject{parent}
@@ -18,6 +19,11 @@ MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): QObject{paren
             this->emojis.append(new MastodonEmoji(emoji.toObject(), this));
         }
     }
+    bool with_avatar = SettingManager::shared().showUserAvatar();
+    if (with_avatar) {
+        auto emoji = new UrlEmoji(QUrl(this->account->avatarUrl), this);
+        this->avatarEmoji = emoji;
+    }
 }
 
 QString MastodonStatus::getText() {
@@ -34,6 +40,13 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
     static QRegularExpression regex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
     QString plainTextContent = this->getPlainText();
     QList<RichTextComponent*> list;
+
+    if (this->avatarEmoji != nullptr) {
+        auto rtc = new RichTextComponent(this);
+        rtc->emoji = this->avatarEmoji;
+        list.append(rtc);
+    }
+
     auto globalMatch = regex.globalMatch(plainTextContent);
     int lastStart = 0;
     while (globalMatch.hasNext()) {
@@ -43,7 +56,7 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
         qsizetype start = match.capturedStart();
         qsizetype end = match.capturedEnd();
         QString before = plainTextContent.sliced(lastStart, start - lastStart);
-        QString after = plainTextContent.sliced(end);
+        // QString after = plainTextContent.sliced(end);
 
         auto textRtc = new RichTextComponent(this);
         textRtc->text = before.remove(QChar('\n'));
@@ -72,10 +85,16 @@ bool MastodonStatus::isEmojisReady() {
             return false;
         }
     }
+    if (this->avatarEmoji != nullptr && !this->avatarEmoji->isReady()) {
+        return false;
+    }
     return true;
 }
 
 void MastodonStatus::downloadEmojis() {
+    if (this->avatarEmoji != nullptr) {
+        this->avatarEmoji->download();
+    }
     for (auto emoji : emojis) {
         emoji->download();
     }

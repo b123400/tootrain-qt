@@ -5,6 +5,7 @@
 #include <QUrlQuery>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 
 MastodonClient ::MastodonClient (QObject *parent)
     : QObject{parent}
@@ -54,5 +55,25 @@ void MastodonClient::verifyCredentials(MastodonApp *app, std::function<void (Mas
                 qDebug() << "json:" << jsonReply;
                 MastodonAccount *account = new MastodonAccount(jsonReply, this);
                 callback(account);
+            });
+}
+
+void MastodonClient::fetchLists(MastodonApp *app, std::function<void (QList<MastodonList*>)> callback) {
+    QUrl url = QUrl(app->baseUrl);
+    url.setPath("/api/v1/lists");
+    auto reply = app->oauth2->get(url);
+    connect(reply, &QNetworkReply::finished, this, [=]()
+            {
+                // TODO: handle error
+                QString err = reply->errorString();
+                QByteArray buffer = reply->readAll();
+                QJsonDocument jsonDoc((QJsonDocument::fromJson(buffer)));
+                QJsonArray jsonReply = jsonDoc.array();
+                qDebug() << "json:" << jsonReply;
+                QList<MastodonList*> result = QList<MastodonList*>();
+                for (auto listObj : jsonReply) {
+                    result.append(new MastodonList(listObj.toObject(), this));
+                }
+                callback(result);
             });
 }

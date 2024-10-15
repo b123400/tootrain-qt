@@ -18,6 +18,7 @@ public:
     QString content;
     MastodonAccount *account = nullptr;
     QList<MastodonEmoji*> emojis;
+    UrlEmoji *avatarEmoji = nullptr;
 
     QString getText();
     QList<RichTextComponent*> richTextcomponents();

@@ -18,20 +18,7 @@ void SettingManager::saveAccounts(QList<Account*> accounts) {
         settings.setArrayIndex(i);
 
         Account *a = accounts[i];
-        settings.setValue("uuid", a->uuid);
-        settings.setValue("displayName", a->displayName);
-        settings.setValue("username", a->username);
-        settings.setValue("id", a->id);
-        settings.setValue("avatarUrl", a->avatarUrl);
-        if (dynamic_cast<MastodonAccount*>(a) != nullptr) {
-            MastodonAccount *ma = (MastodonAccount *)a;
-            settings.setValue("type", "mastodon");
-            settings.setValue("clientId", ma->app->clientId);
-            settings.setValue("clientSecret", ma->app->clientSecret);
-            settings.setValue("redirectUri", ma->app->redirectUri);
-            settings.setValue("baseUrl", ma->app->baseUrl);
-            settings.setValue("accessToken", ma->app->oauth2->token());
-        }
+        a->saveToSettings(&settings);
     }
     settings.endArray();
     // Assumption: Only 1 account at a time
@@ -48,24 +35,8 @@ QList<Account*> SettingManager::getAccounts() {
         Account *account = nullptr;
         QString type = settings.value("type").toString();
         if (type == "mastodon") {
-            account = new MastodonAccount(this);
-            MastodonApp *app = new MastodonApp(account);
-            ((MastodonAccount*)account)->app = app;
-            QOAuth2AuthorizationCodeFlow *oauth2 = new QOAuth2AuthorizationCodeFlow(app);
-            app->oauth2 = oauth2;
-            app->clientId = settings.value("clientId").toString();
-            oauth2->setClientIdentifier(app->clientId);
-            oauth2->setToken(settings.value("accessToken").toString());
-            app->clientSecret = settings.value("clientSecret").toString();
-            app->redirectUri = settings.value("redirectUri").toString();
-            app->baseUrl = settings.value("baseUrl").toUrl();
+            account = new MastodonAccount(&settings, this);
         }
-        account->uuid = settings.value("uuid").toString();
-        account->displayName = settings.value("displayName").toString();
-        account->username = settings.value("username").toString();
-        account->id = settings.value("id").toString();
-        account->avatarUrl= settings.value("avatarUrl").toString();
-
         accounts.append(account);
     }
     settings.endArray();
@@ -106,4 +77,13 @@ QScreen *SettingManager::getScreen() {
         return screens[screenNumber];
     }
     return QGuiApplication::primaryScreen();
+}
+
+void SettingManager::setShowUserAvatar(bool showUserAvatar) {
+    settings.setValue("showUserAvatar", showUserAvatar);
+}
+
+bool SettingManager::showUserAvatar() {
+    bool showUserAvatar = settings.value("showUserAvatar", true).toBool();
+    return showUserAvatar;
 }

@@ -5,6 +5,7 @@
 #include <QProcess>
 
 #include "mastodonoauthwindow.h"
+#include "mastodon/mastodonsettingwindow.h"
 
 namespace Ui {
 class SettingWindow;
@@ -20,11 +21,15 @@ public:
 
 public slots:
     void loginButtonClicked();
+    void configureButtonClicked();
     void mastodonAccountFinished();
     void mastodonAccountAuthenticated(MastodonAccount *account);
+    void mastodonSettingFinished();
+    void mastodonSettingUpdated(MastodonAccount *account);
 
     void testProfile();
     void screenIndexChanged(int index);
+    void showAvatarCheckBoxChanged(Qt::CheckState checkState);
 
     void checkOrUpdateClicked();
     void checkFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -35,6 +40,7 @@ private:
     Ui::SettingWindow *ui;
 
     MastodonOauthWindow *mastodonOAuthWindow = nullptr;
+    MastodonSettingWindow *mastodonSettingWindow = nullptr;
     Account *currentAccount = nullptr;
     QProcess checkProcess;
     QProcess updateProcess;

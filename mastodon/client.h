@@ -5,6 +5,7 @@
 #include <QObject>
 #include "app.h"
 #include "account.h"
+#include "mastodonlist.h"
 
 class MastodonClient : public QObject
 {
@@ -14,6 +15,7 @@ public:
 
     void createApp(QUrl host, std::function<void (MastodonApp*)> callback);
     void verifyCredentials(MastodonApp *app, std::function<void (MastodonAccount*)> callback);
+    void fetchLists(MastodonApp *app, std::function<void (QList<MastodonList*>)> callback);
 
 signals:
 

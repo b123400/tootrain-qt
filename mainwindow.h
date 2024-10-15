@@ -43,7 +43,7 @@ private:
     QWebSocket webSocket;
     void startStreaming();
     void stopStreaming();
-    void reconnectAfterAWhile();
+    void reconnect(bool afterAWhile);
     bool scheduledReconnect;
 };
 #endif // MAINWINDOW_H

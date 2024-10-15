@@ -4,24 +4,16 @@
 #include <QObject>
 #include <QUrl>
 #include <QJsonObject>
-#include "../statusemoji.h"
+#include "../urlemoji.h"
 
-class MastodonEmoji : public QObject, public StatusEmoji
+class MastodonEmoji : public UrlEmoji
 {
     Q_OBJECT
 public:
-    explicit MastodonEmoji(QObject *parent = nullptr);
     MastodonEmoji(QJsonObject json, QObject *parent = nullptr);
 
     QString shortCode;
     QUrl staticURL;
-    QUrl url;
-
-    QUrl getUrl();
-    QString getPath();
-
-    bool isReady();
-    void download();
 
 signals:
 };

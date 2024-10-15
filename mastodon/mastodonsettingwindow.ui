@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MastodonSettingWindow</class>
+ <widget class="QDialog" name="MastodonSettingWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>546</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>546</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>546</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Mastodon Settings</string>
+  </property>
+  <widget class="QComboBox" name="listComboBox">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>382</y>
+     <width>182</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="editable">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="publicRemoteButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>122</y>
+     <width>364</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Public Remote</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="listButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>382</y>
+     <width>182</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>List</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="hashtagLocalButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>226</y>
+     <width>182</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Hashtag Local</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="hashtagLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>174</y>
+     <width>182</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="hashtagButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>174</y>
+     <width>182</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Hashtag</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="userNotificationButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>330</y>
+     <width>364</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>User Notification</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="userButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>278</y>
+     <width>364</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>User</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="publicButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>18</y>
+     <width>364</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Public</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="publicLocalButton">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>70</y>
+     <width>364</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Public Local</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="okButton">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>496</y>
+     <width>100</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>OK</string>
+   </property>
+   <property name="default">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="cancelButton">
+   <property name="geometry">
+    <rect>
+     <x>162</x>
+     <y>496</y>
+     <width>100</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>46</y>
+     <width>441</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>All public posts from the federated timeline.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>98</y>
+     <width>346</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>All public posts originating from this server</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>150</y>
+     <width>346</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>All public posts originating from other servers.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>202</y>
+     <width>346</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>All public posts using a certain hashtag.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>254</y>
+     <width>441</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>Public posts with a certain hashtag, from this server.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>306</y>
+     <width>431</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>Home feed updates and notifications.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>358</y>
+     <width>346</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>Notifications for the current user.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>410</y>
+     <width>346</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>Updates to a specific list.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="directButton">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>434</y>
+     <width>364</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Direct</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>41</x>
+     <y>462</y>
+     <width>346</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <family>.AppleSystemUIFont</family>
+    </font>
+   </property>
+   <property name="text">
+    <string>Updates to direct conversations.</string>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="hashtagLocalLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>226</y>
+     <width>182</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,14 +1,14 @@
 #include <QNetworkRequest>
 #include <QUrl>
+#include <QGuiApplication>
+#include <QMessageBox>
+#include <QDir>
 
 #include "settingwindow.h"
 #include "QtGui/qscreen.h"
 #include "ui_settingwindow.h"
 #include "settingmanager.h"
 #include "mastodon/client.h"
-#include <QGuiApplication>
-#include <QMessageBox>
-#include <QDir>
 
 SettingWindow::SettingWindow(QWidget *parent)
     : QWidget(parent)
@@ -17,14 +17,20 @@ SettingWindow::SettingWindow(QWidget *parent)
     ui->setupUi(this);
 
     connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
+    connect(ui->configButton, &QAbstractButton::clicked, this, &SettingWindow::configureButtonClicked);
     connect(ui->testButton, &QAbstractButton::clicked, this, &SettingWindow::testProfile);
     connect(ui->checkOrUpdateButton, &QAbstractButton::clicked, this, &SettingWindow::checkOrUpdateClicked);
     connect(&checkProcess, &QProcess::finished, this, &SettingWindow::checkFinished);
     connect(&checkProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
     connect(&updateProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
+    connect(ui->showAvatarCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::showAvatarCheckBoxChanged);
+
     loadAccount();
     loadScreens();
+    ui->showAvatarCheckBox->setCheckState(
+        SettingManager::shared().showUserAvatar() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked
+    );
 
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
@@ -44,16 +50,14 @@ void SettingWindow::loadAccount() {
     if (accounts.size()) {
         currentAccount = accounts.at(0);
         ui->currentAccountName->setText(tr("Account: ") + currentAccount->fullUsername());
-        QString aaa = tr("Logout");
         ui->loginButton->setText(tr("Logout"));
+        ui->configButton->show();
         currentAccount->setParent(this);
     } else {
         currentAccount = nullptr;
         ui->currentAccountName->setText(tr("Not logged in"));
         ui->loginButton->setText(tr("Login"));
-    }
-    for (auto a : accounts) {
-        delete a;
+        ui->configButton->hide();
     }
 }
 
@@ -84,6 +88,7 @@ void SettingWindow::loadScreens() {
 void SettingWindow::loginButtonClicked() {
     if (currentAccount) {
         delete currentAccount;
+        currentAccount = nullptr;
         SettingManager::shared().clearAccounts();
         loadAccount();
     } else {
@@ -97,10 +102,37 @@ void SettingWindow::loginButtonClicked() {
 
 void SettingWindow::mastodonAccountFinished() {
     delete mastodonOAuthWindow;
+    mastodonOAuthWindow = nullptr;
 }
 
 void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *account) {
     qDebug() << account->username;
+    // TODO: Support multiple accounts
+    QList<Account*> list;
+    list.append(account);
+    SettingManager::shared().saveAccounts(list);
+    loadAccount();
+}
+
+void SettingWindow::configureButtonClicked() {
+    if (this->mastodonSettingWindow != nullptr) {
+        this->mastodonSettingWindow->show();
+    } else {
+        MastodonSettingWindow *settingWindow = new MastodonSettingWindow((MastodonAccount*)currentAccount, this);
+        this->mastodonSettingWindow = settingWindow;
+        connect(this->mastodonSettingWindow, &QDialog::finished, this, &SettingWindow::mastodonSettingFinished);
+        connect(this->mastodonSettingWindow, &MastodonSettingWindow::accountUpdated, this, &SettingWindow::mastodonSettingUpdated);
+        this->mastodonSettingWindow->setWindowModality(Qt::WindowModality::WindowModal);
+        this->mastodonSettingWindow->show();
+    }
+}
+
+void SettingWindow::mastodonSettingFinished() {
+    delete mastodonSettingWindow;
+    mastodonSettingWindow = nullptr;
+}
+
+void SettingWindow::mastodonSettingUpdated(MastodonAccount *account) {
     // TODO: Support multiple accounts
     QList<Account*> list;
     list.append(account);
@@ -124,6 +156,10 @@ void SettingWindow::screenIndexChanged(int index) {
         auto screens = QGuiApplication::screens();
         SettingManager::shared().setScreen(screens[screenNumber]);
     }
+}
+
+void SettingWindow::showAvatarCheckBoxChanged(Qt::CheckState checkState) {
+    SettingManager::shared().setShowUserAvatar(checkState == Qt::CheckState::Checked);
 }
 
 QString SettingWindow::maintenanceToolPath() {

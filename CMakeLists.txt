@@ -38,6 +38,9 @@ set(PROJECT_SOURCES
         statusemoji.h
         imagemanager.h imagemanager.cpp
         statusimageloader.h statusimageloader.cpp
+        mastodon/mastodonsettingwindow.h mastodon/mastodonsettingwindow.cpp mastodon/mastodonsettingwindow.ui
+        mastodon/mastodonlist.h mastodon/mastodonlist.cpp
+        urlemoji.h urlemoji.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
