@@ -13,6 +13,7 @@ MastodonAccount::MastodonAccount(QJsonObject json, QObject *parent) : Account {p
     username = json["username"].toString();
     avatarUrl = json["avatar"].toString();
     id = json["id"].toString();
+    source = Source::User; // default
 }
 
 MastodonAccount::MastodonAccount(QSettings *settings, QObject *parent) : Account(settings, parent) {

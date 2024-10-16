@@ -2,6 +2,37 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ja_JP">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="aboutdialog.ui" line="32"/>
+        <source>About</source>
+        <translation>TootRainについて</translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="76"/>
+        <source>&lt;b&gt;TootRain-qt&lt;/b&gt;</source>
+        <oldsource>TootRain-qt</oldsource>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="92"/>
+        <source>v0.0.0</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="105"/>
+        <source>&lt;a href=&quot;https://b123400.net/tootrain&quot;&gt;https://b123400.net/tootrain&lt;/a&gt;</source>
+        <oldsource>https://b123400.net/tootrain</oldsource>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="aboutdialog.ui" line="124"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For bug report, please submit an issue at &lt;a href=&quot;https://github.com/b123400/tootrain-qt/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/b123400/tootrain-qt/issues&lt;/span&gt;&lt;/a&gt;, or send an email to &lt;a href=&quot;mailto:i@b123400.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;i@b123400.net&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <oldsource>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;For bug report, please submit an issue at &lt;a href=&quot;https://github.com/b123400/tootrain-qt/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;here&lt;/span&gt;&lt;/a&gt;, or send an email to &lt;a href=&quot;mailto:i@b123400.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;i@b123400.net&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</oldsource>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;バグ報告は &lt;a href=&quot;https://github.com/b123400/tootrain-qt/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;https://github.com/b123400/tootrain-qt/issues&lt;/span&gt;&lt;/a&gt;までお願いします、あるいは &lt;a href=&quot;mailto:i@b123400.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;i@b123400.net&lt;/span&gt;&lt;/a&gt;にメールください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="mainwindow.cpp" line="34"/>
@@ -14,22 +45,28 @@
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="60"/>
+        <location filename="mainwindow.cpp" line="64"/>
         <source>Preferences...</source>
         <translation>設定...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="63"/>
+        <location filename="mainwindow.cpp" line="39"/>
+        <location filename="mainwindow.cpp" line="68"/>
+        <source>About...</source>
+        <translation>TootRainについて</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="72"/>
         <source>Quit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="165"/>
+        <location filename="mainwindow.cpp" line="179"/>
         <source>Stream connected</source>
         <translation>接続しました</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="172"/>
+        <location filename="mainwindow.cpp" line="186"/>
         <source>Stream disconnected</source>
         <translation>接続が切れました</translation>
     </message>
@@ -173,7 +210,7 @@
     </message>
     <message>
         <location filename="settingwindow.ui" line="44"/>
-        <location filename="settingwindow.cpp" line="54"/>
+        <location filename="settingwindow.cpp" line="59"/>
         <source>Login</source>
         <translation>ログイン</translation>
     </message>
@@ -199,47 +236,52 @@
         <translation>チャンネル設定...</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="47"/>
+        <location filename="settingwindow.ui" line="132"/>
+        <source>Show avatar</source>
+        <translation>ユーザーアイコンを表示</translation>
+    </message>
+    <message>
+        <location filename="settingwindow.cpp" line="52"/>
         <source>Account: </source>
         <translation>アカウント：</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="48"/>
+        <location filename="settingwindow.cpp" line="53"/>
         <source>Logout</source>
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="53"/>
+        <location filename="settingwindow.cpp" line="58"/>
         <source>Not logged in</source>
         <translation>ログインしてない</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="178"/>
+        <location filename="settingwindow.cpp" line="187"/>
         <source>Checking for update...</source>
         <translation>更新を確認中</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="196"/>
+        <location filename="settingwindow.cpp" line="205"/>
         <source>New version available</source>
         <translation>新しいバージョンに更新できます</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="197"/>
+        <location filename="settingwindow.cpp" line="206"/>
         <source>Click here to update</source>
         <translation>新しいバージョンに更新する</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="199"/>
+        <location filename="settingwindow.cpp" line="208"/>
         <source>No update available</source>
         <translation>すでに最新のバージョンです</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="236"/>
+        <location filename="settingwindow.cpp" line="245"/>
         <source>Updating...</source>
         <translation>更新中...</translation>
     </message>
     <message>
-        <location filename="settingwindow.cpp" line="247"/>
+        <location filename="settingwindow.cpp" line="256"/>
         <source>Restarting...</source>
         <translation>再起動中</translation>
     </message>
