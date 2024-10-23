@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QProcess>
 
-#include "mastodonoauthwindow.h"
+#include "mastodon/mastodonoauthwindow.h"
 #include "mastodon/mastodonsettingwindow.h"
 
 namespace Ui {

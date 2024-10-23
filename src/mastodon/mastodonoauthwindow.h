@@ -4,8 +4,8 @@
 #include <QDialog>
 #include <QtNetworkAuth/qoauth2authorizationcodeflow.h>
 
-#include "mastodon/app.h"
-#include "mastodon/account.h"
+#include "./app.h"
+#include "./account.h"
 
 namespace Ui {
 class MastodonOauthWindow;

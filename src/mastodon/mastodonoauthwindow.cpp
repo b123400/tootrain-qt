@@ -6,7 +6,7 @@
 #include <QNetworkProxy>
 #include <QPushButton>
 #include <QtGui/qdesktopservices.h>
-#include "mastodon/client.h"
+#include "./client.h"
 
 MastodonOauthWindow::MastodonOauthWindow(QWidget *parent)
     : QDialog(parent)

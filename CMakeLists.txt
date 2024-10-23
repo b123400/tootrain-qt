@@ -17,31 +17,31 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS NetworkAuth)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS WebSockets)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mastodonoauthwindow.h mastodonoauthwindow.cpp mastodonoauthwindow.ui
-        mastodon/client.h mastodon/client.cpp
-        mastodon/app.h mastodon/app.cpp
-        account.h account.cpp
-        mastodon/account.h mastodon/account.cpp
-        settingwindow.h settingwindow.cpp settingwindow.ui
-        settingmanager.h settingmanager.cpp
-        mastodon/status.h mastodon/status.cpp
-        mastodon/streamevent.h mastodon/streamevent.cpp
-        status.h
-        dummystatus.h dummystatus.cpp
-        animationstate.h animationstate.cpp
+        src/main.cpp
+        src/mainwindow.cpp
+        src/mainwindow.h
+        src/mastodon/mastodonoauthwindow.h src/mastodon/mastodonoauthwindow.cpp src/mastodon/mastodonoauthwindow.ui
+        src/mastodon/client.h src/mastodon/client.cpp
+        src/mastodon/app.h src/mastodon/app.cpp
+        src/account.h src/account.cpp
+        src/mastodon/account.h src/mastodon/account.cpp
+        src/settingwindow.h src/settingwindow.cpp src/settingwindow.ui
+        src/settingmanager.h src/settingmanager.cpp
+        src/mastodon/status.h src/mastodon/status.cpp
+        src/mastodon/streamevent.h src/mastodon/streamevent.cpp
+        src/status.h
+        src/dummystatus.h src/dummystatus.cpp
+        src/animationstate.h src/animationstate.cpp
         images/icon.rc
-        mastodon/emoji.h mastodon/emoji.cpp
-        richtextcomponent.h richtextcomponent.cpp
-        statusemoji.h
-        imagemanager.h imagemanager.cpp
-        statusimageloader.h statusimageloader.cpp
-        mastodon/mastodonsettingwindow.h mastodon/mastodonsettingwindow.cpp mastodon/mastodonsettingwindow.ui
-        mastodon/mastodonlist.h mastodon/mastodonlist.cpp
-        urlemoji.h urlemoji.cpp
-        aboutdialog.h aboutdialog.cpp aboutdialog.ui
+        src/mastodon/emoji.h src/mastodon/emoji.cpp
+        src/richtextcomponent.h src/richtextcomponent.cpp
+        src/statusemoji.h
+        src/imagemanager.h src/imagemanager.cpp
+        src/statusimageloader.h src/statusimageloader.cpp
+        src/mastodon/mastodonsettingwindow.h src/mastodon/mastodonsettingwindow.cpp src/mastodon/mastodonsettingwindow.ui
+        src/mastodon/mastodonlist.h src/mastodon/mastodonlist.cpp
+        src/urlemoji.h src/urlemoji.cpp
+        src/aboutdialog.h src/aboutdialog.cpp src/aboutdialog.ui
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
