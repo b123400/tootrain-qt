@@ -48,7 +48,7 @@ jobs:
       uses: jurplel/install-qt-action@v3
       with:
         version: '6.8.0'
-        modules: 'qtnetworkauth qtwebsockets'
+        modules: 'qtnetworkauth qtwebsockets qthttpserver'
         tools: 'tools_ifw'
         add-tools-to-path: true
 
@@ -84,7 +84,7 @@ jobs:
         host: 'windows'
         target: 'desktop'
         arch: 'win64_msvc2022_64'
-        modules: 'qtnetworkauth qtwebsockets'
+        modules: 'qtnetworkauth qtwebsockets qthttpserver'
         tools: 'tools_ifw tools_opensslv3_x64'
         add-tools-to-path: true
     - name: Build

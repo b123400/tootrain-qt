@@ -5,7 +5,7 @@
 #include <QProcess>
 
 #include "mastodon/mastodonoauthwindow.h"
-#include "misskey/misskeyoauthwindow.h"
+#include "misskey/misskeyauthwindow.h"
 #include "mastodon/mastodonsettingwindow.h"
 
 namespace Ui {
@@ -42,7 +42,7 @@ private:
 
     MastodonOauthWindow *mastodonOAuthWindow = nullptr;
     MastodonSettingWindow *mastodonSettingWindow = nullptr;
-    MisskeyOauthWindow *misskeyOAuthWindow = nullptr;
+    MisskeyAuthWindow *misskeyAuthWindow = nullptr;
     Account *currentAccount = nullptr;
     QProcess checkProcess;
     QProcess updateProcess;

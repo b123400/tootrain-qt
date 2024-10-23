@@ -15,6 +15,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS NetworkAuth)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS WebSockets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS HttpServer)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -43,7 +44,7 @@ set(PROJECT_SOURCES
         src/urlemoji.h src/urlemoji.cpp
         src/aboutdialog.h src/aboutdialog.cpp src/aboutdialog.ui
         src/misskey/misskeyaccount.h src/misskey/misskeyaccount.cpp
-        src/misskey/misskeyoauthwindow.h src/misskey/misskeyoauthwindow.cpp src/misskey/misskeyoauthwindow.ui
+        src/misskey/misskeyauthwindow.h src/misskey/misskeyauthwindow.cpp src/misskey/misskeyauthwindow.ui
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
@@ -100,6 +101,7 @@ target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Network)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::NetworkAuth)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::WebSockets)
+target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::HttpServer)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

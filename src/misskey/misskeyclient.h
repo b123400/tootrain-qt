@@ -13,6 +13,7 @@ public:
     static MisskeyClient &shared() {static MisskeyClient client; return client;}
 
     void fetchWellKnown(QUrl host, std::function<void (MisskeyWellKnown *)> callback);
+    void fetchAuthSession(QUrl host, QString sessionId, std::function<void (MisskeyAccount *)> callback);
     void fetchAccountWithToken(QUrl host, QString token, std::function<void (MisskeyAccount *)> callback);
 
 private:
