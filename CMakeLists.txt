@@ -42,6 +42,8 @@ set(PROJECT_SOURCES
         src/mastodon/mastodonlist.h src/mastodon/mastodonlist.cpp
         src/urlemoji.h src/urlemoji.cpp
         src/aboutdialog.h src/aboutdialog.cpp src/aboutdialog.ui
+        src/misskey/misskeyaccount.h src/misskey/misskeyaccount.cpp
+        src/misskey/misskeyoauthwindow.h src/misskey/misskeyoauthwindow.cpp src/misskey/misskeyoauthwindow.ui
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
@@ -58,6 +60,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         ${app_icon_resource_windows}
         ${app_icon_macos}
+        src/misskey/misskeyclient.h src/misskey/misskeyclient.cpp
+        src/misskey/misskeywellknown.h src/misskey/misskeywellknown.cpp
     )
     qt_add_translations(
         tootrain-qt

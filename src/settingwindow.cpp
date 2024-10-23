@@ -92,11 +92,15 @@ void SettingWindow::loginButtonClicked() {
         SettingManager::shared().clearAccounts();
         loadAccount();
     } else {
-        this->mastodonOAuthWindow = new MastodonOauthWindow(this);
-        connect(this->mastodonOAuthWindow, &QDialog::finished, this, &SettingWindow::mastodonAccountFinished);
-        connect(this->mastodonOAuthWindow, &MastodonOauthWindow::authenticated, this, &SettingWindow::mastodonAccountAuthenticated);
-        this->mastodonOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
-        this->mastodonOAuthWindow->show();
+        this->misskeyOAuthWindow = new MisskeyOauthWindow(this);
+        this->misskeyOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
+        this->misskeyOAuthWindow->show();
+
+        // this->mastodonOAuthWindow = new MastodonOauthWindow(this);
+        // connect(this->mastodonOAuthWindow, &QDialog::finished, this, &SettingWindow::mastodonAccountFinished);
+        // connect(this->mastodonOAuthWindow, &MastodonOauthWindow::authenticated, this, &SettingWindow::mastodonAccountAuthenticated);
+        // this->mastodonOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
+        // this->mastodonOAuthWindow->show();
     }
 }
 
