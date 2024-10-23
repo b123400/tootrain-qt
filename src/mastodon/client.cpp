@@ -7,6 +7,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+using namespace Qt::Literals::StringLiterals;
+
 MastodonClient ::MastodonClient (QObject *parent)
     : QObject{parent}
 {
@@ -23,7 +25,7 @@ void MastodonClient ::createApp(QUrl host, std::function<void (MastodonApp*)> ca
 
     QUrlQuery params;
     params.addQueryItem("client_name", "Tootrain-qt");
-    params.addQueryItem("redirect_uris", "http://127.0.0.1:12340/");
+    params.addQueryItem("redirect_uris", "http://localhost:12340/");
     params.addQueryItem("scopes", "read write");
     params.addQueryItem("website", "https://b123400.net/tootrain");
 
@@ -44,7 +46,12 @@ void MastodonClient ::createApp(QUrl host, std::function<void (MastodonApp*)> ca
 void MastodonClient::verifyCredentials(MastodonApp *app, std::function<void (MastodonAccount*)> callback) {
     QUrl url = QUrl(app->baseUrl);
     url.setPath("/api/v1/accounts/verify_credentials");
-    auto reply = app->oauth2->get(url);
+    QNetworkRequest request = QNetworkRequest(url);
+    request.setUrl(url);
+    QHttpHeaders headers;
+    headers.append(QHttpHeaders::WellKnownHeader::Authorization, u"Bearer "_s + app->oauth2->token());
+    request.setHeaders(headers);
+    auto reply = networkManager->get(request);
     connect(reply, &QNetworkReply::finished, this, [=]()
             {
                 // TODO: handle error
@@ -61,7 +68,11 @@ void MastodonClient::verifyCredentials(MastodonApp *app, std::function<void (Mas
 void MastodonClient::fetchLists(MastodonApp *app, std::function<void (QList<MastodonList*>)> callback) {
     QUrl url = QUrl(app->baseUrl);
     url.setPath("/api/v1/lists");
-    auto reply = app->oauth2->get(url);
+    QNetworkRequest request = QNetworkRequest(url);
+    QHttpHeaders headers;
+    headers.append(QHttpHeaders::WellKnownHeader::Authorization, u"Bearer "_s + app->oauth2->token());
+    request.setHeaders(headers);
+    auto reply = networkManager->get(request);
     connect(reply, &QNetworkReply::finished, this, [=]()
             {
                 // TODO: handle error

@@ -15,7 +15,7 @@ jobs:
   #     # Installs the Qt SDK
   #     uses: jurplel/install-qt-action@v3
   #     with:
-  #       version: '6.7.0'
+  #       version: '6.8.0'
   #
   #   - name: Configure CMake
   #     # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -49,7 +49,7 @@ jobs:
       # Installs the Qt SDK
       uses: jurplel/install-qt-action@v3
       with:
-        version: '6.7.0'
+        version: '6.8.0'
         host: 'windows'
         target: 'desktop'
         arch: 'win64_msvc2019_64'
@@ -66,7 +66,7 @@ jobs:
         tree /A /F "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
 
         # tree /A /F "$env:IQTA_TOOLS"
-        # tree /A /F "D:\a\tootrain-qt\Qt\6.7.0\msvc2019_64"
+        # tree /A /F "D:\a\tootrain-qt\Qt\6.8.0\msvc2019_64"
 
         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
