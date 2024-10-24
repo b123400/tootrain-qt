@@ -23,10 +23,14 @@ public:
 public slots:
     void loginButtonClicked();
     void configureButtonClicked();
+
     void mastodonAccountFinished();
     void mastodonAccountAuthenticated(MastodonAccount *account);
     void mastodonSettingFinished();
     void mastodonSettingUpdated(MastodonAccount *account);
+
+    void misskeyAccountFinished();
+    void misskeyAccountAuthenticated(MisskeyAccount *account);
 
     void testProfile();
     void screenIndexChanged(int index);

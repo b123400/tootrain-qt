@@ -93,6 +93,8 @@ void SettingWindow::loginButtonClicked() {
         loadAccount();
     } else {
         this->misskeyAuthWindow = new MisskeyAuthWindow(this);
+        connect(this->misskeyAuthWindow, &QDialog::finished, this, &SettingWindow::misskeyAccountFinished);
+        connect(this->misskeyAuthWindow, &MisskeyAuthWindow::authenticated, this, &SettingWindow::misskeyAccountAuthenticated);
         this->misskeyAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
         this->misskeyAuthWindow->show();
 
@@ -137,6 +139,20 @@ void SettingWindow::mastodonSettingFinished() {
 }
 
 void SettingWindow::mastodonSettingUpdated(MastodonAccount *account) {
+    // TODO: Support multiple accounts
+    QList<Account*> list;
+    list.append(account);
+    SettingManager::shared().saveAccounts(list);
+    loadAccount();
+}
+
+void SettingWindow::misskeyAccountFinished() {
+    delete misskeyAuthWindow;
+    misskeyAuthWindow = nullptr;
+}
+
+void SettingWindow::misskeyAccountAuthenticated(MisskeyAccount *account) {
+    qDebug() << account->username;
     // TODO: Support multiple accounts
     QList<Account*> list;
     list.append(account);

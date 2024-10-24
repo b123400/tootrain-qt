@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QtHttpServer>
 #include <QUuid>
+#include "./misskeyaccount.h"
 
 namespace Ui {
 class MisskeyAuthWindow;
@@ -19,8 +20,9 @@ public:
 
 public slots:
     void accept();
-    void grant();
-    void granted();
+
+signals:
+    void authenticated(MisskeyAccount *account);
 
 private:
     Ui::MisskeyAuthWindow *ui;

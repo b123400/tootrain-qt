@@ -19,7 +19,7 @@ MisskeyAuthWindow::MisskeyAuthWindow(QWidget *parent)
         auto query = request.query();
         auto code = query.queryItemValue("code");
         this->checkForSession();
-        return "hello world " + code;
+        return tr("Authorised, please go back to TootRain");
     });
 
     tcpServer = new QTcpServer();
@@ -32,13 +32,13 @@ MisskeyAuthWindow::MisskeyAuthWindow(QWidget *parent)
 
 MisskeyAuthWindow::~MisskeyAuthWindow()
 {
+    tcpServer->close();
     delete tcpServer;
     delete ui;
 }
 
 void MisskeyAuthWindow::accept() {
     QUrlQuery params;
-    // auto callback = tcpServer->serverAddress().toString();
     params.addQueryItem("name", "TootRain");
     params.addQueryItem("icon", "https://b123400.net/tootrain/mac.png");
     params.addQueryItem("callback", "http://127.0.0.1:" + QString::number(tcpServer->serverPort()));
@@ -49,22 +49,11 @@ void MisskeyAuthWindow::accept() {
     baseUrl.setQuery(params);
     QDesktopServices::openUrl(baseUrl);
 }
-void MisskeyAuthWindow::grant() {
-
-}
-void MisskeyAuthWindow::granted() {
-    // auto token = oauth2->token();
-    // qDebug() << "got misskey token: " << token;
-    // // QUrl host = QUrl(ui->hostLineEdit->text());
-    // auto host = QUrl("https://misskey.io");
-    // MisskeyClient::shared().fetchAccountWithToken(host, token, [=](MisskeyAccount * account) {
-    //     qDebug() << "got account" << account->username;
-    // });
-}
 
 void MisskeyAuthWindow::checkForSession() {
     auto host = QUrl(ui->hostLineEdit->text());
-    MisskeyClient::shared().fetchAuthSession(host, sessionId.toString(QUuid::StringFormat::WithoutBraces), [](MisskeyAccount *account) {
-
+    MisskeyClient::shared().fetchAuthSession(host, sessionId.toString(QUuid::StringFormat::WithoutBraces), [this](MisskeyAccount *account) {
+        this->authenticated(account);
+        close();
     });
 }
