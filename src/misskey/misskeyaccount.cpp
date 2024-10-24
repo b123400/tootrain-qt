@@ -1,20 +1,46 @@
 #include "misskeyaccount.h"
+#include <QUrlQuery>
+#include <QJsonDocument>
 
-MisskeyAccount::MisskeyAccount(QJsonObject responseObject, QObject *parent)
+MisskeyAccount::MisskeyAccount(QJsonObject responseObject, QUrl baseUrl, QObject *parent)
     : Account{parent}
 {
+    uuid = QUuid::createUuid().toString(QUuid::StringFormat::WithoutBraces);
     id = responseObject["id"].toString();
-    name = responseObject["name"].toString();
+    displayName = responseObject["name"].toString();
     username = responseObject["username"].toString();
+    avatarUrl = responseObject["avatarUrl"].toString();
+    this->baseUrl = baseUrl;
+}
+
+MisskeyAccount::MisskeyAccount(QSettings *settings, QObject *parent) : Account {settings, parent}
+{
+    accessToken = settings->value("accessToken").toString();
+    baseUrl = settings->value("baseUrl").toUrl();
 }
 
 QUrl MisskeyAccount::getWebSocketUrl() {
-    return QUrl("TODO");
+    QUrl url = QUrl(baseUrl);
+    url.setScheme("wss");
+    url.setPath("/streaming");
+    QUrlQuery query;
+    query.addQueryItem("i", accessToken);
+    url.setQuery(query);
+    qDebug() << "stream url: " << url;
+    return url;
 }
 
 QString MisskeyAccount::fullUsername() {
-    return "TODO";
+    if (this->baseUrl.isEmpty()) {
+        return username;
+    }
+    return username + "@" + this->baseUrl.host();
 }
+
 void MisskeyAccount::saveToSettings(QSettings *settings) {
-    // TODO;
+    this->Account::saveToSettings(settings);
+    settings->setValue("type", "misskey");
+
+    settings->setValue("baseUrl", this->baseUrl);
+    settings->setValue("accessToken", this->accessToken);
 }

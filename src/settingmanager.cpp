@@ -2,6 +2,7 @@
 #include <QCoreApplication>
 #include <QUrl>
 #include "mastodon/account.h"
+#include "misskey/misskeyaccount.h"
 
 SettingManager::SettingManager(QObject *parent)
     : QObject{parent}
@@ -36,6 +37,8 @@ QList<Account*> SettingManager::getAccounts() {
         QString type = settings.value("type").toString();
         if (type == "mastodon") {
             account = new MastodonAccount(&settings, this);
+        } else if (type == "misskey") {
+            account = new MisskeyAccount(&settings, this);
         }
         accounts.append(account);
     }

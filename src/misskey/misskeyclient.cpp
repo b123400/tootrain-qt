@@ -54,7 +54,9 @@ void MisskeyClient::fetchAuthSession(QUrl host, QString sessionId, std::function
                 QJsonDocument jsonDoc((QJsonDocument::fromJson(buffer)));
                 QJsonObject jsonReply = jsonDoc.object();
                 // qDebug() << "json:" << jsonReply;
-                auto acc = new MisskeyAccount(jsonReply, this);
+                QJsonObject userObj = jsonReply["user"].toObject();
+                auto acc = new MisskeyAccount(userObj, host, this);
+                acc->accessToken = jsonReply["token"].toString();
                 callback(acc);
             });
 }
