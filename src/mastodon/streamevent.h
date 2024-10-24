@@ -1,22 +1,25 @@
-#ifndef STREAMEVENT_H
-#define STREAMEVENT_H
+#ifndef MASTODONSTREAMEVENT_H
+#define MASTODONSTREAMEVENT_H
 
 #include <QObject>
+#include "../streamevent.h"
 #include "status.h"
 
-class MastodonStreamEvent : public QObject
+class MastodonStreamEvent : public StreamEvent
 {
-    Q_OBJECT
 public:
-    explicit MastodonStreamEvent(QObject *parent = nullptr);
+    MastodonStreamEvent(QObject *parent = nullptr);
+    ~MastodonStreamEvent();
+
     MastodonStreamEvent(QJsonObject json, QObject *parent = nullptr);
     static bool isValid(QJsonObject json);
 
     QString type;
     MastodonStatus *status = nullptr;
 
+    MastodonStatus* getStatus();
 
 signals:
 };
 
-#endif // STREAMEVENT_H
+#endif // MASTODONSTREAMEVENT_H

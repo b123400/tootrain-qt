@@ -1,6 +1,8 @@
 #include "account.h"
 #include <QUuid>
 #include <QUrlQuery>
+#include <QJsonDocument>
+#include "./streamevent.h"
 
 MastodonAccount::MastodonAccount(QObject *parent)
     : Account{parent}
@@ -120,4 +122,16 @@ QString MastodonAccount::queryParamForSource(Source source) {
     case Direct:
         return "direct";
     }
+}
+
+StreamEvent* MastodonAccount::getStreamEventFromWebSocketMessage(QString message) {
+    qDebug() << "message: " << message;
+    QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
+    QJsonObject jsonReply = jsonDoc.object();
+    if (MastodonStreamEvent::isValid(jsonReply)) {
+        MastodonStreamEvent *se = new MastodonStreamEvent(jsonReply, this);
+        qDebug() << "status: " << se;
+        return se;
+    }
+    return nullptr;
 }

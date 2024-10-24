@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "../account.h"
+#include "./misskeystreamevent.h"
 #include <QJsonObject>
 
 class MisskeyAccount : public Account
@@ -20,6 +21,8 @@ public:
     void connectedToWebSocket(QWebSocket *websocket) override;
     QString fullUsername() override;
     void saveToSettings(QSettings *settings) override;
+
+    MisskeyStreamEvent* getStreamEventFromWebSocketMessage(QString message) override;
 };
 
 #endif // MISSKEYACCOUNT_H

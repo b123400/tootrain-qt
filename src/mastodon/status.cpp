@@ -4,10 +4,10 @@
 #include "../settingmanager.h"
 
 MastodonStatus::MastodonStatus( QObject *parent)
-    : QObject{parent}
+    : Status{parent}
 {
 }
-MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): QObject{parent}
+MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): Status{parent}
 {
     id = json["id"].toString();
     content = json["content"].toString();

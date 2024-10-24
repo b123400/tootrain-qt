@@ -3,7 +3,7 @@
 #include "status.h"
 
 DummyStatus::DummyStatus(QString message, QObject *parent)
-    : QObject{parent}
+    : Status{parent}
 {
     this->message = message;
 }

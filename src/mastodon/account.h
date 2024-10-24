@@ -6,6 +6,7 @@
 #include <QSettings>
 #include "../account.h"
 #include "app.h"
+#include "../streamevent.h"
 
 class MastodonAccount : public Account
 {
@@ -39,6 +40,8 @@ public:
     void connectedToWebSocket(QWebSocket *websocket) override;
     QString fullUsername() override;
     void saveToSettings(QSettings *settings) override;
+
+    StreamEvent* getStreamEventFromWebSocketMessage(QString message) override;
 
 private:
     QString queryParamForSource(Source source);

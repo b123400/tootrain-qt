@@ -2,10 +2,10 @@
 #include "streamevent.h"
 
 MastodonStreamEvent::MastodonStreamEvent(QObject *parent)
-    : QObject{parent}
+    : StreamEvent{parent}
 {}
 
-MastodonStreamEvent::MastodonStreamEvent(QJsonObject json, QObject *parent): QObject{parent} {
+MastodonStreamEvent::MastodonStreamEvent(QJsonObject json, QObject *parent): StreamEvent{parent} {
     type = json["event"].toString();
     auto payloadString = json["payload"].toString();
     QJsonDocument jsonDoc((QJsonDocument::fromJson(payloadString.toUtf8())));
@@ -13,6 +13,14 @@ MastodonStreamEvent::MastodonStreamEvent(QJsonObject json, QObject *parent): QOb
     status = new MastodonStatus(jsonObj, this);
 }
 
+MastodonStreamEvent::~MastodonStreamEvent() {
+
+}
+
 bool MastodonStreamEvent::isValid(QJsonObject json) {
     return json["event"].toString() == "update";
+}
+
+MastodonStatus* MastodonStreamEvent::getStatus() {
+    return this->status;
 }

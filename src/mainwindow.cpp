@@ -172,16 +172,13 @@ void MainWindow::onStatusEmojisLoaded(Status *status) {
 }
 
 void MainWindow::onWebSocketTextMessageReceived(QString message) {
-    // qDebug() << "message: " << message;
-    QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
-    QJsonObject jsonReply = jsonDoc.object();
-    if (MastodonStreamEvent::isValid(jsonReply)) {
-        MastodonStreamEvent *se = new MastodonStreamEvent(jsonReply, this);
-        qDebug() << "status: " << se;
-        StatusImageLoader::shared().loadEmojisForStatus(se->status);
-        se->status->setParent(this);
-        delete se;
-    }
+    StreamEvent *se = this->currentAccount->getStreamEventFromWebSocketMessage(message);
+    if (se == nullptr) return;
+    Status *status = se->getStatus();
+    if (status == nullptr) return;
+    status->setParent(this);
+    StatusImageLoader::shared().loadEmojisForStatus(status);
+    delete se;
 }
 
 void MainWindow::onWebSocketConnected() {

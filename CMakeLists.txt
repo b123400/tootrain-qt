@@ -30,7 +30,7 @@ set(PROJECT_SOURCES
         src/settingmanager.h src/settingmanager.cpp
         src/mastodon/status.h src/mastodon/status.cpp
         src/mastodon/streamevent.h src/mastodon/streamevent.cpp
-        src/status.h
+        src/status.h src/status.cpp
         src/dummystatus.h src/dummystatus.cpp
         src/animationstate.h src/animationstate.cpp
         images/icon.rc
@@ -45,6 +45,10 @@ set(PROJECT_SOURCES
         src/aboutdialog.h src/aboutdialog.cpp src/aboutdialog.ui
         src/misskey/misskeyaccount.h src/misskey/misskeyaccount.cpp
         src/misskey/misskeyauthwindow.h src/misskey/misskeyauthwindow.cpp src/misskey/misskeyauthwindow.ui
+        src/misskey/misskeyclient.h src/misskey/misskeyclient.cpp
+        src/streamevent.h src/streamevent.cpp
+        src/misskey/misskeystreamevent.h src/misskey/misskeystreamevent.cpp
+        src/misskey/misskeystatus.h src/misskey/misskeystatus.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
@@ -61,7 +65,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         ${app_icon_resource_windows}
         ${app_icon_macos}
-        src/misskey/misskeyclient.h src/misskey/misskeyclient.cpp
     )
     qt_add_translations(
         tootrain-qt

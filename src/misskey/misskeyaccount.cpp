@@ -58,3 +58,8 @@ void MisskeyAccount::saveToSettings(QSettings *settings) {
     settings->setValue("baseUrl", this->baseUrl);
     settings->setValue("accessToken", this->accessToken);
 }
+
+MisskeyStreamEvent* MisskeyAccount::getStreamEventFromWebSocketMessage(QString message) {
+    // TODO
+    return nullptr;
+}
