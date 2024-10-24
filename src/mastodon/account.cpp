@@ -73,6 +73,10 @@ QUrl MastodonAccount::getWebSocketUrl() {
     return url;
 }
 
+void MastodonAccount::connectedToWebSocket(QWebSocket *websocket) {
+
+}
+
 QString MastodonAccount::fullUsername() {
     if (!this->app) {
         return username;

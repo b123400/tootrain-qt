@@ -139,21 +139,31 @@ void MainWindow::moveToScreen() {
 }
 
 void MainWindow::startStreaming() {
+    if (this->currentAccount != nullptr) {
+        delete this->currentAccount;
+        this->currentAccount = nullptr;
+    }
     auto accounts = SettingManager::shared().getAccounts();
     if (accounts.size()) {
         // Only take the first one
         auto account = accounts.at(0);
+        this->currentAccount = account;
 
         QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
         webSocket.open(request);
-        for (auto a : accounts) {
-            delete a;
-        }
+        // TODO: support multiple account, delete other unused accounts
+        // for (auto a : accounts) {
+        //     delete a;
+        // }
     }
 }
 
 void MainWindow::stopStreaming() {
     webSocket.close();
+    if (this->currentAccount != nullptr) {
+        delete currentAccount;
+        this->currentAccount = nullptr;
+    }
 }
 
 void MainWindow::onStatusEmojisLoaded(Status *status) {
@@ -179,6 +189,11 @@ void MainWindow::onWebSocketConnected() {
     auto s = new DummyStatus(tr("Stream connected"), this);
     showStatus(s);
     delete s;
+
+    // Should always be true
+    if (this->currentAccount != nullptr) {
+        this->currentAccount->connectedToWebSocket(&webSocket);
+    }
 }
 
 void MainWindow::onWebSocketDisconnected() {

@@ -40,6 +40,7 @@ private:
     SettingWindow *settingWindow = nullptr;
 
     QQueue<AnimationState*> animationStates;
+    Account *currentAccount = nullptr;
 
     QWebSocket webSocket;
     void startStreaming();

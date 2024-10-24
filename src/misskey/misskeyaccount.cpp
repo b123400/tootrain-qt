@@ -30,6 +30,20 @@ QUrl MisskeyAccount::getWebSocketUrl() {
     return url;
 }
 
+void MisskeyAccount::connectedToWebSocket(QWebSocket *websocket) {
+    QJsonObject params;
+    QJsonObject body;
+    body["channel"] = "localTimeline";
+    body["id"] = QUuid::createUuid().toString(QUuid::StringFormat::WithoutBraces);
+    body["params"] = params;
+    QJsonObject obj;
+    obj["type"] = "connect";
+    obj["body"] = body;
+    QJsonDocument doc = QJsonDocument(obj);
+    auto message = doc.toJson();
+    websocket->sendTextMessage(message);
+}
+
 QString MisskeyAccount::fullUsername() {
     if (this->baseUrl.isEmpty()) {
         return username;

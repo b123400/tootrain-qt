@@ -17,6 +17,7 @@ public:
     QUrl baseUrl;
 
     QUrl getWebSocketUrl() override;
+    void connectedToWebSocket(QWebSocket *websocket) override;
     QString fullUsername() override;
     void saveToSettings(QSettings *settings) override;
 };
