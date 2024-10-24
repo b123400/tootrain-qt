@@ -62,7 +62,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${app_icon_resource_windows}
         ${app_icon_macos}
         src/misskey/misskeyclient.h src/misskey/misskeyclient.cpp
-        src/misskey/misskeywellknown.h src/misskey/misskeywellknown.cpp
     )
     qt_add_translations(
         tootrain-qt
