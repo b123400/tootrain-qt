@@ -1,6 +1,7 @@
 #include "misskeyaccount.h"
 #include <QUrlQuery>
 #include <QJsonDocument>
+#include "./misskeystreamevent.h"
 
 MisskeyAccount::MisskeyAccount(QJsonObject responseObject, QUrl baseUrl, QObject *parent)
     : Account{parent}
@@ -59,7 +60,14 @@ void MisskeyAccount::saveToSettings(QSettings *settings) {
     settings->setValue("accessToken", this->accessToken);
 }
 
-MisskeyStreamEvent* MisskeyAccount::getStreamEventFromWebSocketMessage(QString message) {
-    // TODO
-    return nullptr;
+StreamEvent* MisskeyAccount::getStreamEventFromWebSocketMessage(QString message) {
+    qDebug() << "message: " << message;
+    QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
+    QJsonObject jsonReply = jsonDoc.object();
+    MisskeyStreamEvent *se = new MisskeyStreamEvent(jsonReply, this->baseUrl, this);
+    if (!se->isValid()) {
+        delete se;
+        return nullptr;
+    }
+    return se;
 }

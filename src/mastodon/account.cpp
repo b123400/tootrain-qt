@@ -125,12 +125,10 @@ QString MastodonAccount::queryParamForSource(Source source) {
 }
 
 StreamEvent* MastodonAccount::getStreamEventFromWebSocketMessage(QString message) {
-    qDebug() << "message: " << message;
     QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
     QJsonObject jsonReply = jsonDoc.object();
     if (MastodonStreamEvent::isValid(jsonReply)) {
         MastodonStreamEvent *se = new MastodonStreamEvent(jsonReply, this);
-        qDebug() << "status: " << se;
         return se;
     }
     return nullptr;

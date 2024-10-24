@@ -3,11 +3,18 @@
 
 #include <QObject>
 #include "../status.h"
+#include <QJsonObject>
+#include "./misskeyaccount.h"
 
 class MisskeyStatus : public Status
 {
 public:
-    MisskeyStatus();
+    MisskeyStatus(QJsonObject json, QUrl hostUrl, QObject *parent = nullptr);
+
+    QString id;
+    QString body;
+
+    MisskeyAccount *account = nullptr;
 
     QString getText();
 
