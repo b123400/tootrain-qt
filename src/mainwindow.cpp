@@ -347,6 +347,7 @@ void MainWindow::showStatus(Status *status) {
                 text = component->text.sliced(0, charLeft);
                 characterCount = characterCountLimit;
             }
+            text = text.remove(QChar('\n'));
 
             QLabel *label = new QLabel(this);
             label->setPalette(palette);

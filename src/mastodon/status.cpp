@@ -59,7 +59,7 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
         // QString after = plainTextContent.sliced(end);
 
         auto textRtc = new RichTextComponent(this);
-        textRtc->text = before.remove(QChar('\n'));
+        textRtc->text = before;
         list.append(textRtc);
 
         for (auto emoji : emojis) {
@@ -74,7 +74,7 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
         lastStart = end;
     }
     auto textRtc = new RichTextComponent(this);
-    textRtc->text = plainTextContent.sliced(lastStart).remove(QChar('\n'));
+    textRtc->text = plainTextContent.sliced(lastStart);
     list.append(textRtc);
     return list;
 }
