@@ -49,6 +49,7 @@ set(PROJECT_SOURCES
         src/streamevent.h src/streamevent.cpp
         src/misskey/misskeystreamevent.h src/misskey/misskeystreamevent.cpp
         src/misskey/misskeystatus.h src/misskey/misskeystatus.cpp
+        src/misskey/misskeyemoji.h src/misskey/misskeyemoji.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)

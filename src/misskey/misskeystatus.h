@@ -5,6 +5,7 @@
 #include "../status.h"
 #include <QJsonObject>
 #include "./misskeyaccount.h"
+#include "../urlemoji.h"
 
 class MisskeyStatus : public Status
 {
@@ -18,9 +19,16 @@ public:
 
     QString getText();
 
+
     bool isEmojisReady();
     void downloadEmojis();
     QList<RichTextComponent*> richTextcomponents();
+
+private:
+    bool preparedEmoji = false;
+
+    QMap<QString, UrlEmoji*> emojis;
+    void prepareEmojis();
 };
 
 #endif // MISSKEYSTATUS_H
