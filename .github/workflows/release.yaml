@@ -46,17 +46,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install Qt
-      # Installs the Qt SDK
       uses: jurplel/install-qt-action@v3
       with:
+        aqtversion: '==3.1.*'
         version: '6.8.0'
         host: 'windows'
         target: 'desktop'
-        arch: 'win64_msvc2019_64'
+        arch: 'win64_msvc2022_64'
         modules: 'qtnetworkauth qtwebsockets qtimageformats'
         tools: 'tools_ifw tools_opensslv3_x64'
         add-tools-to-path: true
-
     - name: Build
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type

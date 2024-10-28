@@ -14,7 +14,7 @@ It's still in beta, features are missing and there are a few bugs.
 
 - [x] Connect to Mastodon
 - [ ] Connect to Misskey
-- [ ] Choose Channel
+- [x] Choose Channel
 - [x] GIF, WebP support
 - [x] Japanese Localisation
 - [ ] Linux support
