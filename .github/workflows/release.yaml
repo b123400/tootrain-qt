@@ -53,7 +53,7 @@ jobs:
         host: 'windows'
         target: 'desktop'
         arch: 'win64_msvc2019_64'
-        modules: 'qtnetworkauth qtwebsockets'
+        modules: 'qtnetworkauth qtwebsockets qtimageformats'
         tools: 'tools_ifw tools_opensslv3_x64'
         add-tools-to-path: true
 
@@ -63,7 +63,7 @@ jobs:
       env:
         VCINSTALLDIR: 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC'
       run: |
-        tree /A /F "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
+        # tree /A /F "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
 
         # tree /A /F "$env:IQTA_TOOLS"
         # tree /A /F "D:\a\tootrain-qt\Qt\6.8.0\msvc2019_64"
