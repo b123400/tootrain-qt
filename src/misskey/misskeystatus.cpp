@@ -1,5 +1,6 @@
 #include "misskeystatus.h"
 #include "misskeyemoji.h"
+#include "../settingmanager.h"
 
 MisskeyStatus::MisskeyStatus(QJsonObject json, QUrl hostUrl, QObject *parent)
     : Status{parent}
@@ -22,6 +23,11 @@ bool MisskeyStatus::isEmojisReady() {
             return false;
         }
     }
+    if (this->avatarEmoji != nullptr) {
+        if (!this->avatarEmoji->isReady()) {
+            return false;
+        }
+    }
     return true;
 }
 
@@ -31,6 +37,9 @@ void MisskeyStatus::downloadEmojis() {
         auto emoji = i.value();
         emoji->download();
     }
+    if (this->avatarEmoji != nullptr) {
+        this->avatarEmoji->download();
+    }
 }
 
 void MisskeyStatus::prepareEmojis() {
@@ -39,12 +48,9 @@ void MisskeyStatus::prepareEmojis() {
     static QRegularExpression regex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
     QString plainTextContent = this->body;
 
-    // TODO: show Avatar
-    // if (this->avatarEmoji != nullptr) {
-    //     auto rtc = new RichTextComponent(this);
-    //     rtc->emoji = this->avatarEmoji;
-    //     list.append(rtc);
-    // }
+    if (SettingManager::shared().showUserAvatar()) {
+        this->avatarEmoji = new UrlEmoji(this->account->avatarUrl, this);
+    }
 
     auto globalMatch = regex.globalMatch(plainTextContent);
     int lastStart = 0;
@@ -63,12 +69,11 @@ QList<RichTextComponent*> MisskeyStatus::richTextcomponents() {
     QString plainTextContent = this->body;
     QList<RichTextComponent*> list;
 
-    // TODO: show Avatar
-    // if (this->avatarEmoji != nullptr) {
-    //     auto rtc = new RichTextComponent(this);
-    //     rtc->emoji = this->avatarEmoji;
-    //     list.append(rtc);
-    // }
+    if (this->avatarEmoji != nullptr) {
+        auto rtc = new RichTextComponent(this);
+        rtc->emoji = this->avatarEmoji;
+        list.append(rtc);
+    }
 
     auto globalMatch = regex.globalMatch(plainTextContent);
     int lastStart = 0;

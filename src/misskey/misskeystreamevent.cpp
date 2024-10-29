@@ -21,5 +21,6 @@ MisskeyStreamEvent::~MisskeyStreamEvent() {
 }
 
 MisskeyStatus* MisskeyStreamEvent::getStatus() {
+    if (this->status->body.isEmpty()) return nullptr;
     return this->status;
 }

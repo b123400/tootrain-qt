@@ -28,6 +28,7 @@ private:
     bool preparedEmoji = false;
 
     QMap<QString, UrlEmoji*> emojis;
+    UrlEmoji *avatarEmoji = nullptr;
     void prepareEmojis();
 };
 
