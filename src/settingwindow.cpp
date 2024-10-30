@@ -3,6 +3,7 @@
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QDir>
+#include <QMenu>
 
 #include "settingwindow.h"
 #include "QtGui/qscreen.h"
@@ -92,18 +93,31 @@ void SettingWindow::loginButtonClicked() {
         SettingManager::shared().clearAccounts();
         loadAccount();
     } else {
-        this->misskeyAuthWindow = new MisskeyAuthWindow(this);
-        connect(this->misskeyAuthWindow, &QDialog::finished, this, &SettingWindow::misskeyAccountFinished);
-        connect(this->misskeyAuthWindow, &MisskeyAuthWindow::authenticated, this, &SettingWindow::misskeyAccountAuthenticated);
-        this->misskeyAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
-        this->misskeyAuthWindow->show();
-
-        // this->mastodonOAuthWindow = new MastodonOauthWindow(this);
-        // connect(this->mastodonOAuthWindow, &QDialog::finished, this, &SettingWindow::mastodonAccountFinished);
-        // connect(this->mastodonOAuthWindow, &MastodonOauthWindow::authenticated, this, &SettingWindow::mastodonAccountAuthenticated);
-        // this->mastodonOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
-        // this->mastodonOAuthWindow->show();
+        QMenu menu = QMenu(this);
+        QAction mastodonAction = QAction("Mastodon", this);
+        connect(&mastodonAction, &QAction::triggered, this, &SettingWindow::loginToMastodon);
+        menu.addAction(&mastodonAction);
+        QAction misskeyAction = QAction("Misskey", this);
+        connect(&misskeyAction, &QAction::triggered, this, &SettingWindow::loginToMisskey);
+        menu.addAction(&misskeyAction);
+        menu.exec(ui->loginButton->cursor().pos());
     }
+}
+
+void SettingWindow::loginToMastodon(bool _checked) {
+    this->mastodonOAuthWindow = new MastodonOauthWindow(this);
+    connect(this->mastodonOAuthWindow, &QDialog::finished, this, &SettingWindow::mastodonAccountFinished);
+    connect(this->mastodonOAuthWindow, &MastodonOauthWindow::authenticated, this, &SettingWindow::mastodonAccountAuthenticated);
+    this->mastodonOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
+    this->mastodonOAuthWindow->show();
+}
+
+void SettingWindow::loginToMisskey(bool _checked) {
+    this->misskeyAuthWindow = new MisskeyAuthWindow(this);
+    connect(this->misskeyAuthWindow, &QDialog::finished, this, &SettingWindow::misskeyAccountFinished);
+    connect(this->misskeyAuthWindow, &MisskeyAuthWindow::authenticated, this, &SettingWindow::misskeyAccountAuthenticated);
+    this->misskeyAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
+    this->misskeyAuthWindow->show();
 }
 
 void SettingWindow::mastodonAccountFinished() {

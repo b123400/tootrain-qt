@@ -103,7 +103,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>Checking for update...</string>
    </property>
   </widget>
   <widget class="QPushButton" name="configButton">

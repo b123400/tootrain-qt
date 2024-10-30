@@ -22,6 +22,8 @@ public:
 
 public slots:
     void loginButtonClicked();
+    void loginToMastodon(bool _checked);
+    void loginToMisskey(bool _checked);
     void configureButtonClicked();
 
     void mastodonAccountFinished();
