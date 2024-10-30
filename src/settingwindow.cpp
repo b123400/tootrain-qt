@@ -135,6 +135,15 @@ void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *account) {
 }
 
 void SettingWindow::configureButtonClicked() {
+    if (this->currentAccount == nullptr) return;
+    if (dynamic_cast<MastodonAccount*>(this->currentAccount) != nullptr) {
+        openMastodonSettings();
+    } else if (dynamic_cast<MisskeyAccount*>(this->currentAccount) != nullptr) {
+        openMisskeySettings();
+    }
+}
+
+void SettingWindow::openMastodonSettings() {
     if (this->mastodonSettingWindow != nullptr) {
         this->mastodonSettingWindow->show();
     } else {
@@ -146,13 +155,38 @@ void SettingWindow::configureButtonClicked() {
         this->mastodonSettingWindow->show();
     }
 }
+void SettingWindow::openMisskeySettings() {
+    if (this->misskeySettingWindow != nullptr) {
+        this->misskeySettingWindow->show();
+    } else {
+        MisskeySettingWindow *settingWindow = new MisskeySettingWindow(this);
+        this->misskeySettingWindow = settingWindow;
+        connect(this->misskeySettingWindow, &QDialog::finished, this, &SettingWindow::misskeySettingFinished);
+        connect(this->misskeySettingWindow, &MisskeySettingWindow::accountUpdated, this, &SettingWindow::misskeySettingUpdated);
+        this->misskeySettingWindow->setWindowModality(Qt::WindowModality::WindowModal);
+        this->misskeySettingWindow->show();
+    }
+}
 
 void SettingWindow::mastodonSettingFinished() {
     delete mastodonSettingWindow;
     mastodonSettingWindow = nullptr;
 }
 
+void SettingWindow::misskeySettingFinished() {
+    delete misskeySettingWindow;
+    misskeySettingWindow = nullptr;
+}
+
 void SettingWindow::mastodonSettingUpdated(MastodonAccount *account) {
+    // TODO: Support multiple accounts
+    QList<Account*> list;
+    list.append(account);
+    SettingManager::shared().saveAccounts(list);
+    loadAccount();
+}
+
+void SettingWindow::misskeySettingUpdated(MisskeyAccount *account) {
     // TODO: Support multiple accounts
     QList<Account*> list;
     list.append(account);

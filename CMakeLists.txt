@@ -50,6 +50,7 @@ set(PROJECT_SOURCES
         src/misskey/misskeystreamevent.h src/misskey/misskeystreamevent.cpp
         src/misskey/misskeystatus.h src/misskey/misskeystatus.cpp
         src/misskey/misskeyemoji.h src/misskey/misskeyemoji.cpp
+        src/misskey/misskeysettingwindow.h src/misskey/misskeysettingwindow.cpp src/misskey/misskeysettingwindow.ui
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)

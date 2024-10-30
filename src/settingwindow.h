@@ -5,8 +5,9 @@
 #include <QProcess>
 
 #include "mastodon/mastodonoauthwindow.h"
-#include "misskey/misskeyauthwindow.h"
 #include "mastodon/mastodonsettingwindow.h"
+#include "misskey/misskeyauthwindow.h"
+#include "misskey/misskeysettingwindow.h"
 
 namespace Ui {
 class SettingWindow;
@@ -24,7 +25,10 @@ public slots:
     void loginButtonClicked();
     void loginToMastodon(bool _checked);
     void loginToMisskey(bool _checked);
+
     void configureButtonClicked();
+    void openMastodonSettings();
+    void openMisskeySettings();
 
     void mastodonAccountFinished();
     void mastodonAccountAuthenticated(MastodonAccount *account);
@@ -33,6 +37,8 @@ public slots:
 
     void misskeyAccountFinished();
     void misskeyAccountAuthenticated(MisskeyAccount *account);
+    void misskeySettingFinished();
+    void misskeySettingUpdated(MisskeyAccount *account);
 
     void testProfile();
     void screenIndexChanged(int index);
@@ -49,6 +55,7 @@ private:
     MastodonOauthWindow *mastodonOAuthWindow = nullptr;
     MastodonSettingWindow *mastodonSettingWindow = nullptr;
     MisskeyAuthWindow *misskeyAuthWindow = nullptr;
+    MisskeySettingWindow *misskeySettingWindow = nullptr;
     Account *currentAccount = nullptr;
     QProcess checkProcess;
     QProcess updateProcess;
