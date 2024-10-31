@@ -159,7 +159,7 @@ void SettingWindow::openMisskeySettings() {
     if (this->misskeySettingWindow != nullptr) {
         this->misskeySettingWindow->show();
     } else {
-        MisskeySettingWindow *settingWindow = new MisskeySettingWindow(this);
+        MisskeySettingWindow *settingWindow = new MisskeySettingWindow((MisskeyAccount*)currentAccount, this);
         this->misskeySettingWindow = settingWindow;
         connect(this->misskeySettingWindow, &QDialog::finished, this, &SettingWindow::misskeySettingFinished);
         connect(this->misskeySettingWindow, &MisskeySettingWindow::accountUpdated, this, &SettingWindow::misskeySettingUpdated);
