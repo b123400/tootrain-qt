@@ -12,6 +12,7 @@ MisskeySettingWindow::MisskeySettingWindow(MisskeyAccount *account, QWidget *par
     this->allSources = MisskeyStreamSource::defaultSources(this);
 
     reloadListItems();
+    // TODO: Load Antenna, Channel and Lists
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &MisskeySettingWindow::acceptClicked);
     connect(ui->listWidget, &QListWidget::itemChanged, this, &MisskeySettingWindow::listItemChanged);
@@ -47,7 +48,6 @@ void MisskeySettingWindow::listItemChanged(QListWidgetItem *item) {
     auto index = ui->listWidget->indexFromItem(item);
     auto updatedSource = this->allSources[index.row()];
     bool isChecked = item->checkState() == Qt::Checked;
-    qDebug() << "item changed: " << index.row() << "," << isChecked;
 
     int indexInAccount = -1;
 
@@ -59,11 +59,9 @@ void MisskeySettingWindow::listItemChanged(QListWidgetItem *item) {
         }
     }
 
-    if (indexInAccount == -1 && item->checkState() == Qt::Checked) {
-        qDebug() << "item checked";
+    if (indexInAccount == -1 && isChecked) {
         this->account->sources.append(updatedSource->copy(this->account));
-    } else if (indexInAccount >= 0 && item->checkState() == Qt::Unchecked) {
-        qDebug() << "item unchecked";
+    } else if (indexInAccount >= 0 && !isChecked) {
         auto selectedSource = this->account->sources[indexInAccount];
         this->account->sources.removeAt(indexInAccount);
         delete selectedSource;

@@ -35,38 +35,38 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="src/mainwindow.cpp" line="34"/>
+        <location filename="src/mainwindow.cpp" line="33"/>
         <source>File</source>
         <translation>ファイル</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="35"/>
+        <location filename="src/mainwindow.cpp" line="34"/>
         <source>Preferences</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="64"/>
+        <location filename="src/mainwindow.cpp" line="63"/>
         <source>Preferences...</source>
         <translation>設定...</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="39"/>
-        <location filename="src/mainwindow.cpp" line="68"/>
+        <location filename="src/mainwindow.cpp" line="38"/>
+        <location filename="src/mainwindow.cpp" line="67"/>
         <source>About...</source>
         <translation>TootRainについて</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="72"/>
+        <location filename="src/mainwindow.cpp" line="71"/>
         <source>Quit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="179"/>
+        <location filename="src/mainwindow.cpp" line="185"/>
         <source>Stream connected</source>
         <translation>接続しました</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="186"/>
+        <location filename="src/mainwindow.cpp" line="197"/>
         <source>Stream disconnected</source>
         <translation>接続が切れました</translation>
     </message>
@@ -202,11 +202,83 @@
     </message>
 </context>
 <context>
-    <name>MisskeyOAuthWindow</name>
+    <name>MisskeyAuthWindow</name>
     <message>
-        <location filename="src/misskey/misskeyoauthwindow.ui" line="14"/>
-        <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <location filename="src/misskey/misskeyauthwindow.ui" line="14"/>
+        <source>Login to Misskey</source>
+        <translation>Misskeyにログイン</translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeyauthwindow.ui" line="26"/>
+        <location filename="src/misskey/misskeyauthwindow.ui" line="29"/>
+        <source>https://</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeyauthwindow.ui" line="58"/>
+        <source>Host:</source>
+        <translation>ホスト：</translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeyauthwindow.cpp" line="22"/>
+        <source>Authorised, please go back to TootRain</source>
+        <translation>認証完了しました、TootRainに戻ってください</translation>
+    </message>
+</context>
+<context>
+    <name>MisskeySettingWindow</name>
+    <message>
+        <location filename="src/misskey/misskeysettingwindow.ui" line="20"/>
+        <source>Misskey Settings...</source>
+        <translation>Misskey設定...</translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeysettingwindow.ui" line="48"/>
+        <source>Please see &lt;a href=&quot;https://misskey-hub.net/ja/docs/for-developers/api/streaming/channel/&quot;&gt;here&lt;/a&gt; for more info.</source>
+        <translation>&lt;a href=&quot;https://misskey-hub.net/ja/docs/for-developers/api/streaming/channel/&quot;&gt;もっと詳しく&lt;/a&gt;.</translation>
+    </message>
+</context>
+<context>
+    <name>MisskeyStreamSource</name>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="39"/>
+        <source>Home Timeine</source>
+        <translation>ホームタイムライン</translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="41"/>
+        <source>Global Timeline</source>
+        <translation>グローバルタイムライン</translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="43"/>
+        <source>Hybrid Timeline</source>
+        <translation>ソーシャルタイムライン</translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="45"/>
+        <source>Local Timeline</source>
+        <translation>ローカルタイムライン</translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="47"/>
+        <source>Main (Reply and Renote)</source>
+        <translation>リプライとリノート</translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="49"/>
+        <source>Antenna - </source>
+        <translation>アンテナ - </translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="51"/>
+        <source>List - </source>
+        <translation>リスト - </translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="53"/>
+        <source>Channel - </source>
+        <translation>チャンネル - </translation>
     </message>
 </context>
 <context>
@@ -218,13 +290,12 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="44"/>
-        <location filename="src/settingwindow.cpp" line="59"/>
+        <location filename="src/settingwindow.cpp" line="60"/>
         <source>Login</source>
         <translation>ログイン</translation>
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="57"/>
-        <location filename="src/settingwindow.ui" line="106"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
@@ -249,47 +320,48 @@
         <translation>ユーザーアイコンを表示</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="52"/>
+        <location filename="src/settingwindow.cpp" line="53"/>
         <source>Account: </source>
         <translation>アカウント：</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="53"/>
+        <location filename="src/settingwindow.cpp" line="54"/>
         <source>Logout</source>
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="58"/>
+        <location filename="src/settingwindow.cpp" line="59"/>
         <source>Not logged in</source>
         <translation>ログインしてない</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="187"/>
+        <location filename="src/settingwindow.ui" line="106"/>
+        <location filename="src/settingwindow.cpp" line="255"/>
         <source>Checking for update...</source>
         <translation>更新を確認中</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="205"/>
+        <location filename="src/settingwindow.cpp" line="273"/>
         <source>New version available</source>
         <translation>新しいバージョンに更新できます</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="206"/>
+        <location filename="src/settingwindow.cpp" line="274"/>
         <source>Click here to update</source>
         <translation>新しいバージョンに更新する</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="208"/>
+        <location filename="src/settingwindow.cpp" line="276"/>
         <source>No update available</source>
         <translation>すでに最新のバージョンです</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="245"/>
+        <location filename="src/settingwindow.cpp" line="313"/>
         <source>Updating...</source>
         <translation>更新中...</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="256"/>
+        <location filename="src/settingwindow.cpp" line="324"/>
         <source>Restarting...</source>
         <translation>再起動中</translation>
     </message>
