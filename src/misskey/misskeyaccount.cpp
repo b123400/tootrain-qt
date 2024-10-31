@@ -49,17 +49,47 @@ QUrl MisskeyAccount::getWebSocketUrl() {
 }
 
 void MisskeyAccount::connectedToWebSocket(QWebSocket *websocket) {
-    QJsonObject params;
-    QJsonObject body;
-    body["channel"] = "localTimeline";
-    body["id"] = QUuid::createUuid().toString(QUuid::StringFormat::WithoutBraces);
-    body["params"] = params;
-    QJsonObject obj;
-    obj["type"] = "connect";
-    obj["body"] = body;
-    QJsonDocument doc = QJsonDocument(obj);
-    auto message = doc.toJson();
-    websocket->sendTextMessage(message);
+    for (auto s : this->sources) {
+        QJsonObject params;
+        QJsonObject body;
+        switch (s->channel) {
+        case MisskeyStreamSource::Channel::Antenna:
+            body["channel"] = "antenna";
+            params["antennaId"] = s->antennaId;
+            break;
+        case MisskeyStreamSource::Channel::Channel:
+            body["channel"] = "channel";
+            params["channelId"] = s->channelId;
+            break;
+        case MisskeyStreamSource::Channel::UserList:
+            body["channel"] = "userList";
+            params["listId"] = s->userListId;
+            break;
+        case MisskeyStreamSource::Channel::Global:
+            body["channel"] = "globalTimeline";
+            break;
+        case MisskeyStreamSource::Channel::Local:
+            body["channel"] = "localTimeline";
+            break;
+        case MisskeyStreamSource::Channel::Home:
+            body["channel"] = "homeTimeline";
+            break;
+        case MisskeyStreamSource::Channel::Hybrid:
+            body["channel"] = "hybridTimeline";
+            break;
+        case MisskeyStreamSource::Channel::Main:
+            body["channel"] = "main";
+            break;
+        }
+        body["id"] = QUuid::createUuid().toString(QUuid::StringFormat::WithoutBraces);
+        body["params"] = params;
+        QJsonObject obj;
+        obj["type"] = "connect";
+        obj["body"] = body;
+        QJsonDocument doc = QJsonDocument(obj);
+        auto message = doc.toJson();
+        websocket->sendTextMessage(message);
+    }
 }
 
 QString MisskeyAccount::fullUsername() {
