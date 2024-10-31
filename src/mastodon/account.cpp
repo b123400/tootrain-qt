@@ -32,11 +32,11 @@ MastodonAccount::MastodonAccount(QSettings *settings, QObject *parent) : Account
 
     if (settings->contains("source")) {
         bool sourceOk = false;
-        int source_int = settings->value("source").toInt(&sourceOk);
+        int sourceInt = settings->value("source").toInt(&sourceOk);
         if (!sourceOk) {
             this->source = Source::User;
         } else {
-            this->source = static_cast<Source>(source_int);
+            this->source = static_cast<Source>(sourceInt);
         }
         hashtag = settings->value("hashtag").toString();
         listId = settings->value("listId").toString();

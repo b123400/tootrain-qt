@@ -12,12 +12,29 @@ MisskeyAccount::MisskeyAccount(QJsonObject responseObject, QUrl baseUrl, QObject
     username = responseObject["username"].toString();
     avatarUrl = responseObject["avatarUrl"].toString();
     this->baseUrl = baseUrl;
+    QList<MisskeyStreamSource *> sources;
+    sources.append(new MisskeyStreamSource(MisskeyStreamSource::Channel::Home, this));
+    this->sources = sources; // default
 }
 
 MisskeyAccount::MisskeyAccount(QSettings *settings, QObject *parent) : Account {settings, parent}
 {
     accessToken = settings->value("accessToken").toString();
     baseUrl = settings->value("baseUrl").toUrl();
+
+    QList<MisskeyStreamSource *> sources;
+
+    int size = settings->beginReadArray("sources");
+    for (int i = 0; i < size; ++i) {
+        settings->setArrayIndex(i);
+        auto s = new MisskeyStreamSource(settings, this);
+        sources.append(s);
+    }
+    settings->endArray();
+    if (sources.isEmpty()) {
+        sources.append(new MisskeyStreamSource(MisskeyStreamSource::Channel::Home, this));
+    }
+    this->sources = sources; // default
 }
 
 QUrl MisskeyAccount::getWebSocketUrl() {
@@ -58,6 +75,15 @@ void MisskeyAccount::saveToSettings(QSettings *settings) {
 
     settings->setValue("baseUrl", this->baseUrl);
     settings->setValue("accessToken", this->accessToken);
+
+    settings->remove("sources");
+    settings->beginWriteArray("sources");
+    for (qsizetype i = 0; i < this->sources.size(); i++) {
+        settings->setArrayIndex(i);
+        MisskeyStreamSource *s = this->sources[i];
+        s->saveToSettings(settings);
+    }
+    settings->endArray();
 }
 
 StreamEvent* MisskeyAccount::getStreamEventFromWebSocketMessage(QString message) {

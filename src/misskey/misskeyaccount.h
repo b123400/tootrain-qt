@@ -5,6 +5,7 @@
 #include "../account.h"
 #include "../streamevent.h"
 #include <QJsonObject>
+#include "./misskeystreamsource.h"
 
 class MisskeyAccount : public Account
 {
@@ -16,6 +17,7 @@ public:
     // Only available for accounts from settings, not available for other users
     QString accessToken;
     QUrl baseUrl;
+    QList<MisskeyStreamSource *> sources;
 
     QUrl getWebSocketUrl() override;
     void connectedToWebSocket(QWebSocket *websocket) override;
