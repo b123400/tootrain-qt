@@ -13,7 +13,7 @@ MisskeyAccount::MisskeyAccount(QJsonObject responseObject, QUrl baseUrl, QObject
     avatarUrl = responseObject["avatarUrl"].toString();
     this->baseUrl = baseUrl;
     QList<MisskeyStreamSource *> sources;
-    sources.append(new MisskeyStreamSource(MisskeyStreamSource::Channel::Home, this));
+    sources.append(new MisskeyStreamSource(MisskeyStreamSource::Source::Home, this));
     this->sources = sources; // default
 }
 
@@ -32,7 +32,7 @@ MisskeyAccount::MisskeyAccount(QSettings *settings, QObject *parent) : Account {
     }
     settings->endArray();
     if (sources.isEmpty()) {
-        sources.append(new MisskeyStreamSource(MisskeyStreamSource::Channel::Home, this));
+        sources.append(new MisskeyStreamSource(MisskeyStreamSource::Source::Home, this));
     }
     this->sources = sources; // default
 }
@@ -52,32 +52,32 @@ void MisskeyAccount::connectedToWebSocket(QWebSocket *websocket) {
     for (auto s : this->sources) {
         QJsonObject params;
         QJsonObject body;
-        switch (s->channel) {
-        case MisskeyStreamSource::Channel::Antenna:
+        switch (s->source) {
+        case MisskeyStreamSource::Source::Antenna:
             body["channel"] = "antenna";
             params["antennaId"] = s->antennaId;
             break;
-        case MisskeyStreamSource::Channel::Channel:
+        case MisskeyStreamSource::Source::Channel:
             body["channel"] = "channel";
             params["channelId"] = s->channelId;
             break;
-        case MisskeyStreamSource::Channel::UserList:
+        case MisskeyStreamSource::Source::UserList:
             body["channel"] = "userList";
             params["listId"] = s->userListId;
             break;
-        case MisskeyStreamSource::Channel::Global:
+        case MisskeyStreamSource::Source::Global:
             body["channel"] = "globalTimeline";
             break;
-        case MisskeyStreamSource::Channel::Local:
+        case MisskeyStreamSource::Source::Local:
             body["channel"] = "localTimeline";
             break;
-        case MisskeyStreamSource::Channel::Home:
+        case MisskeyStreamSource::Source::Home:
             body["channel"] = "homeTimeline";
             break;
-        case MisskeyStreamSource::Channel::Hybrid:
+        case MisskeyStreamSource::Source::Hybrid:
             body["channel"] = "hybridTimeline";
             break;
-        case MisskeyStreamSource::Channel::Main:
+        case MisskeyStreamSource::Source::Main:
             body["channel"] = "main";
             break;
         }

@@ -8,7 +8,7 @@ class MisskeyStreamSource : public QObject
 {
     Q_OBJECT
 public:
-    enum Channel: int {
+    enum Source: int {
         Home = 0,
         Global = 1,
         Hybrid = 2,
@@ -20,9 +20,9 @@ public:
     };
 
     MisskeyStreamSource(QSettings *settings, QObject *parent = nullptr);
-    MisskeyStreamSource(enum Channel channel, QObject *parent = nullptr);
+    MisskeyStreamSource(enum Source source, QObject *parent = nullptr);
 
-    enum Channel channel;
+    enum Source source;
 
     QString antennaId;
     QString antennaName;

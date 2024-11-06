@@ -20,7 +20,6 @@
 
 #include "settingwindow.h"
 #include "settingmanager.h"
-#include "mastodon/streamevent.h"
 #include "dummystatus.h"
 #include "statusimageloader.h"
 #include "aboutdialog.h"
