@@ -35,38 +35,38 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="src/mainwindow.cpp" line="34"/>
+        <location filename="src/mainwindow.cpp" line="33"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="35"/>
+        <location filename="src/mainwindow.cpp" line="34"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="64"/>
+        <location filename="src/mainwindow.cpp" line="63"/>
         <source>Preferences...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="39"/>
-        <location filename="src/mainwindow.cpp" line="68"/>
+        <location filename="src/mainwindow.cpp" line="38"/>
+        <location filename="src/mainwindow.cpp" line="67"/>
         <source>About...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="72"/>
+        <location filename="src/mainwindow.cpp" line="71"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="179"/>
+        <location filename="src/mainwindow.cpp" line="185"/>
         <source>Stream connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="186"/>
+        <location filename="src/mainwindow.cpp" line="197"/>
         <source>Stream disconnected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -202,94 +202,181 @@
     </message>
 </context>
 <context>
-    <name>MisskeyOAuthWindow</name>
+    <name>MisskeyAuthWindow</name>
     <message>
-        <location filename="src/misskey/misskeyoauthwindow.ui" line="14"/>
-        <source>Dialog</source>
+        <location filename="src/misskey/misskeyauthwindow.ui" line="14"/>
+        <source>Login to Misskey</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeyauthwindow.ui" line="26"/>
+        <location filename="src/misskey/misskeyauthwindow.ui" line="29"/>
+        <source>https://</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeyauthwindow.ui" line="58"/>
+        <source>Host:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeyauthwindow.cpp" line="22"/>
+        <source>&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;/head&gt;&lt;body&gt;Authorised, please go back to TootRain</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MisskeySettingWindow</name>
+    <message>
+        <location filename="src/misskey/misskeysettingwindow.ui" line="20"/>
+        <source>Misskey Settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeysettingwindow.ui" line="48"/>
+        <source>Please see &lt;a href=&quot;https://misskey-hub.net/ja/docs/for-developers/api/streaming/channel/&quot;&gt;here&lt;/a&gt; for more info.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MisskeyStreamSource</name>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="39"/>
+        <source>Home Timeine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="41"/>
+        <source>Global Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="43"/>
+        <source>Hybrid Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="45"/>
+        <source>Local Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="47"/>
+        <source>Main (Reply and Renote)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="49"/>
+        <source>Antenna - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="51"/>
+        <source>List - </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeystreamsource.cpp" line="53"/>
+        <source>Channel - </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>SettingWindow</name>
     <message>
-        <location filename="src/settingwindow.ui" line="32"/>
+        <location filename="src/settingwindow.ui" line="26"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="44"/>
-        <location filename="src/settingwindow.cpp" line="59"/>
+        <location filename="src/settingwindow.ui" line="38"/>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="50"/>
+        <location filename="src/settingwindow.cpp" line="57"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="57"/>
-        <location filename="src/settingwindow.ui" line="106"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.ui" line="70"/>
-        <source>Test get profile</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.ui" line="93"/>
+        <location filename="src/settingwindow.ui" line="138"/>
         <source>Check for Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="119"/>
+        <location filename="src/settingwindow.ui" line="76"/>
         <source>Configure...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="132"/>
+        <location filename="src/settingwindow.ui" line="63"/>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="90"/>
+        <source>Screen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="113"/>
+        <source>Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="152"/>
+        <source>Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="164"/>
         <source>Show avatar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="52"/>
+        <location filename="src/settingwindow.cpp" line="50"/>
         <source>Account: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="53"/>
+        <location filename="src/settingwindow.cpp" line="51"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="58"/>
+        <location filename="src/settingwindow.cpp" line="56"/>
         <source>Not logged in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="187"/>
+        <location filename="src/settingwindow.ui" line="125"/>
+        <location filename="src/settingwindow.cpp" line="243"/>
         <source>Checking for update...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="205"/>
+        <location filename="src/settingwindow.cpp" line="261"/>
         <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="206"/>
+        <location filename="src/settingwindow.cpp" line="262"/>
         <source>Click here to update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="208"/>
+        <location filename="src/settingwindow.cpp" line="264"/>
         <source>No update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="245"/>
+        <location filename="src/settingwindow.cpp" line="301"/>
         <source>Updating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="256"/>
+        <location filename="src/settingwindow.cpp" line="312"/>
         <source>Restarting...</source>
         <translation type="unfinished"></translation>
     </message>

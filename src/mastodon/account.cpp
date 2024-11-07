@@ -1,6 +1,8 @@
 #include "account.h"
 #include <QUuid>
 #include <QUrlQuery>
+#include <QJsonDocument>
+#include "./streamevent.h"
 
 MastodonAccount::MastodonAccount(QObject *parent)
     : Account{parent}
@@ -30,11 +32,11 @@ MastodonAccount::MastodonAccount(QSettings *settings, QObject *parent) : Account
 
     if (settings->contains("source")) {
         bool sourceOk = false;
-        int source_int = settings->value("source").toInt(&sourceOk);
+        int sourceInt = settings->value("source").toInt(&sourceOk);
         if (!sourceOk) {
             this->source = Source::User;
         } else {
-            this->source = static_cast<Source>(source_int);
+            this->source = static_cast<Source>(sourceInt);
         }
         hashtag = settings->value("hashtag").toString();
         listId = settings->value("listId").toString();
@@ -71,6 +73,10 @@ QUrl MastodonAccount::getWebSocketUrl() {
     url.setQuery(query);
     qDebug() << "stream url: " << url;
     return url;
+}
+
+void MastodonAccount::connectedToWebSocket(QWebSocket *websocket) {
+
 }
 
 QString MastodonAccount::fullUsername() {
@@ -116,4 +122,14 @@ QString MastodonAccount::queryParamForSource(Source source) {
     case Direct:
         return "direct";
     }
+}
+
+StreamEvent* MastodonAccount::getStreamEventFromWebSocketMessage(QString message) {
+    QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
+    QJsonObject jsonReply = jsonDoc.object();
+    if (MastodonStreamEvent::isValid(jsonReply)) {
+        MastodonStreamEvent *se = new MastodonStreamEvent(jsonReply, this);
+        return se;
+    }
+    return nullptr;
 }

@@ -15,6 +15,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Network)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS NetworkAuth)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS WebSockets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS HttpServer)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -29,7 +30,7 @@ set(PROJECT_SOURCES
         src/settingmanager.h src/settingmanager.cpp
         src/mastodon/status.h src/mastodon/status.cpp
         src/mastodon/streamevent.h src/mastodon/streamevent.cpp
-        src/status.h
+        src/status.h src/status.cpp
         src/dummystatus.h src/dummystatus.cpp
         src/animationstate.h src/animationstate.cpp
         images/icon.rc
@@ -42,6 +43,15 @@ set(PROJECT_SOURCES
         src/mastodon/mastodonlist.h src/mastodon/mastodonlist.cpp
         src/urlemoji.h src/urlemoji.cpp
         src/aboutdialog.h src/aboutdialog.cpp src/aboutdialog.ui
+        src/misskey/misskeyaccount.h src/misskey/misskeyaccount.cpp
+        src/misskey/misskeyauthwindow.h src/misskey/misskeyauthwindow.cpp src/misskey/misskeyauthwindow.ui
+        src/misskey/misskeyclient.h src/misskey/misskeyclient.cpp
+        src/streamevent.h src/streamevent.cpp
+        src/misskey/misskeystreamevent.h src/misskey/misskeystreamevent.cpp
+        src/misskey/misskeystatus.h src/misskey/misskeystatus.cpp
+        src/misskey/misskeyemoji.h src/misskey/misskeyemoji.cpp
+        src/misskey/misskeysettingwindow.h src/misskey/misskeysettingwindow.cpp src/misskey/misskeysettingwindow.ui
+        src/misskey/misskeystreamsource.h src/misskey/misskeystreamsource.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
@@ -96,6 +106,7 @@ target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Network)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::NetworkAuth)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::WebSockets)
+target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::HttpServer)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

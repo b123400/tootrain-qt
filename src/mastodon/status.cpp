@@ -4,10 +4,10 @@
 #include "../settingmanager.h"
 
 MastodonStatus::MastodonStatus( QObject *parent)
-    : QObject{parent}
+    : Status{parent}
 {
 }
-MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): QObject{parent}
+MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): Status{parent}
 {
     id = json["id"].toString();
     content = json["content"].toString();
@@ -59,7 +59,7 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
         // QString after = plainTextContent.sliced(end);
 
         auto textRtc = new RichTextComponent(this);
-        textRtc->text = before.remove(QChar('\n'));
+        textRtc->text = before;
         list.append(textRtc);
 
         for (auto emoji : emojis) {
@@ -74,7 +74,7 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
         lastStart = end;
     }
     auto textRtc = new RichTextComponent(this);
-    textRtc->text = plainTextContent.sliced(lastStart).remove(QChar('\n'));
+    textRtc->text = plainTextContent.sliced(lastStart);
     list.append(textRtc);
     return list;
 }

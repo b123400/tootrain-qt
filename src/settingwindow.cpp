@@ -3,6 +3,7 @@
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QDir>
+#include <QMenu>
 
 #include "settingwindow.h"
 #include "QtGui/qscreen.h"
@@ -15,10 +16,10 @@ SettingWindow::SettingWindow(QWidget *parent)
     , ui(new Ui::SettingWindow)
 {
     ui->setupUi(this);
+    this->setFixedSize(size());
 
     connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
     connect(ui->configButton, &QAbstractButton::clicked, this, &SettingWindow::configureButtonClicked);
-    connect(ui->testButton, &QAbstractButton::clicked, this, &SettingWindow::testProfile);
     connect(ui->checkOrUpdateButton, &QAbstractButton::clicked, this, &SettingWindow::checkOrUpdateClicked);
     connect(&checkProcess, &QProcess::finished, this, &SettingWindow::checkFinished);
     connect(&checkProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
@@ -35,9 +36,6 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
     checkForUpdate();
-
-    // Only for debug
-    ui->testButton->hide();
 }
 
 SettingWindow::~SettingWindow()
@@ -92,12 +90,31 @@ void SettingWindow::loginButtonClicked() {
         SettingManager::shared().clearAccounts();
         loadAccount();
     } else {
-        this->mastodonOAuthWindow = new MastodonOauthWindow(this);
-        connect(this->mastodonOAuthWindow, &QDialog::finished, this, &SettingWindow::mastodonAccountFinished);
-        connect(this->mastodonOAuthWindow, &MastodonOauthWindow::authenticated, this, &SettingWindow::mastodonAccountAuthenticated);
-        this->mastodonOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
-        this->mastodonOAuthWindow->show();
+        QMenu menu = QMenu(this);
+        QAction mastodonAction = QAction("Mastodon", this);
+        connect(&mastodonAction, &QAction::triggered, this, &SettingWindow::loginToMastodon);
+        menu.addAction(&mastodonAction);
+        QAction misskeyAction = QAction("Misskey", this);
+        connect(&misskeyAction, &QAction::triggered, this, &SettingWindow::loginToMisskey);
+        menu.addAction(&misskeyAction);
+        menu.exec(ui->loginButton->cursor().pos());
     }
+}
+
+void SettingWindow::loginToMastodon(bool _checked) {
+    this->mastodonOAuthWindow = new MastodonOauthWindow(this);
+    connect(this->mastodonOAuthWindow, &QDialog::finished, this, &SettingWindow::mastodonAccountFinished);
+    connect(this->mastodonOAuthWindow, &MastodonOauthWindow::authenticated, this, &SettingWindow::mastodonAccountAuthenticated);
+    this->mastodonOAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
+    this->mastodonOAuthWindow->show();
+}
+
+void SettingWindow::loginToMisskey(bool _checked) {
+    this->misskeyAuthWindow = new MisskeyAuthWindow(this);
+    connect(this->misskeyAuthWindow, &QDialog::finished, this, &SettingWindow::misskeyAccountFinished);
+    connect(this->misskeyAuthWindow, &MisskeyAuthWindow::authenticated, this, &SettingWindow::misskeyAccountAuthenticated);
+    this->misskeyAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
+    this->misskeyAuthWindow->show();
 }
 
 void SettingWindow::mastodonAccountFinished() {
@@ -115,6 +132,15 @@ void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *account) {
 }
 
 void SettingWindow::configureButtonClicked() {
+    if (this->currentAccount == nullptr) return;
+    if (dynamic_cast<MastodonAccount*>(this->currentAccount) != nullptr) {
+        openMastodonSettings();
+    } else if (dynamic_cast<MisskeyAccount*>(this->currentAccount) != nullptr) {
+        openMisskeySettings();
+    }
+}
+
+void SettingWindow::openMastodonSettings() {
     if (this->mastodonSettingWindow != nullptr) {
         this->mastodonSettingWindow->show();
     } else {
@@ -126,10 +152,27 @@ void SettingWindow::configureButtonClicked() {
         this->mastodonSettingWindow->show();
     }
 }
+void SettingWindow::openMisskeySettings() {
+    if (this->misskeySettingWindow != nullptr) {
+        this->misskeySettingWindow->show();
+    } else {
+        MisskeySettingWindow *settingWindow = new MisskeySettingWindow((MisskeyAccount*)currentAccount, this);
+        this->misskeySettingWindow = settingWindow;
+        connect(this->misskeySettingWindow, &QDialog::finished, this, &SettingWindow::misskeySettingFinished);
+        connect(this->misskeySettingWindow, &MisskeySettingWindow::accountUpdated, this, &SettingWindow::misskeySettingUpdated);
+        this->misskeySettingWindow->setWindowModality(Qt::WindowModality::WindowModal);
+        this->misskeySettingWindow->show();
+    }
+}
 
 void SettingWindow::mastodonSettingFinished() {
     delete mastodonSettingWindow;
     mastodonSettingWindow = nullptr;
+}
+
+void SettingWindow::misskeySettingFinished() {
+    delete misskeySettingWindow;
+    misskeySettingWindow = nullptr;
 }
 
 void SettingWindow::mastodonSettingUpdated(MastodonAccount *account) {
@@ -140,13 +183,26 @@ void SettingWindow::mastodonSettingUpdated(MastodonAccount *account) {
     loadAccount();
 }
 
-void SettingWindow::testProfile() {
-    if (!currentAccount) return;
-    MastodonAccount *ma = (MastodonAccount*)currentAccount;
-    MastodonClient::shared().verifyCredentials(ma->app, [=](MastodonAccount* account){
-        qDebug() << "OK:" << account->username;
-        delete account;
-    });
+void SettingWindow::misskeySettingUpdated(MisskeyAccount *account) {
+    // TODO: Support multiple accounts
+    QList<Account*> list;
+    list.append(account);
+    SettingManager::shared().saveAccounts(list);
+    loadAccount();
+}
+
+void SettingWindow::misskeyAccountFinished() {
+    delete misskeyAuthWindow;
+    misskeyAuthWindow = nullptr;
+}
+
+void SettingWindow::misskeyAccountAuthenticated(MisskeyAccount *account) {
+    qDebug() << account->username;
+    // TODO: Support multiple accounts
+    QList<Account*> list;
+    list.append(account);
+    SettingManager::shared().saveAccounts(list);
+    loadAccount();
 }
 
 void SettingWindow::screenIndexChanged(int index) {

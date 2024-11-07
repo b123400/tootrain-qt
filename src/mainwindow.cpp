@@ -20,7 +20,6 @@
 
 #include "settingwindow.h"
 #include "settingmanager.h"
-#include "mastodon/streamevent.h"
 #include "dummystatus.h"
 #include "statusimageloader.h"
 #include "aboutdialog.h"
@@ -139,21 +138,31 @@ void MainWindow::moveToScreen() {
 }
 
 void MainWindow::startStreaming() {
+    if (this->currentAccount != nullptr) {
+        delete this->currentAccount;
+        this->currentAccount = nullptr;
+    }
     auto accounts = SettingManager::shared().getAccounts();
     if (accounts.size()) {
         // Only take the first one
         auto account = accounts.at(0);
+        this->currentAccount = account;
 
         QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
         webSocket.open(request);
-        for (auto a : accounts) {
-            delete a;
-        }
+        // TODO: support multiple account, delete other unused accounts
+        // for (auto a : accounts) {
+        //     delete a;
+        // }
     }
 }
 
 void MainWindow::stopStreaming() {
     webSocket.close();
+    if (this->currentAccount != nullptr) {
+        delete currentAccount;
+        this->currentAccount = nullptr;
+    }
 }
 
 void MainWindow::onStatusEmojisLoaded(Status *status) {
@@ -162,16 +171,13 @@ void MainWindow::onStatusEmojisLoaded(Status *status) {
 }
 
 void MainWindow::onWebSocketTextMessageReceived(QString message) {
-    // qDebug() << "message: " << message;
-    QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
-    QJsonObject jsonReply = jsonDoc.object();
-    if (MastodonStreamEvent::isValid(jsonReply)) {
-        MastodonStreamEvent *se = new MastodonStreamEvent(jsonReply, this);
-        qDebug() << "status: " << se;
-        StatusImageLoader::shared().loadEmojisForStatus(se->status);
-        se->status->setParent(this);
-        delete se;
-    }
+    StreamEvent *se = this->currentAccount->getStreamEventFromWebSocketMessage(message);
+    if (se == nullptr) return;
+    Status *status = se->getStatus();
+    if (status == nullptr) return;
+    status->setParent(this);
+    StatusImageLoader::shared().loadEmojisForStatus(status);
+    delete se;
 }
 
 void MainWindow::onWebSocketConnected() {
@@ -179,6 +185,11 @@ void MainWindow::onWebSocketConnected() {
     auto s = new DummyStatus(tr("Stream connected"), this);
     showStatus(s);
     delete s;
+
+    // Should always be true
+    if (this->currentAccount != nullptr) {
+        this->currentAccount->connectedToWebSocket(&webSocket);
+    }
 }
 
 void MainWindow::onWebSocketDisconnected() {
@@ -335,6 +346,7 @@ void MainWindow::showStatus(Status *status) {
                 text = component->text.sliced(0, charLeft);
                 characterCount = characterCountLimit;
             }
+            text = text.remove(QChar('\n'));
 
             QLabel *label = new QLabel(this);
             label->setPalette(palette);

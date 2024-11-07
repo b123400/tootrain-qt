@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QUrl>
 #include <QSettings>
+#include <QWebSocket>
+#include "streamevent.h"
 
 class Account : public QObject
 {
@@ -20,9 +22,12 @@ public:
     QString id;
     QString avatarUrl;
 
-    virtual QUrl getWebSocketUrl() = 0;
     virtual QString fullUsername() = 0;
     virtual void saveToSettings(QSettings *settings);
+
+    virtual QUrl getWebSocketUrl() = 0;
+    virtual void connectedToWebSocket(QWebSocket *websocket) = 0;
+    virtual StreamEvent* getStreamEventFromWebSocketMessage(QString message) = 0;
 signals:
 };
 

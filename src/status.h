@@ -4,9 +4,11 @@
 #include <QObject>
 #include "richtextcomponent.h"
 
-class Status
+class Status: public QObject
 {
+    Q_OBJECT
 public:
+    Status(QObject *parent = nullptr);
     virtual QString getText() = 0;
 
     virtual bool isEmojisReady() = 0;

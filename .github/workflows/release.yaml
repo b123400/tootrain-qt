@@ -53,7 +53,7 @@ jobs:
         host: 'windows'
         target: 'desktop'
         arch: 'win64_msvc2022_64'
-        modules: 'qtnetworkauth qtwebsockets qtimageformats'
+        modules: 'qtnetworkauth qtwebsockets qthttpserver qtimageformats'
         tools: 'tools_ifw tools_opensslv3_x64'
         add-tools-to-path: true
     - name: Build

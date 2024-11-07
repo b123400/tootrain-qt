@@ -4,9 +4,8 @@
 #include <QObject>
 #include "status.h"
 
-class DummyStatus : public QObject, public Status
+class DummyStatus : public Status
 {
-    Q_OBJECT
 public:
     explicit DummyStatus(QString message, QObject *parent = nullptr);
 

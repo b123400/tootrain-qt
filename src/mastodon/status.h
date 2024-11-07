@@ -7,9 +7,8 @@
 #include "emoji.h"
 #include "../richtextcomponent.h"
 
-class MastodonStatus : public QObject, public Status
+class MastodonStatus : public Status
 {
-    Q_OBJECT
 public:
     explicit MastodonStatus(QObject *parent = nullptr);
     MastodonStatus(QJsonObject json, QObject *parent = nullptr);

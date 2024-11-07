@@ -1,5 +1,5 @@
-#ifndef EMOJI_H
-#define EMOJI_H
+#ifndef MASTODONEMOJI_H
+#define MASTODONEMOJI_H
 
 #include <QObject>
 #include <QUrl>
@@ -18,4 +18,4 @@ public:
 signals:
 };
 
-#endif // EMOJI_H
+#endif // MASTODONEMOJI_H
