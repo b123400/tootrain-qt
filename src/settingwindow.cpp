@@ -16,10 +16,10 @@ SettingWindow::SettingWindow(QWidget *parent)
     , ui(new Ui::SettingWindow)
 {
     ui->setupUi(this);
+    this->setFixedSize(size());
 
     connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
     connect(ui->configButton, &QAbstractButton::clicked, this, &SettingWindow::configureButtonClicked);
-    connect(ui->testButton, &QAbstractButton::clicked, this, &SettingWindow::testProfile);
     connect(ui->checkOrUpdateButton, &QAbstractButton::clicked, this, &SettingWindow::checkOrUpdateClicked);
     connect(&checkProcess, &QProcess::finished, this, &SettingWindow::checkFinished);
     connect(&checkProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
@@ -36,9 +36,6 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
     checkForUpdate();
-
-    // Only for debug
-    ui->testButton->hide();
 }
 
 SettingWindow::~SettingWindow()
@@ -206,15 +203,6 @@ void SettingWindow::misskeyAccountAuthenticated(MisskeyAccount *account) {
     list.append(account);
     SettingManager::shared().saveAccounts(list);
     loadAccount();
-}
-
-void SettingWindow::testProfile() {
-    if (!currentAccount) return;
-    MastodonAccount *ma = (MastodonAccount*)currentAccount;
-    MastodonClient::shared().verifyCredentials(ma->app, [=](MastodonAccount* account){
-        qDebug() << "OK:" << account->username;
-        delete account;
-    });
 }
 
 void SettingWindow::screenIndexChanged(int index) {

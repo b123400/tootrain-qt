@@ -40,7 +40,6 @@ public slots:
     void misskeySettingFinished();
     void misskeySettingUpdated(MisskeyAccount *account);
 
-    void testProfile();
     void screenIndexChanged(int index);
     void showAvatarCheckBoxChanged(Qt::CheckState checkState);
 
