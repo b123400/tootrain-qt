@@ -19,7 +19,7 @@ MisskeyAuthWindow::MisskeyAuthWindow(QWidget *parent)
         auto query = request.query();
         auto code = query.queryItemValue("code");
         this->checkForSession();
-        return tr("Authorised, please go back to TootRain");
+        return tr("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"></head><body>Authorised, please go back to TootRain");
     });
 
     tcpServer = new QTcpServer();
