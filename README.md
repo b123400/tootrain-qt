@@ -6,14 +6,14 @@ For OSX, please use [TootRain].
 
 <video src="https://github.com/user-attachments/assets/bd7ccdc2-3dc3-4d13-a8dd-b0ea15baa144" controls></video>
 
-This app displays posts from your Mastodon timeline in niconico style.
+This app displays posts from your Mastodon & Misskey timeline in niconico style.
 
 It's still in beta, features are missing and there are a few bugs.
 
 ## Features
 
 - [x] Connect to Mastodon
-- [ ] Connect to Misskey
+- [x] Connect to Misskey
 - [x] Choose Channel
 - [x] GIF, WebP support
 - [x] Japanese Localisation
