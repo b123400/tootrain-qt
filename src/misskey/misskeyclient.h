@@ -12,6 +12,9 @@ public:
     static MisskeyClient &shared() {static MisskeyClient client; return client;}
 
     void fetchAuthSession(QUrl host, QString sessionId, std::function<void (MisskeyAccount *)> callback);
+    void fetchAntennas(MisskeyAccount *account, std::function<void (QList<MisskeyStreamSource *>)> callback);
+    void fetchUserList(MisskeyAccount *account, std::function<void (QList<MisskeyStreamSource *>)> callback);
+    void fetchChannels(MisskeyAccount *account, std::function<void (QList<MisskeyStreamSource *>)> callback);
 
 private:
     explicit MisskeyClient(QObject *parent = nullptr);

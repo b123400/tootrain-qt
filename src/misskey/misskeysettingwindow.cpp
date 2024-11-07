@@ -1,6 +1,7 @@
 #include "misskeysettingwindow.h"
 #include "ui_misskeysettingwindow.h"
 #include <QListWidgetItem>
+#include "./misskeyclient.h"
 
 MisskeySettingWindow::MisskeySettingWindow(MisskeyAccount *account, QWidget *parent)
     : QDialog(parent)
@@ -12,7 +13,27 @@ MisskeySettingWindow::MisskeySettingWindow(MisskeyAccount *account, QWidget *par
     this->allSources = MisskeyStreamSource::defaultSources(this);
 
     reloadListItems();
-    // TODO: Load Antenna, Channel and Lists
+    MisskeyClient::shared().fetchAntennas(this->account, [=](QList<MisskeyStreamSource*> sources) {
+        for (auto s : sources) {
+            s->setParent(this);
+        }
+        this->allSources += sources;
+        this->reloadListItems();
+    });
+    MisskeyClient::shared().fetchUserList(this->account, [=](QList<MisskeyStreamSource*> sources) {
+        for (auto s : sources) {
+            s->setParent(this);
+        }
+        this->allSources += sources;
+        this->reloadListItems();
+    });
+    MisskeyClient::shared().fetchChannels(this->account, [=](QList<MisskeyStreamSource*> sources) {
+        for (auto s : sources) {
+            s->setParent(this);
+        }
+        this->allSources += sources;
+        this->reloadListItems();
+    });
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &MisskeySettingWindow::acceptClicked);
     connect(ui->listWidget, &QListWidget::itemChanged, this, &MisskeySettingWindow::listItemChanged);
@@ -24,6 +45,7 @@ MisskeySettingWindow::~MisskeySettingWindow()
 }
 
 void MisskeySettingWindow::reloadListItems() {
+    disconnect(ui->listWidget, &QListWidget::itemChanged, this, &MisskeySettingWindow::listItemChanged);
     ui->listWidget->clear();
     for (auto source : this->allSources) {
         auto item = new QListWidgetItem(source->displayName(), ui->listWidget);
@@ -42,6 +64,7 @@ void MisskeySettingWindow::reloadListItems() {
             item->setCheckState(Qt::Unchecked);
         }
     }
+    connect(ui->listWidget, &QListWidget::itemChanged, this, &MisskeySettingWindow::listItemChanged);
 }
 
 void MisskeySettingWindow::listItemChanged(QListWidgetItem *item) {
