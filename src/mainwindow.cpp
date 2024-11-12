@@ -300,18 +300,16 @@ void MainWindow::showStatus(Status *status) {
     baseWidget->setLayout(box);
 
     QPalette palette;
-    palette.setColor(QPalette::WindowText, Qt::white);
+    palette.setColor(QPalette::WindowText, SettingManager::shared().textColor());
     // To debug with background colour:
     // palette.setColor(QPalette::Window, Qt::red);
     // label->setAutoFillBackground(true);
 
-    int fontSize = 40;
-    QFont font = QApplication::font();
-    font.setPixelSize(fontSize);
-    font.setWeight(QFont::Weight::Bold);
+    QFont font = SettingManager::shared().font();
+    int fontSize = font.pixelSize();
 
     qsizetype characterCount = 0;
-    qsizetype characterCountLimit = 50;
+    qsizetype characterCountLimit = SettingManager::shared().textLengthLimit();
     AnimationState *as = new AnimationState(this);
 
     auto components = status->richTextcomponents();
@@ -334,11 +332,11 @@ void MainWindow::showStatus(Status *status) {
             effect->setBlurRadius(20);
             effect->setXOffset(0);
             effect->setYOffset(1);
-            effect->setColor(QColor(0, 0, 0, 255));
+            effect->setColor(SettingManager::shared().shadowColor());
 
             qsizetype thisLength = component->text.length();
             QString text;
-            if (characterCount + thisLength <= characterCountLimit) {
+            if (characterCountLimit == -1 || characterCount + thisLength <= characterCountLimit) {
                 text = component->text;
                 characterCount += thisLength;
             } else {
@@ -378,7 +376,7 @@ void MainWindow::showStatus(Status *status) {
     this->show();
 
     QPropertyAnimation *anim = new QPropertyAnimation(baseWidget, "pos", this);
-    anim->setDuration(10000);
+    anim->setDuration(SettingManager::shared().duration() * 1000);
     anim->setStartValue(QPoint(this->geometry().width(), y));
     anim->setEndValue(QPoint(-baseWidget->width(), y));
     anim->start();
@@ -413,7 +411,7 @@ int MainWindow::yForNewStatus(QSize statusSize) {
     qDebug() << "New status size: " << statusSize;
     auto winWidth = this->geometry().width();
     auto winHeight = this->geometry().height();
-    int durationForThisStatus = 10000 * winWidth / (winWidth + statusSize.width());
+    int durationForThisStatus = (SettingManager::shared().duration() * 1000) * winWidth / (winWidth + statusSize.width());
     int currentY = 0;
 
     int counter = 0; // Just in case

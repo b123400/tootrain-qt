@@ -1,6 +1,7 @@
 #include "settingmanager.h"
 #include <QCoreApplication>
 #include <QUrl>
+#include <QApplication>
 #include "mastodon/account.h"
 #include "misskey/misskeyaccount.h"
 
@@ -89,4 +90,48 @@ void SettingManager::setShowUserAvatar(bool showUserAvatar) {
 bool SettingManager::showUserAvatar() {
     bool showUserAvatar = settings.value("showUserAvatar", true).toBool();
     return showUserAvatar;
+}
+
+void SettingManager::setTextColor(QColor color) {
+    settings.setValue("textColor", color);
+}
+
+QColor SettingManager::textColor() {
+    QVariant variant = QColor(Qt::white);
+    QColor color = settings.value("textColor", variant).value<QColor>();
+    return color;
+}
+
+void SettingManager::setShadowColor(QColor color) {
+    settings.setValue("shadowColor", color);
+}
+QColor SettingManager::shadowColor() {
+    QVariant variant = QColor(Qt::black);
+    QColor color = settings.value("shadowColor", variant).value<QColor>();
+    return color;
+}
+
+void SettingManager::setFont(QFont font) {
+    settings.setValue("font", font);
+}
+QFont SettingManager::font() {
+    QFont defaultFont = QApplication::font();
+    defaultFont.setWeight(QFont::Weight::Bold);
+    defaultFont.setPixelSize(40);
+    return settings.value("font", defaultFont).value<QFont>();
+}
+
+void SettingManager::setDuration(int duration) {
+    settings.setValue("duration", duration);
+}
+int SettingManager::duration() {
+    return settings.value("duration", 10).toInt();
+}
+
+void SettingManager::setTextLengthLimit(int limit) {
+    settings.setValue("textLengthLimit", limit);
+}
+
+int SettingManager::textLengthLimit() {
+    return settings.value("textLengthLimit", 50).toInt();
 }

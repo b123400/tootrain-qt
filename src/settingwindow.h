@@ -42,6 +42,12 @@ public slots:
 
     void screenIndexChanged(int index);
     void showAvatarCheckBoxChanged(Qt::CheckState checkState);
+    void textColorButtonClicked();
+    void shadowColorButtonClicked();
+    void fontButtonClicked();
+    void textLengthLimitSpinnerChanged(int value);
+    void textLengthLimitCheckBoxChanged(Qt::CheckState checked);
+    void speedSliderChanged(int value);
 
     void checkOrUpdateClicked();
     void checkFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -61,6 +67,7 @@ private:
 
     void loadAccount();
     void loadScreens();
+    void reloadUIFromSettings();
 
     QString maintenanceToolPath();
     void checkForUpdate();
