@@ -299,7 +299,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="50"/>
-        <location filename="src/settingwindow.cpp" line="57"/>
+        <location filename="src/settingwindow.cpp" line="63"/>
         <source>Login</source>
         <translation>ログイン</translation>
     </message>
@@ -339,48 +339,86 @@
         <translation>ユーザーアイコンを表示</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="50"/>
+        <location filename="src/settingwindow.ui" line="177"/>
+        <location filename="src/settingwindow.ui" line="267"/>
+        <location filename="src/settingwindow.ui" line="280"/>
+        <source>Select...</source>
+        <translation>選択...</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="209"/>
+        <source>Text Color:</source>
+        <translation>テキストの色</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="222"/>
+        <source>Shadow Color:</source>
+        <translation>影の色</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="235"/>
+        <location filename="src/settingwindow.cpp" line="112"/>
+        <source>Font:</source>
+        <translation>フォント</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="293"/>
+        <source>Length Limit</source>
+        <translation>長さ制限</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="322"/>
+        <source>Speed:</source>
+        <translation>スピード</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="354"/>
+        <source>Hide URL</source>
+        <translation>URLを隠す</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="56"/>
         <source>Account: </source>
         <translation>アカウント：</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="51"/>
+        <location filename="src/settingwindow.cpp" line="57"/>
         <source>Logout</source>
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="56"/>
+        <location filename="src/settingwindow.cpp" line="62"/>
         <source>Not logged in</source>
         <translation>ログインしてない</translation>
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="125"/>
-        <location filename="src/settingwindow.cpp" line="243"/>
+        <location filename="src/settingwindow.cpp" line="333"/>
         <source>Checking for update...</source>
         <translation>更新を確認中</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="261"/>
+        <location filename="src/settingwindow.cpp" line="351"/>
         <source>New version available</source>
         <translation>新しいバージョンに更新できます</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="262"/>
+        <location filename="src/settingwindow.cpp" line="352"/>
         <source>Click here to update</source>
         <translation>新しいバージョンに更新する</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="264"/>
+        <location filename="src/settingwindow.cpp" line="354"/>
         <source>No update available</source>
         <translation>すでに最新のバージョンです</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="301"/>
+        <location filename="src/settingwindow.cpp" line="391"/>
         <source>Updating...</source>
         <translation>更新中...</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="312"/>
+        <location filename="src/settingwindow.cpp" line="402"/>
         <source>Restarting...</source>
         <translation>再起動中</translation>
     </message>
