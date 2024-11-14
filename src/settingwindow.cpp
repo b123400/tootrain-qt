@@ -28,6 +28,8 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
     connect(&updateProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
 
+    reloadUIFromSettings();
+
     connect(ui->showAvatarCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::showAvatarCheckBoxChanged);
     connect(ui->textColorButton, &QAbstractButton::clicked, this, &SettingWindow::textColorButtonClicked);
     connect(ui->shadowColorButton, &QAbstractButton::clicked, this, &SettingWindow::shadowColorButtonClicked);
@@ -35,8 +37,7 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->lengthLimitCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::textLengthLimitCheckBoxChanged);
     connect(ui->lengthLimitSpinBox, &QSpinBox::valueChanged, this, &SettingWindow::textLengthLimitSpinnerChanged);
     connect(ui->speedSlider, &QSlider::valueChanged, this, &SettingWindow::speedSliderChanged);
-
-    reloadUIFromSettings();
+    connect(ui->hideUrlCheckbox, &QCheckBox::checkStateChanged, this, &SettingWindow::hideUrlCheckboxChanged);
 
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
@@ -121,6 +122,7 @@ void SettingWindow::reloadUIFromSettings() {
     }
 
     ui->speedSlider->setValue(20-SettingManager::shared().duration());
+    ui->hideUrlCheckbox->setCheckState(SettingManager::shared().hideUrl() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 }
@@ -300,6 +302,10 @@ void SettingWindow::textLengthLimitCheckBoxChanged(Qt::CheckState checked) {
 
 void SettingWindow::speedSliderChanged(int value) {
     SettingManager::shared().setDuration(20 - value);
+}
+
+void SettingWindow::hideUrlCheckboxChanged(Qt::CheckState checkState) {
+    SettingManager::shared().setHideUrl(checkState == Qt::CheckState::Checked);
 }
 
 QString SettingWindow::maintenanceToolPath() {

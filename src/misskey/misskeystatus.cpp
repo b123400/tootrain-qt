@@ -64,9 +64,13 @@ void MisskeyStatus::prepareEmojis() {
 }
 
 QList<RichTextComponent*> MisskeyStatus::richTextcomponents() {
+    static QRegularExpression urlRegex = QRegularExpression("https?://\\S+");
+    static QRegularExpression emojiRegex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
     this->prepareEmojis();
-    static QRegularExpression regex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
     QString plainTextContent = this->body;
+    if (SettingManager::shared().hideUrl()) {
+        plainTextContent = plainTextContent.replace(urlRegex, "");
+    }
     QList<RichTextComponent*> list;
 
     if (this->avatarEmoji != nullptr) {
@@ -75,7 +79,7 @@ QList<RichTextComponent*> MisskeyStatus::richTextcomponents() {
         list.append(rtc);
     }
 
-    auto globalMatch = regex.globalMatch(plainTextContent);
+    auto globalMatch = emojiRegex.globalMatch(plainTextContent);
     int lastStart = 0;
     while (globalMatch.hasNext()) {
         QRegularExpressionMatch match = globalMatch.next();

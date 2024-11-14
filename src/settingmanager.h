@@ -40,6 +40,9 @@ public:
     void setTextLengthLimit(int limit);
     int textLengthLimit();
 
+    void setHideUrl(bool value);
+    bool hideUrl();
+
 private:
     QSettings settings = QSettings("b123400", "TootRain-qt");
 

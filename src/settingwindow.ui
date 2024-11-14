@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>401</width>
-    <height>511</height>
+    <height>531</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -104,7 +104,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>410</y>
+     <y>430</y>
      <width>381</width>
      <height>91</height>
     </rect>
@@ -145,7 +145,7 @@
      <x>10</x>
      <y>190</y>
      <width>381</width>
-     <height>211</height>
+     <height>231</height>
     </rect>
    </property>
    <property name="title">
@@ -313,7 +313,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>174</y>
+      <y>175</y>
       <width>58</width>
       <height>16</height>
      </rect>
@@ -326,7 +326,7 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>174</y>
+      <y>175</y>
       <width>161</width>
       <height>25</height>
      </rect>
@@ -339,6 +339,19 @@
     </property>
     <property name="orientation">
      <enum>Qt::Orientation::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="hideUrlCheckbox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>251</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Hide URL</string>
     </property>
    </widget>
   </widget>

@@ -135,3 +135,10 @@ void SettingManager::setTextLengthLimit(int limit) {
 int SettingManager::textLengthLimit() {
     return settings.value("textLengthLimit", 50).toInt();
 }
+
+void SettingManager::setHideUrl(bool value) {
+    settings.setValue("hideUrl", value);
+}
+bool SettingManager::hideUrl() {
+    return settings.value("hideUrl", false).toBool();
+}
