@@ -265,6 +265,7 @@ void SettingWindow::showAvatarCheckBoxChanged(Qt::CheckState checkState) {
 void SettingWindow::textColorButtonClicked() {
     QColor currentColor = SettingManager::shared().textColor();
     QColor color = QColorDialog::getColor(currentColor, this);
+    if (!color.isValid()) return;
     SettingManager::shared().setTextColor(color);
     reloadUIFromSettings();
 }
@@ -272,6 +273,7 @@ void SettingWindow::textColorButtonClicked() {
 void SettingWindow::shadowColorButtonClicked() {
     QColor currentColor = SettingManager::shared().shadowColor();
     QColor color = QColorDialog::getColor(currentColor, this);
+    if (!color.isValid()) return;
     SettingManager::shared().setShadowColor(color);
     reloadUIFromSettings();
 }
