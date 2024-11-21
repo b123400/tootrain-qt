@@ -2,6 +2,8 @@
 #include <QCoreApplication>
 #include <QUrl>
 #include <QApplication>
+#include <QDir>
+#include <QTimer>
 #include "mastodon/account.h"
 #include "misskey/misskeyaccount.h"
 
@@ -141,4 +143,43 @@ void SettingManager::setHideUrl(bool value) {
 }
 bool SettingManager::hideUrl() {
     return settings.value("hideUrl", false).toBool();
+}
+
+QString SettingManager::maintenanceToolPath() {
+    QString maintenanceToolPath =
+#if defined(Q_OS_WIN)
+        "../maintenancetool.exe";
+#elif defined(Q_OS_MAC)
+        "../../../maintenancetool.app/Contents/MacOS/maintenancetool";
+#else
+        "../maintenancetool";
+#endif
+    return maintenanceToolPath;
+}
+
+void SettingManager::checkForUpdate(std::function<void (bool)> callback) {
+    QString maintenanceToolPath = this->maintenanceToolPath();
+    QString myPath = QCoreApplication::applicationDirPath();
+    QDir myDir = QDir(myPath);
+    QString absPath = QDir::cleanPath(myDir.absoluteFilePath(maintenanceToolPath));
+    qDebug() << "Update binary path: " << absPath;
+    QProcess *checkProcess = new QProcess(this);
+
+    connect(checkProcess, &QProcess::finished, this, [=](int exitCode, QProcess::ExitStatus exitStatus) {
+        qDebug() << "checkfinished exitCode=" << exitCode << ", exitStatus=" << exitStatus;
+        QByteArray stdOut = checkProcess->readAllStandardOutput();
+        qDebug() << "checkfinished>" << stdOut;
+        // delete checkProcess;
+        bool hasNewVersion = stdOut.contains("<updates>");
+        callback(hasNewVersion);
+    });
+
+    connect(checkProcess, &QProcess::errorOccurred, this, [=](QProcess::ProcessError error) {
+        callback(false);
+        // delete checkProcess;
+    });
+
+    QTimer::singleShot(0, this, [=]{
+        checkProcess->start(absPath, {"check-updates"});
+    });
 }

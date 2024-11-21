@@ -51,9 +51,8 @@ public slots:
     void hideUrlCheckboxChanged(Qt::CheckState checkState);
 
     void checkOrUpdateClicked();
-    void checkFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void updateFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void updateCheckErrored(QProcess::ProcessError error);
+    void updateErrored(QProcess::ProcessError error);
 
 private:
     Ui::SettingWindow *ui;
@@ -63,14 +62,12 @@ private:
     MisskeyAuthWindow *misskeyAuthWindow = nullptr;
     MisskeySettingWindow *misskeySettingWindow = nullptr;
     Account *currentAccount = nullptr;
-    QProcess checkProcess;
     QProcess updateProcess;
 
     void loadAccount();
     void loadScreens();
     void reloadUIFromSettings();
 
-    QString maintenanceToolPath();
     void checkForUpdate();
     void runUpdate();
     bool hasNewVersion;

@@ -99,6 +99,16 @@ MainWindow::MainWindow(QWidget *parent)
         delete a;
     }
 
+    SettingManager::shared().checkForUpdate([=](bool hasUpdate) {
+        QTimer::singleShot(0, this, [=]{
+            if (hasUpdate) {
+                auto s = new DummyStatus(tr("New version available"), this);
+                showStatus(s);
+                delete s;
+            }
+        });
+    });
+
 #ifdef Q_OS_WIN
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::onRepaintTimer);

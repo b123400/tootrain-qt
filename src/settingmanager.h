@@ -7,6 +7,7 @@
 #include "account.h"
 #include <QColor>
 #include <QFont>
+#include <QProcess>
 
 class SettingManager : public QObject
 {
@@ -42,6 +43,9 @@ public:
 
     void setHideUrl(bool value);
     bool hideUrl();
+
+    QString maintenanceToolPath();
+    void checkForUpdate(std::function<void (bool)> callback);
 
 private:
     QSettings settings = QSettings("b123400", "TootRain-qt");
