@@ -145,6 +145,13 @@ bool SettingManager::hideUrl() {
     return settings.value("hideUrl", false).toBool();
 }
 
+void SettingManager::setIgnoreContentWarning(bool value) {
+    settings.setValue("ignoreContentWarning", value);
+}
+bool SettingManager::ignoreContentWarning() {
+    return settings.value("ignoreContentWarning", false).toBool();
+}
+
 QString SettingManager::maintenanceToolPath() {
     QString maintenanceToolPath =
 #if defined(Q_OS_WIN)

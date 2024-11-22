@@ -36,6 +36,7 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->lengthLimitSpinBox, &QSpinBox::valueChanged, this, &SettingWindow::textLengthLimitSpinnerChanged);
     connect(ui->speedSlider, &QSlider::valueChanged, this, &SettingWindow::speedSliderChanged);
     connect(ui->hideUrlCheckbox, &QCheckBox::checkStateChanged, this, &SettingWindow::hideUrlCheckboxChanged);
+    connect(ui->ignoreContentWarningCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::ignoreContentWarningCheckboxChanged);
 
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
@@ -121,6 +122,7 @@ void SettingWindow::reloadUIFromSettings() {
 
     ui->speedSlider->setValue(20-SettingManager::shared().duration());
     ui->hideUrlCheckbox->setCheckState(SettingManager::shared().hideUrl() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+    ui->ignoreContentWarningCheckBox->setCheckState(SettingManager::shared().ignoreContentWarning() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 }
@@ -306,6 +308,10 @@ void SettingWindow::speedSliderChanged(int value) {
 
 void SettingWindow::hideUrlCheckboxChanged(Qt::CheckState checkState) {
     SettingManager::shared().setHideUrl(checkState == Qt::CheckState::Checked);
+}
+
+void SettingWindow::ignoreContentWarningCheckboxChanged(Qt::CheckState checkState) {
+    SettingManager::shared().setIgnoreContentWarning(checkState == Qt::CheckState::Checked);
 }
 
 void SettingWindow::checkOrUpdateClicked() {

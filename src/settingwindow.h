@@ -49,6 +49,7 @@ public slots:
     void textLengthLimitCheckBoxChanged(Qt::CheckState checked);
     void speedSliderChanged(int value);
     void hideUrlCheckboxChanged(Qt::CheckState checkState);
+    void ignoreContentWarningCheckboxChanged(Qt::CheckState checkState);
 
     void checkOrUpdateClicked();
     void updateFinished(int exitCode, QProcess::ExitStatus exitStatus);

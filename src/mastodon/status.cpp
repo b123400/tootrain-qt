@@ -11,6 +11,7 @@ MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): Status{parent
 {
     id = json["id"].toString();
     content = json["content"].toString();
+    spoilerText = json["spoiler_text"].toString();
     account = new MastodonAccount(json["account"].toObject(), this);
 
     if (json.contains("emojis")) {
@@ -31,6 +32,9 @@ QString MastodonStatus::getText() {
 }
 
 QString MastodonStatus::getPlainText() {
+    if (!SettingManager::shared().ignoreContentWarning() && !spoilerText.isEmpty()) {
+        return spoilerText;
+    }
     QTextDocument document;
     document.setHtml(this->content);
     return document.toPlainText();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>401</width>
-    <height>531</height>
+    <height>563</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -104,7 +104,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>430</y>
+     <y>460</y>
      <width>381</width>
      <height>91</height>
     </rect>
@@ -145,7 +145,7 @@
      <x>10</x>
      <y>190</y>
      <width>381</width>
-     <height>231</height>
+     <height>261</height>
     </rect>
    </property>
    <property name="title">
@@ -352,6 +352,19 @@
     </property>
     <property name="text">
      <string>Hide URL</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="ignoreContentWarningCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>230</y>
+      <width>361</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ignore Content Warning</string>
     </property>
    </widget>
   </widget>

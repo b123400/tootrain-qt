@@ -7,7 +7,7 @@ MisskeyStatus::MisskeyStatus(QJsonObject json, QUrl hostUrl, QObject *parent)
 {
     id = json["id"].toString("");
     body = json["text"].toString("");
-
+    contentWarning = json["cw"].toString();
     account = new MisskeyAccount(json["user"].toObject(), hostUrl, this);
 }
 
@@ -67,7 +67,12 @@ QList<RichTextComponent*> MisskeyStatus::richTextcomponents() {
     static QRegularExpression urlRegex = QRegularExpression("https?://\\S+");
     static QRegularExpression emojiRegex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
     this->prepareEmojis();
-    QString plainTextContent = this->body;
+    QString plainTextContent;
+    if (!SettingManager::shared().ignoreContentWarning() && !contentWarning.isEmpty()) {
+        plainTextContent = this->contentWarning;
+    } else {
+        plainTextContent = this->body;
+    }
     if (SettingManager::shared().hideUrl()) {
         plainTextContent = plainTextContent.replace(urlRegex, "");
     }

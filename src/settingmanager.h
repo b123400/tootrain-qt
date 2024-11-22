@@ -44,6 +44,9 @@ public:
     void setHideUrl(bool value);
     bool hideUrl();
 
+    void setIgnoreContentWarning(bool value);
+    bool ignoreContentWarning();
+
     QString maintenanceToolPath();
     void checkForUpdate(std::function<void (bool)> callback);
 

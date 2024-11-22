@@ -15,6 +15,7 @@ public:
 
     QString id;
     QString content;
+    QString spoilerText;
     MastodonAccount *account = nullptr;
     QList<MastodonEmoji*> emojis;
     UrlEmoji *avatarEmoji = nullptr;
