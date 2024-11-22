@@ -1,6 +1,9 @@
 #include "settingmanager.h"
 #include <QCoreApplication>
 #include <QUrl>
+#include <QApplication>
+#include <QDir>
+#include <QTimer>
 #include "mastodon/account.h"
 #include "misskey/misskeyaccount.h"
 
@@ -89,4 +92,101 @@ void SettingManager::setShowUserAvatar(bool showUserAvatar) {
 bool SettingManager::showUserAvatar() {
     bool showUserAvatar = settings.value("showUserAvatar", true).toBool();
     return showUserAvatar;
+}
+
+void SettingManager::setTextColor(QColor color) {
+    settings.setValue("textColor", color);
+}
+
+QColor SettingManager::textColor() {
+    QVariant variant = QColor(Qt::white);
+    QColor color = settings.value("textColor", variant).value<QColor>();
+    return color;
+}
+
+void SettingManager::setShadowColor(QColor color) {
+    settings.setValue("shadowColor", color);
+}
+QColor SettingManager::shadowColor() {
+    QVariant variant = QColor(Qt::black);
+    QColor color = settings.value("shadowColor", variant).value<QColor>();
+    return color;
+}
+
+void SettingManager::setFont(QFont font) {
+    settings.setValue("font", font);
+}
+QFont SettingManager::font() {
+    QFont defaultFont = QApplication::font();
+    defaultFont.setWeight(QFont::Weight::Bold);
+    defaultFont.setPixelSize(40);
+    return settings.value("font", defaultFont).value<QFont>();
+}
+
+void SettingManager::setDuration(int duration) {
+    settings.setValue("duration", duration);
+}
+int SettingManager::duration() {
+    return settings.value("duration", 10).toInt();
+}
+
+void SettingManager::setTextLengthLimit(int limit) {
+    settings.setValue("textLengthLimit", limit);
+}
+
+int SettingManager::textLengthLimit() {
+    return settings.value("textLengthLimit", 50).toInt();
+}
+
+void SettingManager::setHideUrl(bool value) {
+    settings.setValue("hideUrl", value);
+}
+bool SettingManager::hideUrl() {
+    return settings.value("hideUrl", false).toBool();
+}
+
+void SettingManager::setIgnoreContentWarning(bool value) {
+    settings.setValue("ignoreContentWarning", value);
+}
+bool SettingManager::ignoreContentWarning() {
+    return settings.value("ignoreContentWarning", false).toBool();
+}
+
+QString SettingManager::maintenanceToolPath() {
+    QString maintenanceToolPath =
+#if defined(Q_OS_WIN)
+        "../maintenancetool.exe";
+#elif defined(Q_OS_MAC)
+        "../../../maintenancetool.app/Contents/MacOS/maintenancetool";
+#else
+        "../maintenancetool";
+#endif
+    return maintenanceToolPath;
+}
+
+void SettingManager::checkForUpdate(std::function<void (bool)> callback) {
+    QString maintenanceToolPath = this->maintenanceToolPath();
+    QString myPath = QCoreApplication::applicationDirPath();
+    QDir myDir = QDir(myPath);
+    QString absPath = QDir::cleanPath(myDir.absoluteFilePath(maintenanceToolPath));
+    qDebug() << "Update binary path: " << absPath;
+    QProcess *checkProcess = new QProcess(this);
+
+    connect(checkProcess, &QProcess::finished, this, [=](int exitCode, QProcess::ExitStatus exitStatus) {
+        qDebug() << "checkfinished exitCode=" << exitCode << ", exitStatus=" << exitStatus;
+        QByteArray stdOut = checkProcess->readAllStandardOutput();
+        qDebug() << "checkfinished>" << stdOut;
+        // delete checkProcess;
+        bool hasNewVersion = stdOut.contains("<updates>");
+        callback(hasNewVersion);
+    });
+
+    connect(checkProcess, &QProcess::errorOccurred, this, [=](QProcess::ProcessError error) {
+        callback(false);
+        // delete checkProcess;
+    });
+
+    QTimer::singleShot(0, this, [=]{
+        checkProcess->start(absPath, {"check-updates"});
+    });
 }

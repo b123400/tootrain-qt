@@ -5,6 +5,9 @@
 #include <QSettings>
 #include <QScreen>
 #include "account.h"
+#include <QColor>
+#include <QFont>
+#include <QProcess>
 
 class SettingManager : public QObject
 {
@@ -23,8 +26,32 @@ public:
     void setShowUserAvatar(bool showUserAvatar);
     bool showUserAvatar();
 
+    void setTextColor(QColor color);
+    QColor textColor();
+
+    void setShadowColor(QColor color);
+    QColor shadowColor();
+
+    void setFont(QFont font);
+    QFont font();
+
+    void setDuration(int duration);
+    int duration();
+
+    void setTextLengthLimit(int limit);
+    int textLengthLimit();
+
+    void setHideUrl(bool value);
+    bool hideUrl();
+
+    void setIgnoreContentWarning(bool value);
+    bool ignoreContentWarning();
+
+    QString maintenanceToolPath();
+    void checkForUpdate(std::function<void (bool)> callback);
+
 private:
-    QSettings settings = QSettings("TootRain-qt", "Star Runner");
+    QSettings settings = QSettings("b123400", "TootRain-qt");
 
 signals:
     void currentAccountChanged();

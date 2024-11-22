@@ -4,6 +4,8 @@
 #include <QMessageBox>
 #include <QDir>
 #include <QMenu>
+#include <QColorDialog>
+#include <QFontDialog>
 
 #include "settingwindow.h"
 #include "QtGui/qscreen.h"
@@ -21,17 +23,20 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
     connect(ui->configButton, &QAbstractButton::clicked, this, &SettingWindow::configureButtonClicked);
     connect(ui->checkOrUpdateButton, &QAbstractButton::clicked, this, &SettingWindow::checkOrUpdateClicked);
-    connect(&checkProcess, &QProcess::finished, this, &SettingWindow::checkFinished);
-    connect(&checkProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
-    connect(&updateProcess, &QProcess::errorOccurred, this, &SettingWindow::updateCheckErrored);
-    connect(ui->showAvatarCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::showAvatarCheckBoxChanged);
+    connect(&updateProcess, &QProcess::errorOccurred, this, &SettingWindow::updateErrored);
 
-    loadAccount();
-    loadScreens();
-    ui->showAvatarCheckBox->setCheckState(
-        SettingManager::shared().showUserAvatar() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked
-    );
+    reloadUIFromSettings();
+
+    connect(ui->showAvatarCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::showAvatarCheckBoxChanged);
+    connect(ui->textColorButton, &QAbstractButton::clicked, this, &SettingWindow::textColorButtonClicked);
+    connect(ui->shadowColorButton, &QAbstractButton::clicked, this, &SettingWindow::shadowColorButtonClicked);
+    connect(ui->fontButton, &QAbstractButton::clicked, this, &SettingWindow::fontButtonClicked);
+    connect(ui->lengthLimitCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::textLengthLimitCheckBoxChanged);
+    connect(ui->lengthLimitSpinBox, &QSpinBox::valueChanged, this, &SettingWindow::textLengthLimitSpinnerChanged);
+    connect(ui->speedSlider, &QSlider::valueChanged, this, &SettingWindow::speedSliderChanged);
+    connect(ui->hideUrlCheckbox, &QCheckBox::checkStateChanged, this, &SettingWindow::hideUrlCheckboxChanged);
+    connect(ui->ignoreContentWarningCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::ignoreContentWarningCheckboxChanged);
 
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
@@ -81,6 +86,45 @@ void SettingWindow::loadScreens() {
     } else {
         ui->screenComboBox->setCurrentIndex(0);
     }
+}
+
+void SettingWindow::reloadUIFromSettings() {
+    disconnect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
+
+    loadAccount();
+    loadScreens();
+
+    ui->showAvatarCheckBox->setCheckState(
+        SettingManager::shared().showUserAvatar() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked
+        );
+    QPalette textPalette;
+    textPalette.setColor(QPalette::Window, SettingManager::shared().textColor());
+    ui->textColorFrame->setAutoFillBackground(true);
+    ui->textColorFrame->setPalette(textPalette);
+
+    QPalette shadowPalette;
+    shadowPalette.setColor(QPalette::Window, SettingManager::shared().shadowColor());
+    ui->shadowColorFrame->setAutoFillBackground(true);
+    ui->shadowColorFrame->setPalette(shadowPalette);
+
+    QFont font = SettingManager::shared().font();
+    ui->fontLabel->setText(tr("Font:") + " " + font.family() + " " + QString::number(font.pointSize()) + "px");
+
+    int textLengthLimit = SettingManager::shared().textLengthLimit();
+    if (textLengthLimit <= 0) {
+        ui->lengthLimitCheckBox->setCheckState(Qt::CheckState::Unchecked);
+        ui->lengthLimitSpinBox->setEnabled(false);
+    } else {
+        ui->lengthLimitCheckBox->setCheckState(Qt::CheckState::Checked);
+        ui->lengthLimitSpinBox->setValue(textLengthLimit);
+        ui->lengthLimitSpinBox->setEnabled(true);
+    }
+
+    ui->speedSlider->setValue(20-SettingManager::shared().duration());
+    ui->hideUrlCheckbox->setCheckState(SettingManager::shared().hideUrl() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+    ui->ignoreContentWarningCheckBox->setCheckState(SettingManager::shared().ignoreContentWarning() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+
+    connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 }
 
 void SettingWindow::loginButtonClicked() {
@@ -218,16 +262,56 @@ void SettingWindow::showAvatarCheckBoxChanged(Qt::CheckState checkState) {
     SettingManager::shared().setShowUserAvatar(checkState == Qt::CheckState::Checked);
 }
 
-QString SettingWindow::maintenanceToolPath() {
-    QString maintenanceToolPath =
-#if defined(Q_OS_WIN)
-        "../maintenancetool.exe";
-#elif defined(Q_OS_MAC)
-        "../../../maintenancetool.app/Contents/MacOS/maintenancetool";
-#else
-        "../maintenancetool";
-#endif
-    return maintenanceToolPath;
+void SettingWindow::textColorButtonClicked() {
+    QColor currentColor = SettingManager::shared().textColor();
+    QColor color = QColorDialog::getColor(currentColor, this);
+    if (!color.isValid()) return;
+    SettingManager::shared().setTextColor(color);
+    reloadUIFromSettings();
+}
+
+void SettingWindow::shadowColorButtonClicked() {
+    QColor currentColor = SettingManager::shared().shadowColor();
+    QColor color = QColorDialog::getColor(currentColor, this);
+    if (!color.isValid()) return;
+    SettingManager::shared().setShadowColor(color);
+    reloadUIFromSettings();
+}
+
+void SettingWindow::fontButtonClicked() {
+    bool ok;
+    QFont currentFont = SettingManager::shared().font();
+    QFont newFont = QFontDialog::getFont(&ok, currentFont, this);
+    if (ok) {
+        SettingManager::shared().setFont(newFont);
+    }
+    reloadUIFromSettings();
+}
+
+void SettingWindow::textLengthLimitSpinnerChanged(int value) {
+    SettingManager::shared().setTextLengthLimit(value);
+    reloadUIFromSettings();
+}
+
+void SettingWindow::textLengthLimitCheckBoxChanged(Qt::CheckState checked) {
+    if (checked == Qt::CheckState::Unchecked) {
+        SettingManager::shared().setTextLengthLimit(-1);
+    } else {
+        SettingManager::shared().setTextLengthLimit(50);
+    }
+    reloadUIFromSettings();
+}
+
+void SettingWindow::speedSliderChanged(int value) {
+    SettingManager::shared().setDuration(20 - value);
+}
+
+void SettingWindow::hideUrlCheckboxChanged(Qt::CheckState checkState) {
+    SettingManager::shared().setHideUrl(checkState == Qt::CheckState::Checked);
+}
+
+void SettingWindow::ignoreContentWarningCheckboxChanged(Qt::CheckState checkState) {
+    SettingManager::shared().setIgnoreContentWarning(checkState == Qt::CheckState::Checked);
 }
 
 void SettingWindow::checkOrUpdateClicked() {
@@ -240,36 +324,24 @@ void SettingWindow::checkOrUpdateClicked() {
 
 void SettingWindow::checkForUpdate() {
     if (hasNewVersion) return;
+
     ui->updateStatusLabel->setText(tr("Checking for update..."));
     ui->checkOrUpdateButton->setEnabled(false);
-    QString maintenanceToolPath = this->maintenanceToolPath();
-    QString myPath = QCoreApplication::applicationDirPath();
-    QDir myDir = QDir(myPath);
-    QString absPath = QDir::cleanPath(myDir.absoluteFilePath(maintenanceToolPath));
-    qDebug() << "Update binary path: " << absPath;
-    checkProcess.start(absPath, {"check-updates"});
+
+    SettingManager::shared().checkForUpdate([=](bool hasUpdate) {
+        hasNewVersion = hasUpdate;
+        ui->checkOrUpdateButton->setEnabled(true);
+
+        if (hasNewVersion) {
+            ui->updateStatusLabel->setText(tr("New version available"));
+            ui->checkOrUpdateButton->setText(tr("Click here to update"));
+        } else {
+            ui->updateStatusLabel->setText(tr("No update available"));
+        }
+    });
 }
 
-void SettingWindow::checkFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    qDebug() << "checkfinished exitCode=" << exitCode << ", exitStatus=" << exitStatus;
-    QByteArray stdOut = checkProcess.readAllStandardOutput();
-    qDebug() << "checkfinished>" << stdOut;
-    hasNewVersion = stdOut.contains("<updates>");
-    ui->checkOrUpdateButton->setEnabled(true);
-
-    if (hasNewVersion) {
-        ui->updateStatusLabel->setText(tr("New version available"));
-        ui->checkOrUpdateButton->setText(tr("Click here to update"));
-    } else {
-        ui->updateStatusLabel->setText(tr("No update available"));
-    }
-    // QMessageBox msgBox;
-    // msgBox.setText("Status: " + QString::number(exitCode));
-    // msgBox.setDetailedText(stdOut);
-    // msgBox.exec();
-}
-
-void SettingWindow::updateCheckErrored(QProcess::ProcessError error) {
+void SettingWindow::updateErrored(QProcess::ProcessError error) {
     QMessageBox msgBox;
 
     switch (error) {
@@ -300,7 +372,7 @@ void SettingWindow::runUpdate() {
     if (!hasNewVersion) return;
     ui->updateStatusLabel->setText(tr("Updating..."));
     ui->checkOrUpdateButton->setEnabled(false);
-    QString maintenanceToolPath = this->maintenanceToolPath();
+    QString maintenanceToolPath = SettingManager::shared().maintenanceToolPath();
     QString myPath = QCoreApplication::applicationDirPath();
     QDir myDir = QDir(myPath);
     QString absPath = QDir::cleanPath(myDir.absoluteFilePath(maintenanceToolPath));

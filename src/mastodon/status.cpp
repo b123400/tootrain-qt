@@ -11,6 +11,7 @@ MastodonStatus::MastodonStatus(QJsonObject json, QObject *parent): Status{parent
 {
     id = json["id"].toString();
     content = json["content"].toString();
+    spoilerText = json["spoiler_text"].toString();
     account = new MastodonAccount(json["account"].toObject(), this);
 
     if (json.contains("emojis")) {
@@ -31,14 +32,21 @@ QString MastodonStatus::getText() {
 }
 
 QString MastodonStatus::getPlainText() {
+    if (!SettingManager::shared().ignoreContentWarning() && !spoilerText.isEmpty()) {
+        return spoilerText;
+    }
     QTextDocument document;
     document.setHtml(this->content);
     return document.toPlainText();
 }
 
 QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
-    static QRegularExpression regex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
+    static QRegularExpression urlRegex = QRegularExpression("https?://\\S+");
+    static QRegularExpression emojiRegex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
     QString plainTextContent = this->getPlainText();
+    if (SettingManager::shared().hideUrl()) {
+        plainTextContent = plainTextContent.replace(urlRegex, "");
+    }
     QList<RichTextComponent*> list;
 
     if (this->avatarEmoji != nullptr) {
@@ -47,7 +55,7 @@ QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
         list.append(rtc);
     }
 
-    auto globalMatch = regex.globalMatch(plainTextContent);
+    auto globalMatch = emojiRegex.globalMatch(plainTextContent);
     int lastStart = 0;
     while (globalMatch.hasNext()) {
         QRegularExpressionMatch match = globalMatch.next();

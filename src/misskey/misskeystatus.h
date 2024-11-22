@@ -14,6 +14,7 @@ public:
 
     QString id;
     QString body;
+    QString contentWarning;
 
     MisskeyAccount *account = nullptr;
 
