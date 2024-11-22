@@ -43,7 +43,7 @@ QString MastodonStatus::getPlainText() {
 QList<RichTextComponent*> MastodonStatus::richTextcomponents() {
     static QRegularExpression urlRegex = QRegularExpression("https?://\\S+");
     static QRegularExpression emojiRegex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
-    QString plainTextContent = this->getPlainText();
+    QString plainTextContent = QString(this->getPlainText());
     if (SettingManager::shared().hideUrl()) {
         plainTextContent = plainTextContent.replace(urlRegex, "");
     }

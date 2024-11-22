@@ -51,7 +51,8 @@ public:
     void checkForUpdate(std::function<void (bool)> callback);
 
 private:
-    QSettings settings = QSettings("b123400", "TootRain-qt");
+    // No idea why but if I use b123400 / tootrain-qt the images doesn't show
+    QSettings settings = QSettings("TootRain-qt", "Star Runner");
 
 signals:
     void currentAccountChanged();

@@ -12,7 +12,11 @@ MisskeyStatus::MisskeyStatus(QJsonObject json, QUrl hostUrl, QObject *parent)
 }
 
 QString MisskeyStatus::getText() {
-    return this->body;
+    if (!SettingManager::shared().ignoreContentWarning() && !contentWarning.isEmpty()) {
+        return this->contentWarning;
+    } else {
+        return this->body;
+    }
 }
 
 bool MisskeyStatus::isEmojisReady() {
@@ -46,7 +50,7 @@ void MisskeyStatus::prepareEmojis() {
     if (this->preparedEmoji) return;
     this->preparedEmoji = true;
     static QRegularExpression regex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
-    QString plainTextContent = this->body;
+    QString plainTextContent = QString(this->getText());
 
     if (SettingManager::shared().showUserAvatar()) {
         this->avatarEmoji = new UrlEmoji(this->account->avatarUrl, this);
@@ -67,12 +71,7 @@ QList<RichTextComponent*> MisskeyStatus::richTextcomponents() {
     static QRegularExpression urlRegex = QRegularExpression("https?://\\S+");
     static QRegularExpression emojiRegex = QRegularExpression(":([a-zA-Z0-9_]+(@[a-zA-Z0-9-.]+)?):");
     this->prepareEmojis();
-    QString plainTextContent;
-    if (!SettingManager::shared().ignoreContentWarning() && !contentWarning.isEmpty()) {
-        plainTextContent = this->contentWarning;
-    } else {
-        plainTextContent = this->body;
-    }
+    QString plainTextContent = QString(this->getText());
     if (SettingManager::shared().hideUrl()) {
         plainTextContent = plainTextContent.replace(urlRegex, "");
     }
