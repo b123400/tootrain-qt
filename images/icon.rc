@@ -3,7 +3,7 @@
 IDI_ICON1               ICON    "32x32.ico"
 
 1 VERSIONINFO
-    PRODUCTVERSION 0,9,0
+    PRODUCTVERSION 1,0,0
 {
     BLOCK "StringFileInfo"
     {
