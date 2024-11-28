@@ -7,37 +7,70 @@ on:
 env:
   BUILD_TYPE: Release
 jobs:
-  # build-linux:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #   - name: Install Qt
-  #     # Installs the Qt SDK
-  #     uses: jurplel/install-qt-action@v3
-  #     with:
-  #       version: '6.8.0'
-  #
-  #   - name: Configure CMake
-  #     # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-  #     # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-  #     run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+  build-linux:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - name: Download QT static
+      env:
+        QT_STATIC_PASSWORD: ${{ secrets.QT_STATIC_PASSWORD }}
+      run: |
+        sudo apt-get install cmake \
+          python3 \
+          build-essential \
+          libgl1-mesa-dev \
+          libfontconfig1-dev \
+          libfreetype-dev \
+          libx11-dev \
+          libx11-xcb-dev \
+          libxcb-cursor-dev \
+          libxcb-glx0-dev \
+          libxcb-icccm4-dev \
+          libxcb-image0-dev \
+          libxcb-keysyms1-dev \
+          libxcb-randr0-dev \
+          libxcb-render-util0-dev \
+          libxcb-shape0-dev \
+          libxcb-shm0-dev \
+          libxcb-sync-dev \
+          libxcb-util-dev \
+          libxcb-xfixes0-dev \
+          libxcb-xinerama0-dev \
+          libxcb-xkb-dev \
+          libxcb1-dev \
+          libxext-dev \
+          libxfixes-dev \
+          libxi-dev \
+          libxkbcommon-dev \
+          libxkbcommon-x11-dev \
+          libxrender-dev
+        sudo apt install unzip
+        cd ..
+        curl -u "tootrain-qt-github:${QT_STATIC_PASSWORD}" https://b123400.net/tootrain/qt-static.zip > ./qt-static.zip
+        unzip qt-static.zip
 
-  #   - name: Build
-  #     # Build your program with the given configuration
-  #     run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: CMAKE_PREFIX_PATH="../qt-static" cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
-  #   - name: Install
-  #     run: |
-  #       cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="$(pwd)/bin"
-  #       tar -cvf bin.tar bin
+    - name: Build
+      # Build your program with the given configuration
+      run: CMAKE_PREFIX_PATH="../qt-static" cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-  #   - uses: actions/upload-artifact@v4
-  #     with:
-  #       name: linux
-  #       path: |
-  #         ${{github.workspace}}/build
-  #         ${{github.workspace}}/bin.tar
-  #       retention-days: 7
+    - name: Install
+      run: |
+        cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="$(pwd)/bin"
+        tar -cvf ubuntu.tar bin
+        ldd ./bin/bin/tootrain-qt
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: linux
+        path: |
+          ${{github.workspace}}/build
+          ${{github.workspace}}/ubuntu.tar
+        retention-days: 7
 
   build-mac:
     runs-on: macos-14
