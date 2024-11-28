@@ -7,52 +7,67 @@ on:
 env:
   BUILD_TYPE: Release
 jobs:
-  # build-linux:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: actions/checkout@v4
-  #   - name: Install Qt
-  #     # Installs the Qt SDK
-  #     uses: jurplel/install-qt-action@v3
-  #     with:
-  #       version: '6.8.0'
-  #
-  #   - name: Configure CMake
-  #     # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-  #     # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-  #     run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
-  #   - name: Build
-  #     # Build your program with the given configuration
-  #     run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-  #   - name: Install
-  #     run: |
-  #       cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="$(pwd)/bin"
-  #       tar -cvf bin.tar bin
-
-  #   - uses: actions/upload-artifact@v4
-  #     with:
-  #       name: linux
-  #       path: |
-  #         ${{github.workspace}}/build
-  #         ${{github.workspace}}/bin.tar
-  #       retention-days: 7
-
-  build-mac:
-    runs-on: macos-14
+  build-linux:
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Install Qt
-      # Installs the Qt SDK
-      uses: jurplel/install-qt-action@v3
-      with:
-        version: '6.8.0'
-        modules: 'qtnetworkauth qtwebsockets qthttpserver qtimageformats'
-        tools: 'tools_ifw'
-        add-tools-to-path: true
+    # - name: Install Qt
+    #   uses: jurplel/install-qt-action@v3
+    #   with:
+    #     aqtversion: '==3.1.*'
+    #     version: '6.8.0'
+    #     host: 'linux'
+    #     target: 'desktop'
+    #     arch: 'linux_gcc_64'
+    #     modules: 'qthttpserver qtimageformats qtnetworkauth qtwebsockets'
+    #     tools: 'tools_ifw tools_opensslv3_src'
+    #     add-tools-to-path: true
+    #     source: true
+
+    - name: Build QT
+      run: |
+        sudo apt-get install cmake \
+          python3 \
+          llvm-dev \
+          build-essential \
+          libgl1-mesa-dev \
+          libfontconfig1-dev \
+          libfreetype-dev \
+          libx11-dev \
+          libx11-xcb-dev \
+          libxcb-cursor-dev \
+          libxcb-glx0-dev \
+          libxcb-icccm4-dev \
+          libxcb-image0-dev \
+          libxcb-keysyms1-dev \
+          libxcb-randr0-dev \
+          libxcb-render-util0-dev \
+          libxcb-shape0-dev \
+          libxcb-shm0-dev \
+          libxcb-sync-dev \
+          libxcb-util-dev \
+          libxcb-xfixes0-dev \
+          libxcb-xinerama0-dev \
+          libxcb-xkb-dev \
+          libxcb1-dev \
+          libxext-dev \
+          libxfixes-dev \
+          libxi-dev \
+          libxkbcommon-dev \
+          libxkbcommon-x11-dev \
+          libxrender-dev \
+          llvm-dev
+        cd ..
+        git clone --branch v6.8.0 https://code.qt.io/qt/qt5.git
+        mkdir qt-build
+        cd qt-build
+        ../qt5/configure -static -init-submodules -submodules qthttpserver,qtimageformats,qtnetworkauth,qtwebsockets -nomake tools -nomake tests -nomake examples -no-dbus
+        cmake --build . --parallel 2
+        sudo cmake --install .
 
     - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
@@ -62,59 +77,105 @@ jobs:
     - name: Install
       run: |
         cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="$(pwd)/bin"
-        chmod +x ./bin/tootrain-qt.app/Contents/MacOS/tootrain-qt
-        macdeployqt './bin/tootrain-qt.app' '-appstore-compliant' '-always-overwrite'
-        tar -cvf bin.tar ./bin
+        tar -cvf bin.tar bin
+        ldd ./bin/bin/tootrain-qt
 
     - uses: actions/upload-artifact@v4
       with:
-        name: osx
-        path: ${{github.workspace}}/bin.tar
-        retention-days: 7
-
-  build-windows:
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v4
-    - name: Install Qt
-      uses: jurplel/install-qt-action@v3
-      with:
-        aqtversion: '==3.1.*'
-        version: '6.8.0'
-        host: 'windows'
-        target: 'desktop'
-        arch: 'win64_msvc2022_64'
-        modules: 'qtnetworkauth qtwebsockets qthttpserver qtimageformats'
-        tools: 'tools_ifw tools_opensslv3_x64'
-        add-tools-to-path: true
-    - name: Build
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      env:
-        VCINSTALLDIR: 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC'
-      run: |
-        # tree /A /F "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
-
-        # tree /A /F "$env:IQTA_TOOLS"
-        # tree /A /F "D:\a\tootrain-qt\Qt\6.8.0\msvc2019_64"
-
-        cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-        cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="./bin"
-        windeployqt --release '.\bin\bin\tootrain-qt.exe'
-
-        cp "${{github.workspace}}/build/tootrain-qt_ja.qm" "${{github.workspace}}/bin/bin"
-        cp "$env:IQTA_TOOLS\OpenSSLv3\Win_x64\bin\libssl-3-x64.dll" '.\bin\bin\'
-        cp "$env:IQTA_TOOLS\OpenSSLv3\Win_x64\bin\libcrypto-3-x64.dll" '.\bin\bin\'
-
-        mkdir "${{github.workspace}}\installer-win\net.b123400.tootrainqt\data\"
-        cp -R .\bin\bin "${{github.workspace}}\installer-win\net.b123400.tootrainqt\data\"
-        ../Qt/Tools/QtInstallerFramework/4.7/bin/binarycreator.exe -c config/config.xml -p installer-win Installer.exe
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: win
+        name: linux
         path: |
-          ${{github.workspace}}/bin
-          Installer.exe
+          ${{github.workspace}}/build
+          ${{github.workspace}}/bin.tar
         retention-days: 7
+    # - name: Setup interactive ssh session
+    #   uses: Warpbuilds/action-debugger@v1.3
+
+
+# cd ../Qt/6.8.0/Src
+# sudo apt install llvm-dev
+# cd ..
+# git clone --branch v6.8.0 https://code.qt.io/qt/qt5.git
+# mkdir build
+# cd build
+# ../qt5/configure -static -init-submodules -submodules qthttpserver,qtimageformats,qtnetworkauth,qtwebsockets -nomake tools -nomake tests -nomake examples -no-dbus
+# cmake --build . --parallel
+
+#   build-mac:
+#     runs-on: macos-14
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Install Qt
+#       # Installs the Qt SDK
+#       uses: jurplel/install-qt-action@v3
+#       with:
+#         version: '6.8.0'
+#         modules: 'qtnetworkauth qtwebsockets qthttpserver qtimageformats'
+#         tools: 'tools_ifw'
+#         add-tools-to-path: true
+
+#     - name: Configure CMake
+#       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+#     - name: Build
+#       # Build your program with the given configuration
+#       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+#     - name: Install
+#       run: |
+#         cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="$(pwd)/bin"
+#         chmod +x ./bin/tootrain-qt.app/Contents/MacOS/tootrain-qt
+#         macdeployqt './bin/tootrain-qt.app' '-appstore-compliant' '-always-overwrite'
+#         tar -cvf bin.tar ./bin
+
+#     - uses: actions/upload-artifact@v4
+#       with:
+#         name: osx
+#         path: ${{github.workspace}}/bin.tar
+#         retention-days: 7
+
+#   build-windows:
+#     runs-on: windows-latest
+#     steps:
+#     - uses: actions/checkout@v4
+#     - name: Install Qt
+#       uses: jurplel/install-qt-action@v3
+#       with:
+#         aqtversion: '==3.1.*'
+#         version: '6.8.0'
+#         host: 'windows'
+#         target: 'desktop'
+#         arch: 'win64_msvc2022_64'
+#         modules: 'qtnetworkauth qtwebsockets qthttpserver qtimageformats'
+#         tools: 'tools_ifw tools_opensslv3_x64'
+#         add-tools-to-path: true
+#     - name: Build
+#       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+#       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+#       env:
+#         VCINSTALLDIR: 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC'
+#       run: |
+#         # tree /A /F "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
+
+#         # tree /A /F "$env:IQTA_TOOLS"
+#         # tree /A /F "D:\a\tootrain-qt\Qt\6.8.0\msvc2019_64"
+
+#         cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+#         cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+#         cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="./bin"
+#         windeployqt --release '.\bin\bin\tootrain-qt.exe'
+
+#         cp "${{github.workspace}}/build/tootrain-qt_ja.qm" "${{github.workspace}}/bin/bin"
+#         cp "$env:IQTA_TOOLS\OpenSSLv3\Win_x64\bin\libssl-3-x64.dll" '.\bin\bin\'
+#         cp "$env:IQTA_TOOLS\OpenSSLv3\Win_x64\bin\libcrypto-3-x64.dll" '.\bin\bin\'
+
+#         mkdir "${{github.workspace}}\installer-win\net.b123400.tootrainqt\data\"
+#         cp -R .\bin\bin "${{github.workspace}}\installer-win\net.b123400.tootrainqt\data\"
+#         ../Qt/Tools/QtInstallerFramework/4.7/bin/binarycreator.exe -c config/config.xml -p installer-win Installer.exe
+
+#     - uses: actions/upload-artifact@v4
+#       with:
+#         name: win
+#         path: |
+#           ${{github.workspace}}/bin
+#           Installer.exe
+#         retention-days: 7

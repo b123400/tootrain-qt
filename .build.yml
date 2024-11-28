@@ -1,0 +1,47 @@
+image: ubuntu/lts
+packages:
+  - cmake
+  - python3
+  - llvm-dev
+  - build-essential
+  - libgl1-mesa-dev
+  - libfontconfig1-dev
+  - libfreetype-dev
+  - libx11-dev
+  - libx11-xcb-dev
+  - libxcb-cursor-dev
+  - libxcb-glx0-dev
+  - libxcb-icccm4-dev
+  - libxcb-image0-dev
+  - libxcb-keysyms1-dev
+  - libxcb-randr0-dev
+  - libxcb-render-util0-dev
+  - libxcb-shape0-dev
+  - libxcb-shm0-dev
+  - libxcb-sync-dev
+  - libxcb-util-dev
+  - libxcb-xfixes0-dev
+  - libxcb-xinerama0-dev
+  - libxcb-xkb-dev
+  - libxcb1-dev
+  - libxext-dev
+  - libxfixes-dev
+  - libxi-dev
+  - libxkbcommon-dev
+  - libxkbcommon-x11-dev
+  - libxrender-dev
+tasks:
+  - build-qt: |
+      pwd
+      git clone --branch v6.8.0 https://code.qt.io/qt/qt5.git
+      mkdir qt-build
+      cd qt-build
+      ../qt5/configure -static -init-submodules -submodules qthttpserver,qtimageformats,qtnetworkauth,qtwebsockets -nomake tools -nomake tests -nomake examples -no-dbus -no-opengl
+      cmake --build . --parallel 2
+      sudo cmake --install .
+  - build: |
+      cd tootrain-qt
+      cmake -B ./build -DCMAKE_BUILD_TYPE=release
+      cmake --build ./build --config release
+      cmake --install ./build --config release --prefix="$(pwd)/bin"
+

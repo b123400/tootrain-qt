@@ -102,11 +102,11 @@ else()
     endif()
 endif()
 
-target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
-target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Network)
-target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::NetworkAuth)
-target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::WebSockets)
-target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::HttpServer)
+target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets -static)
+target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Network -static)
+target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::NetworkAuth -static)
+target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::WebSockets -static)
+target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::HttpServer -static)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
