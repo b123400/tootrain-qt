@@ -24,6 +24,7 @@ public:
 public slots:
     void preferencesTriggered(bool check);
     void aboutDialogClicked(bool check);
+    void settingsOpacityUpdated(qreal opacity);
     void onWebSocketTextMessageReceived(QString message);
     void onWebSocketConnected();
     void onWebSocketDisconnected();

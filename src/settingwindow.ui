@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>401</width>
-    <height>563</height>
+    <height>575</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -104,7 +104,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>460</y>
+     <y>470</y>
      <width>381</width>
      <height>91</height>
     </rect>
@@ -145,7 +145,7 @@
      <x>10</x>
      <y>190</y>
      <width>381</width>
-     <height>261</height>
+     <height>271</height>
     </rect>
    </property>
    <property name="title">
@@ -345,7 +345,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>200</y>
+      <y>220</y>
       <width>251</width>
       <height>20</height>
      </rect>
@@ -358,13 +358,45 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>230</y>
+      <y>240</y>
       <width>361</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
      <string>Ignore Content Warning</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="opacityLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Opacity</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="opacitySlider">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>200</y>
+      <width>161</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>100</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Orientation::Horizontal</enum>
     </property>
    </widget>
   </widget>

@@ -48,6 +48,7 @@ public slots:
     void textLengthLimitSpinnerChanged(int value);
     void textLengthLimitCheckBoxChanged(Qt::CheckState checked);
     void speedSliderChanged(int value);
+    void opacitySliderChanged(int value);
     void hideUrlCheckboxChanged(Qt::CheckState checkState);
     void ignoreContentWarningCheckboxChanged(Qt::CheckState checkState);
 

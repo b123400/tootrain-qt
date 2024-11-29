@@ -85,8 +85,8 @@ MainWindow::MainWindow(QWidget *parent)
     pingTimer->start(60000);
 
     connect(&SettingManager::shared(), &SettingManager::currentAccountChanged, this, &MainWindow::onCurrentAccountChanged);
-
     connect(&SettingManager::shared(), &SettingManager::currentScreenChanged, this, &MainWindow::onCurrentScreenChanged);
+    connect(&SettingManager::shared(), &SettingManager::settingsOpacityUpdated, this, &MainWindow::settingsOpacityUpdated);
     moveToScreen();
 
     startStreaming();
@@ -109,6 +109,8 @@ MainWindow::MainWindow(QWidget *parent)
         });
     });
 
+    setWindowOpacity(SettingManager::shared().opacity());
+
 #ifdef Q_OS_WIN
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::onRepaintTimer);
@@ -128,6 +130,10 @@ void MainWindow::preferencesTriggered(bool checked) {
 void MainWindow::aboutDialogClicked(bool check) {
     auto ad = new AboutDialog(this);
     ad->exec();
+}
+
+void MainWindow::settingsOpacityUpdated(qreal opacity) {
+    setWindowOpacity(opacity);
 }
 
 void MainWindow::onRepaintTimer() {

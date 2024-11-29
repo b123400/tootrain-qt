@@ -152,6 +152,14 @@ bool SettingManager::ignoreContentWarning() {
     return settings.value("ignoreContentWarning", false).toBool();
 }
 
+void SettingManager::setOpacity(qreal opacity) {
+    settings.setValue("opacity", opacity);
+    emit settingsOpacityUpdated(opacity);
+}
+qreal SettingManager::opacity() {
+    return settings.value("opacity", 1.0).toReal();
+}
+
 QString SettingManager::maintenanceToolPath() {
     QString maintenanceToolPath =
 #if defined(Q_OS_WIN)
