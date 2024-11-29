@@ -47,8 +47,14 @@ public:
     void setIgnoreContentWarning(bool value);
     bool ignoreContentWarning();
 
+    void setOpacity(qreal opacity);
+    qreal opacity();
+
     QString maintenanceToolPath();
     void checkForUpdate(std::function<void (bool)> callback);
+
+signals:
+    void settingsOpacityUpdated(qreal opacity);
 
 private:
     // No idea why but if I use b123400 / tootrain-qt the images doesn't show

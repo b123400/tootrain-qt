@@ -35,6 +35,7 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->lengthLimitCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::textLengthLimitCheckBoxChanged);
     connect(ui->lengthLimitSpinBox, &QSpinBox::valueChanged, this, &SettingWindow::textLengthLimitSpinnerChanged);
     connect(ui->speedSlider, &QSlider::valueChanged, this, &SettingWindow::speedSliderChanged);
+    connect(ui->opacitySlider, &QSlider::valueChanged, this, &SettingWindow::opacitySliderChanged);
     connect(ui->hideUrlCheckbox, &QCheckBox::checkStateChanged, this, &SettingWindow::hideUrlCheckboxChanged);
     connect(ui->ignoreContentWarningCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::ignoreContentWarningCheckboxChanged);
 
@@ -121,6 +122,7 @@ void SettingWindow::reloadUIFromSettings() {
     }
 
     ui->speedSlider->setValue(20-SettingManager::shared().duration());
+    ui->opacitySlider->setValue(SettingManager::shared().opacity() * 100);
     ui->hideUrlCheckbox->setCheckState(SettingManager::shared().hideUrl() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
     ui->ignoreContentWarningCheckBox->setCheckState(SettingManager::shared().ignoreContentWarning() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 
@@ -304,6 +306,10 @@ void SettingWindow::textLengthLimitCheckBoxChanged(Qt::CheckState checked) {
 
 void SettingWindow::speedSliderChanged(int value) {
     SettingManager::shared().setDuration(20 - value);
+}
+
+void SettingWindow::opacitySliderChanged(int value) {
+    SettingManager::shared().setOpacity(value / 100.0f);
 }
 
 void SettingWindow::hideUrlCheckboxChanged(Qt::CheckState checkState) {
