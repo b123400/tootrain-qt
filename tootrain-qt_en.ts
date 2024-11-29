@@ -66,12 +66,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="195"/>
+        <location filename="src/mainwindow.cpp" line="201"/>
         <source>Stream connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="207"/>
+        <location filename="src/mainwindow.cpp" line="213"/>
         <source>Stream disconnected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -300,7 +300,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="50"/>
-        <location filename="src/settingwindow.cpp" line="62"/>
+        <location filename="src/settingwindow.cpp" line="63"/>
         <source>Login</source>
         <translation type="unfinished"></translation>
     </message>
@@ -358,7 +358,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="235"/>
-        <location filename="src/settingwindow.cpp" line="111"/>
+        <location filename="src/settingwindow.cpp" line="112"/>
         <source>Font:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -383,48 +383,53 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="55"/>
-        <source>Account: </source>
+        <location filename="src/settingwindow.ui" line="380"/>
+        <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/settingwindow.cpp" line="56"/>
+        <source>Account: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="57"/>
         <source>Logout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="61"/>
+        <location filename="src/settingwindow.cpp" line="62"/>
         <source>Not logged in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="125"/>
-        <location filename="src/settingwindow.cpp" line="328"/>
+        <location filename="src/settingwindow.cpp" line="334"/>
         <source>Checking for update...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="336"/>
+        <location filename="src/settingwindow.cpp" line="342"/>
         <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="337"/>
+        <location filename="src/settingwindow.cpp" line="343"/>
         <source>Click here to update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="339"/>
+        <location filename="src/settingwindow.cpp" line="345"/>
         <source>No update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="373"/>
+        <location filename="src/settingwindow.cpp" line="379"/>
         <source>Updating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="384"/>
+        <location filename="src/settingwindow.cpp" line="390"/>
         <source>Restarting...</source>
         <translation type="unfinished"></translation>
     </message>

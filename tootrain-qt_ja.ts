@@ -66,12 +66,12 @@
         <translation>新しいバージョンに更新できます</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="195"/>
+        <location filename="src/mainwindow.cpp" line="201"/>
         <source>Stream connected</source>
         <translation>接続しました</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="207"/>
+        <location filename="src/mainwindow.cpp" line="213"/>
         <source>Stream disconnected</source>
         <translation>接続が切れました</translation>
     </message>
@@ -304,7 +304,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="50"/>
-        <location filename="src/settingwindow.cpp" line="62"/>
+        <location filename="src/settingwindow.cpp" line="63"/>
         <source>Login</source>
         <translation>ログイン</translation>
     </message>
@@ -362,7 +362,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="235"/>
-        <location filename="src/settingwindow.cpp" line="111"/>
+        <location filename="src/settingwindow.cpp" line="112"/>
         <source>Font:</source>
         <translation>フォント</translation>
     </message>
@@ -387,48 +387,53 @@
         <translation>CWを無視する</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="55"/>
+        <location filename="src/settingwindow.ui" line="380"/>
+        <source>Opacity</source>
+        <translation>透明度</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="56"/>
         <source>Account: </source>
         <translation>アカウント：</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="56"/>
+        <location filename="src/settingwindow.cpp" line="57"/>
         <source>Logout</source>
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="61"/>
+        <location filename="src/settingwindow.cpp" line="62"/>
         <source>Not logged in</source>
         <translation>ログインしてない</translation>
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="125"/>
-        <location filename="src/settingwindow.cpp" line="328"/>
+        <location filename="src/settingwindow.cpp" line="334"/>
         <source>Checking for update...</source>
         <translation>更新を確認中</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="336"/>
+        <location filename="src/settingwindow.cpp" line="342"/>
         <source>New version available</source>
         <translation>新しいバージョンに更新できます</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="337"/>
+        <location filename="src/settingwindow.cpp" line="343"/>
         <source>Click here to update</source>
         <translation>新しいバージョンに更新する</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="339"/>
+        <location filename="src/settingwindow.cpp" line="345"/>
         <source>No update available</source>
         <translation>すでに最新のバージョンです</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="373"/>
+        <location filename="src/settingwindow.cpp" line="379"/>
         <source>Updating...</source>
         <translation>更新中...</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="384"/>
+        <location filename="src/settingwindow.cpp" line="390"/>
         <source>Restarting...</source>
         <translation>再起動中</translation>
     </message>
