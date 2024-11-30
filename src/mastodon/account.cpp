@@ -122,6 +122,7 @@ QString MastodonAccount::queryParamForSource(Source source) {
     case Direct:
         return "direct";
     }
+    return "";
 }
 
 StreamEvent* MastodonAccount::getStreamEventFromWebSocketMessage(QString message) {

@@ -269,6 +269,7 @@ QString printSocketError(QAbstractSocket::SocketError error) {
     case QAbstractSocket::SocketError::UnknownSocketError:
         return "UnknownSocketError";
     }
+    return "";
 }
 
 void MainWindow::onWebSocketErrorOccurred(QAbstractSocket::SocketError error){
