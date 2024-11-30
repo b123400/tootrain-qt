@@ -52,6 +52,7 @@ QString MisskeyStreamSource::displayName() {
     case Channel:
         return tr("Channel - ") + this->channelName;
     }
+    return "";
 }
 
 void MisskeyStreamSource::saveToSettings(QSettings *settings) {
