@@ -116,6 +116,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, &QTimer::timeout, this, &MainWindow::onRepaintTimer);
     timer->start(17); // 60fps
 #endif
+#ifdef Q_OS_LINUX
+    preferencesTriggered(false);
+#endif
 }
 
 MainWindow::~MainWindow() {}
