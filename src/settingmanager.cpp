@@ -30,6 +30,23 @@ void SettingManager::saveAccounts(QList<Account*> accounts) {
     emit this->currentAccountChanged();
 }
 
+void SettingManager::deleteAccountWithUuid(QString uuid) {
+    auto accounts = this->getAccounts();
+    int index = -1;
+    for (qsizetype i = 0; i < accounts.size(); i++) {
+        Account *a = accounts[i];
+        if (a->uuid == uuid) {
+            index = i;
+            break;
+        }
+    }
+    if (index != -1) {
+        accounts.removeAt(index);
+    }
+    this->saveAccounts(accounts);
+    qDeleteAll(accounts);
+}
+
 QList<Account*> SettingManager::getAccounts() {
     QList<Account*> accounts;
     int size = settings.beginReadArray("accounts");

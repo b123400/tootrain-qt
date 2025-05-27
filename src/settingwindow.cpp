@@ -11,6 +11,7 @@
 #include "QtGui/qscreen.h"
 #include "ui_settingwindow.h"
 #include "settingmanager.h"
+#include "imagemanager.h"
 
 SettingWindow::SettingWindow(QWidget *parent)
     : QWidget(parent)
@@ -19,7 +20,8 @@ SettingWindow::SettingWindow(QWidget *parent)
     ui->setupUi(this);
     this->setFixedSize(size());
 
-    connect(ui->loginButton, &QAbstractButton::clicked, this, &SettingWindow::loginButtonClicked);
+    connect(ui->addAccountButton, &QAbstractButton::clicked, this, &SettingWindow::addAccountButtonClicked);
+    connect(ui->deleteAccountButton, &QAbstractButton::clicked, this, &SettingWindow::deleteAccountButtonClicked);
     connect(ui->configButton, &QAbstractButton::clicked, this, &SettingWindow::configureButtonClicked);
     connect(ui->checkOrUpdateButton, &QAbstractButton::clicked, this, &SettingWindow::checkOrUpdateClicked);
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
@@ -48,19 +50,44 @@ SettingWindow::~SettingWindow()
     delete ui;
 }
 
-void SettingWindow::loadAccount() {
+void SettingWindow::loadAccounts() {
     auto accounts = SettingManager::shared().getAccounts();
     if (accounts.size()) {
+        // TODO: multiple accounts
         currentAccount = accounts.at(0);
         ui->currentAccountName->setText(tr("Account: ") + currentAccount->fullUsername());
-        ui->loginButton->setText(tr("Logout"));
         ui->configButton->show();
         currentAccount->setParent(this);
     } else {
         currentAccount = nullptr;
         ui->currentAccountName->setText(tr("Not logged in"));
-        ui->loginButton->setText(tr("Login"));
         ui->configButton->hide();
+    }
+
+    ui->accountTable->clearContents();
+    ui->accountTable->setColumnCount(3);
+    ui->accountTable->setRowCount(accounts.size());
+    ui->accountTable->setColumnWidth(0, 32);
+    ui->accountTable->setColumnWidth(1, 32);
+    ui->accountTable->setColumnWidth(2, 230);
+    int i = 0;
+    for (auto account : accounts) {
+        bool hasImage = ImageManager::shared().isReady(account->avatarUrl);
+        QTableWidgetItem *avatarItem = NULL;
+        if (hasImage) {
+            avatarItem = new QTableWidgetItem(QIcon(ImageManager::shared().pathForUrl(account->avatarUrl)), "");
+        } else {
+            avatarItem = new QTableWidgetItem("");
+            ImageManager::shared().download(account->avatarUrl);
+            // TODO: after download: reload
+        }
+        ui->accountTable->setItem(i, 0, new QTableWidgetItem(i == 0 ? "✅" : ""));
+        ui->accountTable->setItem(i, 1, avatarItem);
+        ui->accountTable->setItem(i, 2, new QTableWidgetItem(account->fullUsername()));
+        i++;
+    }
+    for (qsizetype i = 1; i < accounts.size(); i++) {
+        delete accounts[i];
     }
 }
 
@@ -91,7 +118,7 @@ void SettingWindow::loadScreens() {
 void SettingWindow::reloadUIFromSettings() {
     disconnect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 
-    loadAccount();
+    loadAccounts();
     loadScreens();
 
     ui->showAvatarCheckBox->setCheckState(
@@ -128,22 +155,32 @@ void SettingWindow::reloadUIFromSettings() {
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 }
 
-void SettingWindow::loginButtonClicked() {
-    if (currentAccount) {
-        delete currentAccount;
-        currentAccount = nullptr;
-        SettingManager::shared().clearAccounts();
-        loadAccount();
-    } else {
-        QMenu menu = QMenu(this);
-        QAction mastodonAction = QAction("Mastodon", this);
-        connect(&mastodonAction, &QAction::triggered, this, &SettingWindow::loginToMastodon);
-        menu.addAction(&mastodonAction);
-        QAction misskeyAction = QAction("Misskey", this);
-        connect(&misskeyAction, &QAction::triggered, this, &SettingWindow::loginToMisskey);
-        menu.addAction(&misskeyAction);
-        menu.exec(ui->loginButton->cursor().pos());
+void SettingWindow::addAccountButtonClicked() {
+    QMenu menu = QMenu(this);
+    QAction mastodonAction = QAction("Mastodon", this);
+    connect(&mastodonAction, &QAction::triggered, this, &SettingWindow::loginToMastodon);
+    menu.addAction(&mastodonAction);
+    QAction misskeyAction = QAction("Misskey", this);
+    connect(&misskeyAction, &QAction::triggered, this, &SettingWindow::loginToMisskey);
+    menu.addAction(&misskeyAction);
+    menu.exec(ui->addAccountButton->cursor().pos());
+}
+
+void SettingWindow::deleteAccountButtonClicked() {
+    auto selectedItems = ui->accountTable->selectedItems();
+    if (selectedItems.empty()) return;
+    auto accounts = SettingManager::shared().getAccounts();
+    for (auto item : selectedItems) {
+        int selectedRow = item->row();
+        if (selectedRow < accounts.size()) {
+            SettingManager::shared().deleteAccountWithUuid(accounts[selectedRow]->uuid);
+        }
     }
+    delete currentAccount;
+    currentAccount = nullptr;
+    qDeleteAll(accounts);
+    accounts.clear();
+    loadAccounts();
 }
 
 void SettingWindow::loginToMastodon(bool _checked) {
@@ -167,29 +204,53 @@ void SettingWindow::mastodonAccountFinished() {
     mastodonOAuthWindow = nullptr;
 }
 
-void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *account) {
-    qDebug() << account->username;
-    // TODO: Support multiple accounts
-    QList<Account*> list;
-    list.append(account);
-    SettingManager::shared().saveAccounts(list);
-    loadAccount();
+void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *newAccount) {
+    qDebug() << newAccount->username;
+    QList<Account*> list = SettingManager::shared().getAccounts();
+    bool isAccountNew = true;
+    QList<Account*> newAccounts = QList<Account*>();
+    for (auto oldAccount : list) {
+        if (oldAccount->fullUsername() == newAccount->fullUsername()) {
+            newAccounts.append(newAccount);
+            isAccountNew = false;
+        } else {
+            newAccounts.append(oldAccount);
+        }
+    }
+    if (isAccountNew) {
+        newAccounts.append(newAccount);
+    }
+    SettingManager::shared().saveAccounts(newAccounts);
+    qDeleteAll(list);
+    list.clear();
+    loadAccounts();
 }
 
 void SettingWindow::configureButtonClicked() {
+    auto selectedRows = ui->accountTable->selectedItems();
+    if (selectedRows.empty()) return;
+    int row = selectedRows[0]->row();
+    auto accounts = SettingManager::shared().getAccounts();
     if (this->currentAccount == nullptr) return;
-    if (dynamic_cast<MastodonAccount*>(this->currentAccount) != nullptr) {
-        openMastodonSettings();
-    } else if (dynamic_cast<MisskeyAccount*>(this->currentAccount) != nullptr) {
-        openMisskeySettings();
+    auto selectedAccount = accounts[row];
+    if (dynamic_cast<MastodonAccount*>(selectedAccount) != nullptr) {
+        openMastodonSettings((MastodonAccount*)selectedAccount);
+    } else if (dynamic_cast<MisskeyAccount*>(selectedAccount) != nullptr) {
+        openMisskeySettings((MisskeyAccount*)selectedAccount);
     }
+    for (qsizetype i = 0; i < accounts.size(); i++) {
+        if (i != row) {
+            delete accounts[i];
+        }
+    }
+    accounts.clear();
 }
 
-void SettingWindow::openMastodonSettings() {
+void SettingWindow::openMastodonSettings(MastodonAccount *account) {
     if (this->mastodonSettingWindow != nullptr) {
         this->mastodonSettingWindow->show();
     } else {
-        MastodonSettingWindow *settingWindow = new MastodonSettingWindow((MastodonAccount*)currentAccount, this);
+        MastodonSettingWindow *settingWindow = new MastodonSettingWindow(account, this);
         this->mastodonSettingWindow = settingWindow;
         connect(this->mastodonSettingWindow, &QDialog::finished, this, &SettingWindow::mastodonSettingFinished);
         connect(this->mastodonSettingWindow, &MastodonSettingWindow::accountUpdated, this, &SettingWindow::mastodonSettingUpdated);
@@ -197,11 +258,11 @@ void SettingWindow::openMastodonSettings() {
         this->mastodonSettingWindow->show();
     }
 }
-void SettingWindow::openMisskeySettings() {
+void SettingWindow::openMisskeySettings(MisskeyAccount *account) {
     if (this->misskeySettingWindow != nullptr) {
         this->misskeySettingWindow->show();
     } else {
-        MisskeySettingWindow *settingWindow = new MisskeySettingWindow((MisskeyAccount*)currentAccount, this);
+        MisskeySettingWindow *settingWindow = new MisskeySettingWindow(account, this);
         this->misskeySettingWindow = settingWindow;
         connect(this->misskeySettingWindow, &QDialog::finished, this, &SettingWindow::misskeySettingFinished);
         connect(this->misskeySettingWindow, &MisskeySettingWindow::accountUpdated, this, &SettingWindow::misskeySettingUpdated);
@@ -220,20 +281,36 @@ void SettingWindow::misskeySettingFinished() {
     misskeySettingWindow = nullptr;
 }
 
-void SettingWindow::mastodonSettingUpdated(MastodonAccount *account) {
-    // TODO: Support multiple accounts
-    QList<Account*> list;
-    list.append(account);
-    SettingManager::shared().saveAccounts(list);
-    loadAccount();
+void SettingWindow::mastodonSettingUpdated(MastodonAccount *newAccount) {
+    QList<Account*> list = SettingManager::shared().getAccounts();
+    QList<Account*> newAccounts = QList<Account*>();
+    for (auto oldAccount : list) {
+        if (oldAccount->uuid == newAccount->uuid) {
+            newAccounts.append(newAccount);
+        } else {
+            newAccounts.append(oldAccount);
+        }
+    }
+    SettingManager::shared().saveAccounts(newAccounts);
+    qDeleteAll(list);
+    list.clear();
+    loadAccounts();
 }
 
-void SettingWindow::misskeySettingUpdated(MisskeyAccount *account) {
-    // TODO: Support multiple accounts
-    QList<Account*> list;
-    list.append(account);
-    SettingManager::shared().saveAccounts(list);
-    loadAccount();
+void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
+    QList<Account*> list = SettingManager::shared().getAccounts();
+    QList<Account*> newAccounts = QList<Account*>();
+    for (auto oldAccount : list) {
+        if (oldAccount->uuid == newAccount->uuid) {
+            newAccounts.append(newAccount);
+        } else {
+            newAccounts.append(oldAccount);
+        }
+    }
+    SettingManager::shared().saveAccounts(newAccounts);
+    qDeleteAll(list);
+    list.clear();
+    loadAccounts();
 }
 
 void SettingWindow::misskeyAccountFinished() {
@@ -241,13 +318,26 @@ void SettingWindow::misskeyAccountFinished() {
     misskeyAuthWindow = nullptr;
 }
 
-void SettingWindow::misskeyAccountAuthenticated(MisskeyAccount *account) {
-    qDebug() << account->username;
-    // TODO: Support multiple accounts
-    QList<Account*> list;
-    list.append(account);
-    SettingManager::shared().saveAccounts(list);
-    loadAccount();
+void SettingWindow::misskeyAccountAuthenticated(MisskeyAccount *newAccount) {
+    qDebug() << newAccount->username;
+    QList<Account*> list = SettingManager::shared().getAccounts();
+    bool isAccountNew = true;
+    QList<Account*> newAccounts = QList<Account*>();
+    for (auto oldAccount : list) {
+        if (oldAccount->fullUsername() == newAccount->fullUsername()) {
+            newAccounts.append(newAccount);
+            isAccountNew = false;
+        } else {
+            newAccounts.append(oldAccount);
+        }
+    }
+    if (isAccountNew) {
+        newAccounts.append(newAccount);
+    }
+    SettingManager::shared().saveAccounts(newAccounts);
+    qDeleteAll(list);
+    list.clear();
+    loadAccounts();
 }
 
 void SettingWindow::screenIndexChanged(int index) {

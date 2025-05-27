@@ -17,6 +17,7 @@ public:
     static SettingManager &shared() {static SettingManager man; return man;}
 
     void saveAccounts(QList<Account*>);
+    void deleteAccountWithUuid(QString uuid);
     QList<Account*> getAccounts();
     void clearAccounts();
 

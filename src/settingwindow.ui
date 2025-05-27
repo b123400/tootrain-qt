@@ -35,7 +35,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="Account">
     <attribute name="title">
@@ -44,9 +44,9 @@
     <widget class="QPushButton" name="configButton">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>30</y>
-       <width>120</width>
+       <x>209</x>
+       <y>280</y>
+       <width>101</width>
        <height>32</height>
       </rect>
      </property>
@@ -67,27 +67,58 @@
       <string>Status</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="loginButton">
+    <widget class="QTableWidget" name="accountTable">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>30</y>
+       <width>295</width>
+       <height>251</height>
+      </rect>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+     <property name="cornerButtonEnabled">
+      <bool>false</bool>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+    <widget class="QPushButton" name="addAccountButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>280</y>
        <width>100</width>
        <height>32</height>
       </rect>
      </property>
      <property name="text">
-      <string>Login</string>
+      <string>Add Account</string>
      </property>
     </widget>
-    <widget class="QTableView" name="tableView">
+    <widget class="QPushButton" name="deleteAccountButton">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>70</y>
-       <width>300</width>
-       <height>192</height>
+       <x>130</x>
+       <y>280</y>
+       <width>71</width>
+       <height>32</height>
       </rect>
+     </property>
+     <property name="text">
+      <string>Delete</string>
      </property>
     </widget>
    </widget>
@@ -148,7 +179,7 @@
       <rect>
        <x>130</x>
        <y>120</y>
-       <width>161</width>
+       <width>171</width>
        <height>32</height>
       </rect>
      </property>
@@ -165,7 +196,7 @@
     <widget class="QPushButton" name="fontButton">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>210</x>
        <y>90</y>
        <width>100</width>
        <height>32</height>
@@ -226,7 +257,7 @@
     <widget class="QPushButton" name="shadowColorButton">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>210</x>
        <y>60</y>
        <width>100</width>
        <height>32</height>
@@ -239,7 +270,7 @@
     <widget class="QPushButton" name="textColorButton">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>210</x>
        <y>30</y>
        <width>100</width>
        <height>32</height>
@@ -328,7 +359,7 @@
       <rect>
        <x>130</x>
        <y>150</y>
-       <width>161</width>
+       <width>171</width>
        <height>32</height>
       </rect>
      </property>
@@ -363,7 +394,7 @@
       <rect>
        <x>130</x>
        <y>0</y>
-       <width>170</width>
+       <width>180</width>
        <height>32</height>
       </rect>
      </property>

@@ -22,13 +22,14 @@ public:
     ~SettingWindow();
 
 public slots:
-    void loginButtonClicked();
+    void addAccountButtonClicked();
+    void deleteAccountButtonClicked();
     void loginToMastodon(bool _checked);
     void loginToMisskey(bool _checked);
 
     void configureButtonClicked();
-    void openMastodonSettings();
-    void openMisskeySettings();
+    void openMastodonSettings(MastodonAccount *account);
+    void openMisskeySettings(MisskeyAccount *account);
 
     void mastodonAccountFinished();
     void mastodonAccountAuthenticated(MastodonAccount *account);
@@ -66,7 +67,7 @@ private:
     Account *currentAccount = nullptr;
     QProcess updateProcess;
 
-    void loadAccount();
+    void loadAccounts();
     void loadScreens();
     void reloadUIFromSettings();
 
