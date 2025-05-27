@@ -125,6 +125,10 @@ QString MastodonAccount::queryParamForSource(Source source) {
     return "";
 }
 
+QString MastodonAccount::serviceName() {
+    return "Mastodon";
+}
+
 StreamEvent* MastodonAccount::getStreamEventFromWebSocketMessage(QString message) {
     QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
     QJsonObject jsonReply = jsonDoc.object();
