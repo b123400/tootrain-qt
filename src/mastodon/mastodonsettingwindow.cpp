@@ -98,20 +98,22 @@ void MastodonSettingWindow::updateButtonState() {
     if (ui->hashtagLocalButton->isChecked() && currentHashtag.isEmpty()) {
         isOkEnabled = false;
     }
-    ui->listComboBox->clear();
-    int i = 0;
-    int selectedIndex = -1;
-    for (auto list : this->lists) {
-        ui->listComboBox->addItem(list->title, list->id);
-        if (list->id == currentListId) {
-            selectedIndex = i;
+    if (ui->listButton->isChecked()) {
+        ui->listComboBox->clear();
+        int i = 0;
+        int selectedIndex = -1;
+        for (auto list : this->lists) {
+            ui->listComboBox->addItem(list->title, list->id);
+            if (list->id == currentListId) {
+                selectedIndex = i;
+            }
+            i++;
         }
-        i++;
-    }
-    if (selectedIndex >= 0 && !currentListId.isEmpty()) {
-        ui->listComboBox->setCurrentIndex(selectedIndex);
-    } else {
-        isOkEnabled = false;
+        if (selectedIndex >= 0 && !currentListId.isEmpty()) {
+            ui->listComboBox->setCurrentIndex(selectedIndex);
+        } else {
+            isOkEnabled = false;
+        }
     }
 
     ui->okButton->setEnabled(isOkEnabled);
