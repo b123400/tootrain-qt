@@ -11,7 +11,6 @@
 #include "QtGui/qscreen.h"
 #include "ui_settingwindow.h"
 #include "settingmanager.h"
-#include "mastodon/client.h"
 
 SettingWindow::SettingWindow(QWidget *parent)
     : QWidget(parent)
