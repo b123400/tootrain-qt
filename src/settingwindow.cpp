@@ -108,7 +108,7 @@ void SettingWindow::reloadUIFromSettings() {
     ui->shadowColorFrame->setPalette(shadowPalette);
 
     QFont font = SettingManager::shared().font();
-    ui->fontLabel->setText(tr("Font:") + " " + font.family() + " " + QString::number(font.pointSize()) + "px");
+    ui->fontValueLabel->setText(font.family() + " " + QString::number(font.pointSize()) + "px");
 
     int textLengthLimit = SettingManager::shared().textLengthLimit();
     if (textLengthLimit <= 0) {
