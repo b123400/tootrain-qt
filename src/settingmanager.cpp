@@ -39,9 +39,9 @@ QList<Account*> SettingManager::getAccounts() {
         Account *account = nullptr;
         QString type = settings.value("type").toString();
         if (type == "mastodon") {
-            account = new MastodonAccount(&settings, this);
+            account = new MastodonAccount(&settings);
         } else if (type == "misskey") {
-            account = new MisskeyAccount(&settings, this);
+            account = new MisskeyAccount(&settings);
         }
         accounts.append(account);
     }

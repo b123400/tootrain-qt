@@ -95,9 +95,8 @@ MainWindow::MainWindow(QWidget *parent)
     if (!accounts.size()) {
         this->preferencesTriggered(false);
     }
-    for (auto a : accounts) {
-        delete a;
-    }
+    qDeleteAll(accounts);
+    accounts.clear(); // Just in case, no dangling pointers
 
     SettingManager::shared().checkForUpdate([=](bool hasUpdate) {
         QTimer::singleShot(0, this, [=]{
@@ -170,9 +169,10 @@ void MainWindow::startStreaming() {
         QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
         webSocket.open(request);
         // TODO: support multiple account, delete other unused accounts
-        // for (auto a : accounts) {
-        //     delete a;
-        // }
+        for (qsizetype i = 1; i < accounts.size(); i++) {
+            delete accounts[i];
+        }
+        accounts.clear(); // No dangling pointers
     }
 }
 

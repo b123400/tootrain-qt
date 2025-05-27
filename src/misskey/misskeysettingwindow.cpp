@@ -10,6 +10,7 @@ MisskeySettingWindow::MisskeySettingWindow(MisskeyAccount *account, QWidget *par
     ui->setupUi(this);
     setFixedSize(size());
     this->account = account;
+    account->setParent(this);
     this->allSources = MisskeyStreamSource::defaultSources(this);
 
     reloadListItems();

@@ -7,6 +7,7 @@ MastodonSettingWindow::MastodonSettingWindow(MastodonAccount*account, QWidget *p
     , ui(new Ui::MastodonSettingWindow)
 {
     this->account = account;
+    account->setParent(this);
     ui->setupUi(this);
 
     connect(ui->publicButton, &QAbstractButton::clicked, this, &MastodonSettingWindow::sourceButtonClicked);
