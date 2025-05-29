@@ -23,11 +23,13 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->addAccountButton, &QAbstractButton::clicked, this, &SettingWindow::addAccountButtonClicked);
     connect(ui->deleteAccountButton, &QAbstractButton::clicked, this, &SettingWindow::deleteAccountButtonClicked);
     connect(ui->configButton, &QAbstractButton::clicked, this, &SettingWindow::configureButtonClicked);
+    connect(ui->accountTable, &QTableWidget::itemSelectionChanged, this, &SettingWindow::accountTableSelectionChanged);
     connect(ui->checkOrUpdateButton, &QAbstractButton::clicked, this, &SettingWindow::checkOrUpdateClicked);
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
     connect(&updateProcess, &QProcess::errorOccurred, this, &SettingWindow::updateErrored);
 
     reloadUIFromSettings();
+    reloadAccountButtons();
 
     connect(ui->showAvatarCheckBox, &QCheckBox::checkStateChanged, this, &SettingWindow::showAvatarCheckBoxChanged);
     connect(ui->textColorButton, &QAbstractButton::clicked, this, &SettingWindow::textColorButtonClicked);
@@ -69,7 +71,7 @@ void SettingWindow::loadAccounts() {
     ui->accountTable->setRowCount(accounts.size());
     ui->accountTable->setColumnWidth(0, 32);
     ui->accountTable->setColumnWidth(1, 32);
-    ui->accountTable->setColumnWidth(2, 230);
+    ui->accountTable->setColumnWidth(2, 367);
     int i = 0;
     for (auto account : accounts) {
         bool hasImage = ImageManager::shared().isReady(account->avatarUrl);
@@ -155,6 +157,28 @@ void SettingWindow::reloadUIFromSettings() {
     connect(ui->screenComboBox, &QComboBox::currentIndexChanged, this, &SettingWindow::screenIndexChanged);
 }
 
+void SettingWindow::reloadAccountButtons() {
+    auto selectedItems = ui->accountTable->selectedItems();
+    if (selectedItems.isEmpty()) {
+        ui->deleteAccountButton->setEnabled(false);
+        ui->connectButton->setEnabled(false);
+        ui->configButton->setEnabled(false);
+    } else {
+        ui->deleteAccountButton->setEnabled(true);
+        ui->connectButton->setEnabled(true);
+        ui->configButton->setEnabled(true);
+        for (auto selectedItem : selectedItems) {
+            int row = selectedItem->row();
+            bool isConnected = row == 0; // TODO
+            if (isConnected) {
+                ui->connectButton->setText(tr("Disconnect"));
+            } else {
+                ui->connectButton->setText(tr("Connect"));
+            }
+        }
+    }
+}
+
 void SettingWindow::addAccountButtonClicked() {
     QMenu menu = QMenu(this);
     QAction mastodonAction = QAction("Mastodon", this);
@@ -181,6 +205,10 @@ void SettingWindow::deleteAccountButtonClicked() {
     qDeleteAll(accounts);
     accounts.clear();
     loadAccounts();
+}
+
+void SettingWindow::accountTableSelectionChanged() {
+    reloadAccountButtons();
 }
 
 void SettingWindow::loginToMastodon(bool _checked) {
@@ -244,6 +272,10 @@ void SettingWindow::configureButtonClicked() {
         }
     }
     accounts.clear();
+}
+
+void SettingWindow::connectButtonClicked() {
+    // TODO
 }
 
 void SettingWindow::openMastodonSettings(MastodonAccount *account) {

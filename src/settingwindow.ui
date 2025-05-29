@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>340</width>
+    <width>480</width>
     <height>362</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>320</width>
+     <width>460</width>
      <height>341</height>
     </rect>
    </property>
@@ -44,7 +44,7 @@
     <widget class="QPushButton" name="configButton">
      <property name="geometry">
       <rect>
-       <x>209</x>
+       <x>344</x>
        <y>280</y>
        <width>101</width>
        <height>32</height>
@@ -72,8 +72,8 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>295</width>
-       <height>251</height>
+       <width>435</width>
+       <height>248</height>
       </rect>
      </property>
      <property name="editTriggers">
@@ -111,7 +111,7 @@
     <widget class="QPushButton" name="deleteAccountButton">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>120</x>
        <y>280</y>
        <width>71</width>
        <height>32</height>
@@ -119,6 +119,19 @@
      </property>
      <property name="text">
       <string>Delete</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="connectButton">
+     <property name="geometry">
+      <rect>
+       <x>234</x>
+       <y>280</y>
+       <width>101</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Connect</string>
      </property>
     </widget>
    </widget>
@@ -129,7 +142,7 @@
     <widget class="QLabel" name="textColorLabel">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>50</x>
        <y>40</y>
        <width>110</width>
        <height>16</height>
@@ -145,7 +158,7 @@
     <widget class="QLabel" name="opacityLabel">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>50</x>
        <y>160</y>
        <width>110</width>
        <height>16</height>
@@ -161,7 +174,7 @@
     <widget class="QLabel" name="shadowColorLabel">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>50</x>
        <y>70</y>
        <width>110</width>
        <height>16</height>
@@ -177,7 +190,7 @@
     <widget class="QSlider" name="speedSlider">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>170</x>
        <y>120</y>
        <width>171</width>
        <height>32</height>
@@ -196,7 +209,7 @@
     <widget class="QPushButton" name="fontButton">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>250</x>
        <y>90</y>
        <width>100</width>
        <height>32</height>
@@ -209,7 +222,7 @@
     <widget class="QLabel" name="fontLabel">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>50</x>
        <y>100</y>
        <width>110</width>
        <height>16</height>
@@ -225,7 +238,7 @@
     <widget class="QCheckBox" name="ignoreContentWarningCheckBox">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>70</x>
        <y>280</y>
        <width>361</width>
        <height>20</height>
@@ -238,7 +251,7 @@
     <widget class="QFrame" name="shadowColorFrame">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>170</x>
        <y>70</y>
        <width>40</width>
        <height>16</height>
@@ -257,7 +270,7 @@
     <widget class="QPushButton" name="shadowColorButton">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>250</x>
        <y>60</y>
        <width>100</width>
        <height>32</height>
@@ -270,7 +283,7 @@
     <widget class="QPushButton" name="textColorButton">
      <property name="geometry">
       <rect>
-       <x>210</x>
+       <x>250</x>
        <y>30</y>
        <width>100</width>
        <height>32</height>
@@ -283,7 +296,7 @@
     <widget class="QFrame" name="textColorFrame">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>170</x>
        <y>40</y>
        <width>40</width>
        <height>16</height>
@@ -302,7 +315,7 @@
     <widget class="QCheckBox" name="lengthLimitCheckBox">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>70</x>
        <y>220</y>
        <width>281</width>
        <height>20</height>
@@ -315,7 +328,7 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>50</x>
        <y>130</y>
        <width>110</width>
        <height>16</height>
@@ -331,7 +344,7 @@
     <widget class="QCheckBox" name="showAvatarCheckBox">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>70</x>
        <y>190</y>
        <width>281</width>
        <height>20</height>
@@ -344,7 +357,7 @@
     <widget class="QCheckBox" name="hideUrlCheckbox">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>70</x>
        <y>250</y>
        <width>291</width>
        <height>20</height>
@@ -357,7 +370,7 @@
     <widget class="QSlider" name="opacitySlider">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>170</x>
        <y>150</y>
        <width>171</width>
        <height>32</height>
@@ -376,7 +389,7 @@
     <widget class="QSpinBox" name="lengthLimitSpinBox">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>190</x>
        <y>220</y>
        <width>42</width>
        <height>22</height>
@@ -392,7 +405,7 @@
     <widget class="QComboBox" name="screenComboBox">
      <property name="geometry">
       <rect>
-       <x>130</x>
+       <x>170</x>
        <y>0</y>
        <width>180</width>
        <height>32</height>
@@ -402,7 +415,7 @@
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>50</x>
        <y>10</y>
        <width>110</width>
        <height>16</height>
@@ -418,7 +431,7 @@
     <widget class="QLabel" name="fontValueLabel">
      <property name="geometry">
       <rect>
-       <x>129</x>
+       <x>169</x>
        <y>100</y>
        <width>71</width>
        <height>16</height>

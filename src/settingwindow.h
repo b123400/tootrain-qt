@@ -24,10 +24,12 @@ public:
 public slots:
     void addAccountButtonClicked();
     void deleteAccountButtonClicked();
+    void accountTableSelectionChanged();
     void loginToMastodon(bool _checked);
     void loginToMisskey(bool _checked);
 
     void configureButtonClicked();
+    void connectButtonClicked();
     void openMastodonSettings(MastodonAccount *account);
     void openMisskeySettings(MisskeyAccount *account);
 
@@ -70,6 +72,7 @@ private:
     void loadAccounts();
     void loadScreens();
     void reloadUIFromSettings();
+    void reloadAccountButtons();
 
     void checkForUpdate();
     void runUpdate();
