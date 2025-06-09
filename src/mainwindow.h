@@ -25,28 +25,15 @@ public slots:
     void preferencesTriggered(bool check);
     void aboutDialogClicked(bool check);
     void settingsOpacityUpdated(qreal opacity);
-    void onWebSocketTextMessageReceived(QString message);
-    void onWebSocketConnected();
-    void onWebSocketDisconnected();
-    void onWebSocketErrorOccurred(QAbstractSocket::SocketError error);
     void onAnimationFinish();
     void onRepaintTimer();
-    void onPingTimer();
-    void onCurrentAccountChanged();
     void onCurrentScreenChanged();
-    void onStatusEmojisLoaded(Status *status);
-    void onReconnectTimer();
+    void onStatus(Status *status);
 
 private:
     SettingWindow *settingWindow = nullptr;
 
     QQueue<AnimationState*> animationStates;
     Account *currentAccount = nullptr;
-
-    QWebSocket webSocket;
-    void startStreaming();
-    void stopStreaming();
-    void reconnect(bool afterAWhile);
-    bool scheduledReconnect;
 };
 #endif // MAINWINDOW_H

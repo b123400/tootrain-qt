@@ -21,9 +21,9 @@
 #include "settingwindow.h"
 #include "settingmanager.h"
 #include "dummystatus.h"
-#include "statusimageloader.h"
 #include "aboutdialog.h"
 #include <QApplication>
+#include "streammanager.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -73,25 +73,22 @@ MainWindow::MainWindow(QWidget *parent)
     connect(trayQuitAction, &QAction::triggered, QCoreApplication::instance(), &QCoreApplication::quit);
     trayIcon->show();
 
-    connect(&StatusImageLoader::shared(), &StatusImageLoader::statusIsReady, this, &MainWindow::onStatusEmojisLoaded);
+    connect(&StreamManager::shared(), &StreamManager::gotStatus, this, &MainWindow::onStatus);
 
-    connect(&webSocket, &QWebSocket::connected, this, &MainWindow::onWebSocketConnected);
-    connect(&webSocket, &QWebSocket::textMessageReceived, this, &MainWindow::onWebSocketTextMessageReceived);
-    connect(&webSocket, &QWebSocket::errorOccurred, this, &MainWindow::onWebSocketErrorOccurred);
-    connect(&webSocket, &QWebSocket::disconnected, this, &MainWindow::onWebSocketDisconnected);
-
-    QTimer *pingTimer = new QTimer(this);
-    connect(pingTimer, &QTimer::timeout, this, &MainWindow::onPingTimer);
-    pingTimer->start(60000);
-
-    connect(&SettingManager::shared(), &SettingManager::currentAccountChanged, this, &MainWindow::onCurrentAccountChanged);
     connect(&SettingManager::shared(), &SettingManager::currentScreenChanged, this, &MainWindow::onCurrentScreenChanged);
     connect(&SettingManager::shared(), &SettingManager::settingsOpacityUpdated, this, &MainWindow::settingsOpacityUpdated);
     moveToScreen();
 
-    startStreaming();
+    // Initial stream
+    auto streamingAccounts = SettingManager::shared().streamingAccounts();
+    foreach (auto account, streamingAccounts) {
+        StreamManager::shared().startStreaming(account);
+    }
+    qDeleteAll(streamingAccounts);
+    streamingAccounts.clear();
 
     auto accounts = SettingManager::shared().getAccounts();
+    // TODO: open when nothing is streaming
     if (!accounts.size()) {
         this->preferencesTriggered(false);
     }
@@ -142,11 +139,6 @@ void MainWindow::onRepaintTimer() {
     this->repaint();
 }
 
-void MainWindow::onPingTimer() {
-    if (webSocket.state() != QAbstractSocket::SocketState::ConnectedState ) return;
-    webSocket.ping();
-}
-
 void MainWindow::moveToScreen() {
     QScreen *theScreen = SettingManager::shared().getScreen();
     this->setScreen(theScreen);
@@ -155,154 +147,14 @@ void MainWindow::moveToScreen() {
     show();
 }
 
-void MainWindow::startStreaming() {
-    if (this->currentAccount != nullptr) {
-        delete this->currentAccount;
-        this->currentAccount = nullptr;
-    }
-    auto accounts = SettingManager::shared().getAccounts();
-    if (accounts.size()) {
-        // Only take the first one
-        auto account = accounts.at(0);
-        this->currentAccount = account;
-
-        QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
-        webSocket.open(request);
-        // TODO: support multiple account, delete other unused accounts
-        for (qsizetype i = 1; i < accounts.size(); i++) {
-            delete accounts[i];
-        }
-        accounts.clear(); // No dangling pointers
-    }
-}
-
-void MainWindow::stopStreaming() {
-    webSocket.close();
-    if (this->currentAccount != nullptr) {
-        delete currentAccount;
-        this->currentAccount = nullptr;
-    }
-}
-
-void MainWindow::onStatusEmojisLoaded(Status *status) {
+void MainWindow::onStatus(Status *status) {
     showStatus(status);
-    // delete status;
+    // TODO: delete status;
 }
 
-void MainWindow::onWebSocketTextMessageReceived(QString message) {
-    StreamEvent *se = this->currentAccount->getStreamEventFromWebSocketMessage(message);
-    if (se == nullptr) return;
-    Status *status = se->getStatus();
-    if (status == nullptr) return;
-    status->setParent(this);
-    StatusImageLoader::shared().loadEmojisForStatus(status);
-    delete se;
-}
-
-void MainWindow::onWebSocketConnected() {
-    qDebug() << "connected";
-    auto s = new DummyStatus(tr("Stream connected"), this);
-    showStatus(s);
-    delete s;
-
-    // Should always be true
-    if (this->currentAccount != nullptr) {
-        this->currentAccount->connectedToWebSocket(&webSocket);
-    }
-}
-
-void MainWindow::onWebSocketDisconnected() {
-    auto closeCode = webSocket.closeCode();
-    auto s = new DummyStatus(tr("Stream disconnected"), this);
-    showStatus(s);
-    delete s;
-    if (closeCode != QWebSocketProtocol::CloseCodeNormal) {
-        reconnect(true);
-    }
-}
-
-QString printSocketError(QAbstractSocket::SocketError error) {
-    switch (error) {
-    case QAbstractSocket::SocketError::ConnectionRefusedError:
-        return "ConnectionRefusedError";
-    case QAbstractSocket::SocketError::RemoteHostClosedError:
-        return "RemoteHostClosedError";
-    case QAbstractSocket::SocketError::HostNotFoundError:
-        return "HostNotFoundError";
-    case QAbstractSocket::SocketError::SocketAccessError:
-        return "SocketAccessError";
-    case QAbstractSocket::SocketError::SocketResourceError:
-        return "SocketResourceError";
-    case QAbstractSocket::SocketError::SocketTimeoutError:
-        return "SocketTimeoutError";
-    case QAbstractSocket::SocketError::DatagramTooLargeError:
-        return "DatagramTooLargeError";
-    case QAbstractSocket::SocketError::NetworkError:
-        return "NetworkError";
-    case QAbstractSocket::SocketError::AddressInUseError:
-        return "AddressInUseError";
-    case QAbstractSocket::SocketError::SocketAddressNotAvailableError:
-        return "SocketAddressNotAvailableError";
-    case QAbstractSocket::SocketError::UnsupportedSocketOperationError:
-        return "UnsupportedSocketOperationError";
-    case QAbstractSocket::SocketError::UnfinishedSocketOperationError:
-        return "UnfinishedSocketOperationError";
-    case QAbstractSocket::SocketError::ProxyAuthenticationRequiredError:
-        return "ProxyAuthenticationRequiredError";
-    case QAbstractSocket::SocketError::SslHandshakeFailedError:
-        return "SslHandshakeFailedError";
-    case QAbstractSocket::SocketError::ProxyConnectionRefusedError:
-        return "ProxyConnectionRefusedError";
-    case QAbstractSocket::SocketError::ProxyConnectionClosedError:
-        return "ProxyConnectionClosedError";
-    case QAbstractSocket::SocketError::ProxyConnectionTimeoutError:
-        return "ProxyConnectionTimeoutError";
-    case QAbstractSocket::SocketError::ProxyNotFoundError:
-        return "ProxyNotFoundError";
-    case QAbstractSocket::SocketError::ProxyProtocolError:
-        return "ProxyProtocolError";
-    case QAbstractSocket::SocketError::OperationError:
-        return "OperationError";
-    case QAbstractSocket::SocketError::SslInternalError:
-        return "SslInternalError";
-    case QAbstractSocket::SocketError::SslInvalidUserDataError:
-        return "SslInvalidUserDataError";
-    case QAbstractSocket::SocketError::TemporaryError:
-        return "TemporaryError";
-    case QAbstractSocket::SocketError::UnknownSocketError:
-        return "UnknownSocketError";
-    }
-    return "";
-}
-
-void MainWindow::onWebSocketErrorOccurred(QAbstractSocket::SocketError error){
-    QString errorMessage = printSocketError(error);
-    qDebug() << "error" << errorMessage;
-    reconnect(true);
-}
-
-void MainWindow::reconnect(bool afterAWhile) {
-    if (!afterAWhile) {
-        stopStreaming();
-        startStreaming();
-        scheduledReconnect = false;
-        return;
-    }
-    if (scheduledReconnect) return;
-    scheduledReconnect = true;
-    stopStreaming();
-    QTimer::singleShot(10000, this, &MainWindow::onReconnectTimer);
-}
-
-void MainWindow::onReconnectTimer() {
-    if (!scheduledReconnect) return;
-    scheduledReconnect = false;
-    this->startStreaming();
-}
-
-void MainWindow::onCurrentAccountChanged() {
-    reconnect(false);
-}
+// void MainWindow::onCurrentAccountChanged() {
+//     reconnect(false);
+// }
 
 void MainWindow::onCurrentScreenChanged() {
     moveToScreen();
