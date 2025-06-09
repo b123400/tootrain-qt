@@ -6,6 +6,7 @@
 #include <QTimer>
 #include "mastodon/account.h"
 #include "misskey/misskeyaccount.h"
+#include "streammanager.h"
 
 SettingManager::SettingManager(QObject *parent)
     : QObject{parent}
@@ -64,6 +65,18 @@ QList<Account*> SettingManager::getAccounts() {
     }
     settings.endArray();
     return accounts;
+}
+
+Account* SettingManager::accountWithUuid(QString uuid) {
+    Account *result = nullptr;
+    foreach (auto account, this->getAccounts()) {
+        if (account->uuid == uuid) {
+            result = account;
+        } else {
+            delete account;
+        }
+    }
+    return result;
 }
 
 void SettingManager::clearAccounts() {
@@ -175,6 +188,61 @@ void SettingManager::setOpacity(qreal opacity) {
 }
 qreal SettingManager::opacity() {
     return settings.value("opacity", 1.0).toReal();
+}
+
+QList<Account *> SettingManager::streamingAccounts() {
+    // TODO: migrate from single streaming account
+    QSet<QString> streamingUuids;
+    int size = settings.beginReadArray("streaming-accounts");
+    for (int i = 0; i < size; ++i) {
+        settings.setArrayIndex(i);
+        QString uuid = settings.value("uuid").toString();
+        streamingUuids.insert(uuid);
+    }
+    settings.endArray();
+
+    auto accounts = getAccounts();
+
+    QList<Account*> result;
+    foreach (auto account, accounts) {
+        if (streamingUuids.contains(account->uuid)) {
+            result.append(account);
+        } else {
+            delete account;
+        }
+    }
+    return result;
+}
+
+void SettingManager::setStreamingAccounts(QList<Account *> newAccounts) {
+    // TODO
+    // emit changed
+    auto currentStreamingAccounts = streamingAccounts();
+    QMap<QString, Account *> accountIdsToStop;
+    foreach (auto currentStreamingAccount, currentStreamingAccounts) {
+        accountIdsToStop.insert(currentStreamingAccount->uuid, currentStreamingAccount);
+    }
+
+    foreach (auto newAccount, newAccounts) {
+        StreamManager::shared().startStreaming(newAccount); // No-op if already streaming
+        accountIdsToStop.remove(newAccount->uuid);
+    }
+    for (auto i = accountIdsToStop.cbegin(), end = accountIdsToStop.cend(); i != end; ++i) {
+        auto account = i.value();
+        StreamManager::shared().stopStreaming(account);
+    }
+    auto newStreamingAccountUuids = StreamManager::shared().streamingAccountUuids();
+    settings.remove("streaming-accounts");
+    settings.beginWriteArray("streaming-accounts");
+    for (qsizetype i = 0; i < newStreamingAccountUuids.size(); i++) {
+        settings.setArrayIndex(i);
+
+        QString uuid = newStreamingAccountUuids[i];
+        settings.setValue("uuid", uuid);
+    }
+    settings.endArray();
+
+    qDeleteAll(currentStreamingAccounts);
 }
 
 QString SettingManager::maintenanceToolPath() {

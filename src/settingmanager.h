@@ -20,6 +20,7 @@ public:
     void deleteAccountWithUuid(QString uuid);
     QList<Account*> getAccounts();
     void clearAccounts();
+    Account* accountWithUuid(QString uuid);
 
     void setScreen(QScreen *screen);
     QScreen *getScreen();
@@ -50,6 +51,9 @@ public:
 
     void setOpacity(qreal opacity);
     qreal opacity();
+
+    QList<Account *>streamingAccounts();
+    void setStreamingAccounts(QList<Account *> accounts);
 
     QString maintenanceToolPath();
     void checkForUpdate(std::function<void (bool)> callback);
