@@ -54,30 +54,20 @@
       <string>Configure...</string>
      </property>
     </widget>
-    <widget class="QLabel" name="currentAccountName">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>251</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Status</string>
-     </property>
-    </widget>
     <widget class="QTableWidget" name="accountTable">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>7</y>
        <width>435</width>
-       <height>248</height>
+       <height>271</height>
       </rect>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
      </property>
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>

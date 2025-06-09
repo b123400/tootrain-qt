@@ -66,7 +66,6 @@ private:
     MastodonSettingWindow *mastodonSettingWindow = nullptr;
     MisskeyAuthWindow *misskeyAuthWindow = nullptr;
     MisskeySettingWindow *misskeySettingWindow = nullptr;
-    Account *currentAccount = nullptr;
     QProcess updateProcess;
 
     void loadAccounts();

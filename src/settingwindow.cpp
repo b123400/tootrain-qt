@@ -12,6 +12,7 @@
 #include "ui_settingwindow.h"
 #include "settingmanager.h"
 #include "imagemanager.h"
+#include "streammanager.h"
 
 SettingWindow::SettingWindow(QWidget *parent)
     : QWidget(parent)
@@ -23,6 +24,7 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->addAccountButton, &QAbstractButton::clicked, this, &SettingWindow::addAccountButtonClicked);
     connect(ui->deleteAccountButton, &QAbstractButton::clicked, this, &SettingWindow::deleteAccountButtonClicked);
     connect(ui->configButton, &QAbstractButton::clicked, this, &SettingWindow::configureButtonClicked);
+    connect(ui->connectButton, &QAbstractButton::clicked, this, &SettingWindow::connectButtonClicked);
     connect(ui->accountTable, &QTableWidget::itemSelectionChanged, this, &SettingWindow::accountTableSelectionChanged);
     connect(ui->checkOrUpdateButton, &QAbstractButton::clicked, this, &SettingWindow::checkOrUpdateClicked);
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
@@ -54,43 +56,33 @@ SettingWindow::~SettingWindow()
 
 void SettingWindow::loadAccounts() {
     auto accounts = SettingManager::shared().getAccounts();
-    if (accounts.size()) {
-        // TODO: multiple accounts
-        currentAccount = accounts.at(0);
-        ui->currentAccountName->setText(tr("Account: ") + currentAccount->fullUsername());
-        ui->configButton->show();
-        currentAccount->setParent(this);
-    } else {
-        currentAccount = nullptr;
-        ui->currentAccountName->setText(tr("Not logged in"));
-        ui->configButton->hide();
-    }
 
     ui->accountTable->clearContents();
-    ui->accountTable->setColumnCount(3);
+    ui->accountTable->setColumnCount(2);
     ui->accountTable->setRowCount(accounts.size());
     ui->accountTable->setColumnWidth(0, 32);
-    ui->accountTable->setColumnWidth(1, 32);
-    ui->accountTable->setColumnWidth(2, 367);
+    ui->accountTable->setColumnWidth(1, 400);
+    // ui->accountTable->setColumnWidth(2, 367);
+
+    QList<QString> streamingAccountUuids = StreamManager::shared().streamingAccountUuids();
+
     int i = 0;
     for (auto account : accounts) {
         bool hasImage = ImageManager::shared().isReady(account->avatarUrl);
         QTableWidgetItem *avatarItem = NULL;
         if (hasImage) {
-            avatarItem = new QTableWidgetItem(QIcon(ImageManager::shared().pathForUrl(account->avatarUrl)), "");
+            avatarItem = new QTableWidgetItem(QIcon(ImageManager::shared().pathForUrl(account->avatarUrl)), account->fullUsername());
         } else {
             avatarItem = new QTableWidgetItem("");
             ImageManager::shared().download(account->avatarUrl);
             // TODO: after download: reload
         }
-        ui->accountTable->setItem(i, 0, new QTableWidgetItem(i == 0 ? "✅" : ""));
+        bool isStreaming = streamingAccountUuids.contains(account->uuid);
+        ui->accountTable->setItem(i, 0, new QTableWidgetItem(isStreaming ? "✅" : ""));
         ui->accountTable->setItem(i, 1, avatarItem);
-        ui->accountTable->setItem(i, 2, new QTableWidgetItem(account->fullUsername()));
         i++;
     }
-    for (qsizetype i = 1; i < accounts.size(); i++) {
-        delete accounts[i];
-    }
+    qDeleteAll(accounts);
 }
 
 void SettingWindow::loadScreens() {
@@ -159,6 +151,11 @@ void SettingWindow::reloadUIFromSettings() {
 
 void SettingWindow::reloadAccountButtons() {
     auto selectedItems = ui->accountTable->selectedItems();
+    if (selectedItems.empty()) return;
+    int row = selectedItems[0]->row();
+    auto accounts = SettingManager::shared().getAccounts();
+    if (row >= accounts.count()) return;
+    auto selectedAccount = accounts[row];
     if (selectedItems.isEmpty()) {
         ui->deleteAccountButton->setEnabled(false);
         ui->connectButton->setEnabled(false);
@@ -169,7 +166,7 @@ void SettingWindow::reloadAccountButtons() {
         ui->configButton->setEnabled(true);
         for (auto selectedItem : selectedItems) {
             int row = selectedItem->row();
-            bool isConnected = row == 0; // TODO
+            bool isConnected = StreamManager::shared().isAccountStreaming(selectedAccount);
             if (isConnected) {
                 ui->connectButton->setText(tr("Disconnect"));
             } else {
@@ -200,8 +197,6 @@ void SettingWindow::deleteAccountButtonClicked() {
             SettingManager::shared().deleteAccountWithUuid(accounts[selectedRow]->uuid);
         }
     }
-    delete currentAccount;
-    currentAccount = nullptr;
     qDeleteAll(accounts);
     accounts.clear();
     loadAccounts();
@@ -259,7 +254,7 @@ void SettingWindow::configureButtonClicked() {
     if (selectedRows.empty()) return;
     int row = selectedRows[0]->row();
     auto accounts = SettingManager::shared().getAccounts();
-    if (this->currentAccount == nullptr) return;
+    if (row >= accounts.count()) return;
     auto selectedAccount = accounts[row];
     if (dynamic_cast<MastodonAccount*>(selectedAccount) != nullptr) {
         openMastodonSettings((MastodonAccount*)selectedAccount);
@@ -275,7 +270,38 @@ void SettingWindow::configureButtonClicked() {
 }
 
 void SettingWindow::connectButtonClicked() {
-    // TODO
+    auto selectedRows = ui->accountTable->selectedItems();
+    if (selectedRows.empty()) return;
+    int row = selectedRows[0]->row();
+    auto accounts = SettingManager::shared().getAccounts();
+    auto selectedAccount = accounts[row];
+    bool isStreaming = StreamManager::shared().isAccountStreaming(selectedAccount);
+
+    QList<Account *> streamingAccounts = SettingManager::shared().streamingAccounts();
+
+    if (isStreaming) {
+        QList<Account *> newAccounts;
+        foreach (auto streamingAccount, streamingAccounts) {
+            if (streamingAccount->uuid == selectedAccount->uuid) {
+                delete streamingAccount;
+            } else {
+                newAccounts.append(streamingAccount);
+            }
+        }
+        SettingManager::shared().setStreamingAccounts(newAccounts);
+        qDeleteAll(newAccounts);
+    } else {
+        streamingAccounts.append(selectedAccount);
+        SettingManager::shared().setStreamingAccounts(streamingAccounts);
+        foreach (auto streamingAccount, streamingAccounts) {
+            if (streamingAccount != selectedAccount) {
+                delete streamingAccount;
+            }
+        }
+    }
+    qDeleteAll(accounts);
+    reloadUIFromSettings();
+    reloadAccountButtons();
 }
 
 void SettingWindow::openMastodonSettings(MastodonAccount *account) {
@@ -327,6 +353,7 @@ void SettingWindow::mastodonSettingUpdated(MastodonAccount *newAccount) {
     qDeleteAll(list);
     list.clear();
     loadAccounts();
+    // TODO: reconnect
 }
 
 void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
@@ -343,6 +370,7 @@ void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
     qDeleteAll(list);
     list.clear();
     loadAccounts();
+    // TODO: reconnect
 }
 
 void SettingWindow::misskeyAccountFinished() {
