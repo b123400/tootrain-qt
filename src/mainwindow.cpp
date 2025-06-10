@@ -87,8 +87,7 @@ MainWindow::MainWindow(QWidget *parent)
     qDeleteAll(streamingAccounts);
     streamingAccounts.clear();
 
-    auto accounts = SettingManager::shared().getAccounts();
-    // TODO: open when nothing is streaming
+    auto accounts = SettingManager::shared().streamingAccounts();
     if (!accounts.size()) {
         this->preferencesTriggered(false);
     }
@@ -151,10 +150,6 @@ void MainWindow::onStatus(Status *status) {
     showStatus(status);
     // TODO: delete status;
 }
-
-// void MainWindow::onCurrentAccountChanged() {
-//     reconnect(false);
-// }
 
 void MainWindow::onCurrentScreenChanged() {
     moveToScreen();
