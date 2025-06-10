@@ -19,7 +19,6 @@ public:
     void saveAccounts(QList<Account*>);
     void deleteAccountWithUuid(QString uuid);
     QList<Account*> getAccounts();
-    void clearAccounts();
     Account* accountWithUuid(QString uuid);
 
     void setScreen(QScreen *screen);
@@ -66,7 +65,6 @@ private:
     QSettings settings = QSettings("TootRain-qt", "Star Runner");
 
 signals:
-    void currentAccountChanged();
     void currentScreenChanged();
 };
 

@@ -26,9 +26,6 @@ void SettingManager::saveAccounts(QList<Account*> accounts) {
         a->saveToSettings(&settings);
     }
     settings.endArray();
-    // Assumption: Only 1 account at a time
-    // TODO: Support multiple accounts
-    emit this->currentAccountChanged();
 }
 
 void SettingManager::deleteAccountWithUuid(QString uuid) {
@@ -77,11 +74,6 @@ Account* SettingManager::accountWithUuid(QString uuid) {
         }
     }
     return result;
-}
-
-void SettingManager::clearAccounts() {
-    settings.remove("accounts");
-    emit this->currentAccountChanged();
 }
 
 void SettingManager::setScreen(QScreen *screen) {
@@ -191,7 +183,24 @@ qreal SettingManager::opacity() {
 }
 
 QList<Account *> SettingManager::streamingAccounts() {
-    // TODO: migrate from single streaming account
+    // An array is saved as keys with "/" separated string with index
+    // e.g. accounts/1/id, and there's a key "accounts/size" to indicate the size of the entire array
+    // so to check the existence of an array, we cannot just check the raw key, but need to add the "/size" suffix
+    // https://doc.qt.io/qt-6/qsettings.html#beginWriteArray
+    bool hasStreamAccounts = settings.contains("streaming-accounts/size");
+    if (!hasStreamAccounts) {
+        // Migrate from the old single account model
+        auto accounts = getAccounts();
+        if (!accounts.empty()) {
+            settings.beginWriteArray("streaming-accounts");
+            settings.setArrayIndex(0);
+            settings.setValue("uuid", accounts[0]->uuid);
+            settings.endArray();
+        }
+        qDeleteAll(accounts);
+    }
+    // Migration finished
+
     QSet<QString> streamingUuids;
     int size = settings.beginReadArray("streaming-accounts");
     for (int i = 0; i < size; ++i) {
