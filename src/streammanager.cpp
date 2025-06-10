@@ -72,9 +72,6 @@ void StreamManager::onWebSocketTextMessageReceived(QString message) {
 
 void StreamManager::onWebSocketConnected() {
     qDebug() << "connected";
-    auto s = new DummyStatus(tr("Stream connected"), this);
-    emit gotStatus(s);
-    // TODO: delete s;
 
     if (qobject_cast<QWebSocket*>(sender()) == nullptr) {
         return;
@@ -82,6 +79,11 @@ void StreamManager::onWebSocketConnected() {
     QWebSocket *webSocket = (QWebSocket*)sender();
     QString accountUuid = webSockets.key(webSocket);
     auto account = SettingManager::shared().accountWithUuid(accountUuid);
+
+    auto s = new DummyStatus(tr("Stream connected: ") + account->fullUsername() , this);
+    emit gotStatus(s);
+    // TODO: delete s;
+
     if (account != nullptr) {
         account->connectedToWebSocket(webSocket);
         delete account;

@@ -264,14 +264,14 @@ void MainWindow::showStatus(Status *status) {
 }
 
 void MainWindow::onAnimationFinish() {
-    qDebug() << "anim end";
+    // qDebug() << "anim end";
     int i = 0;
     while (i < animationStates.length()) {
         auto animationState = animationStates[i];
         auto animation = animationState->animation;
         auto label = animationState->target;
         if (animation->state() == QAbstractAnimation::State::Stopped) {
-            qDebug() << "deleting";
+            // qDebug() << "deleting";
             animationStates.remove(i);
             delete label;
             delete animation;

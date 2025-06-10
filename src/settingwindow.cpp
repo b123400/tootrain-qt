@@ -246,6 +246,7 @@ void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *newAccount) {
     SettingManager::shared().saveAccounts(newAccounts);
     qDeleteAll(list);
     list.clear();
+    StreamManager::shared().startStreaming(newAccount);
     loadAccounts();
 }
 
@@ -301,6 +302,7 @@ void SettingWindow::connectButtonClicked() {
     }
     qDeleteAll(accounts);
     reloadUIFromSettings();
+    ui->accountTable->selectRow(row);
     reloadAccountButtons();
 }
 
@@ -353,7 +355,7 @@ void SettingWindow::mastodonSettingUpdated(MastodonAccount *newAccount) {
     qDeleteAll(list);
     list.clear();
     loadAccounts();
-    // TODO: reconnect
+    StreamManager::shared().reconnect(newAccount);
 }
 
 void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
@@ -370,7 +372,7 @@ void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
     qDeleteAll(list);
     list.clear();
     loadAccounts();
-    // TODO: reconnect
+    StreamManager::shared().reconnect(newAccount);
 }
 
 void SettingWindow::misskeyAccountFinished() {
@@ -397,6 +399,7 @@ void SettingWindow::misskeyAccountAuthenticated(MisskeyAccount *newAccount) {
     SettingManager::shared().saveAccounts(newAccounts);
     qDeleteAll(list);
     list.clear();
+    StreamManager::shared().startStreaming(newAccount);
     loadAccounts();
 }
 
