@@ -60,9 +60,8 @@ void SettingWindow::loadAccounts() {
     ui->accountTable->clearContents();
     ui->accountTable->setColumnCount(2);
     ui->accountTable->setRowCount(accounts.size());
-    ui->accountTable->setColumnWidth(0, 32);
-    ui->accountTable->setColumnWidth(1, 400);
-    // ui->accountTable->setColumnWidth(2, 367);
+    ui->accountTable->setColumnWidth(0, 300);
+    ui->accountTable->setColumnWidth(1, 132);
 
     QList<QString> streamingAccountUuids = StreamManager::shared().streamingAccountUuids();
 
@@ -78,8 +77,8 @@ void SettingWindow::loadAccounts() {
             // TODO: after download: reload
         }
         bool isStreaming = streamingAccountUuids.contains(account->uuid);
-        ui->accountTable->setItem(i, 0, new QTableWidgetItem(isStreaming ? "✅" : ""));
-        ui->accountTable->setItem(i, 1, avatarItem);
+        ui->accountTable->setItem(i, 0, avatarItem);
+        ui->accountTable->setItem(i, 1, new QTableWidgetItem(isStreaming ? tr("✅ Connected") : tr("Disconnected")));
         i++;
     }
     qDeleteAll(accounts);
@@ -151,27 +150,26 @@ void SettingWindow::reloadUIFromSettings() {
 
 void SettingWindow::reloadAccountButtons() {
     auto selectedItems = ui->accountTable->selectedItems();
-    if (selectedItems.empty()) return;
+    if (selectedItems.empty()) {
+        ui->deleteAccountButton->setEnabled(false);
+        ui->connectButton->setEnabled(false);
+        ui->configButton->setEnabled(false);
+        return;
+    }
     int row = selectedItems[0]->row();
     auto accounts = SettingManager::shared().getAccounts();
     if (row >= accounts.count()) return;
     auto selectedAccount = accounts[row];
-    if (selectedItems.isEmpty()) {
-        ui->deleteAccountButton->setEnabled(false);
-        ui->connectButton->setEnabled(false);
-        ui->configButton->setEnabled(false);
-    } else {
-        ui->deleteAccountButton->setEnabled(true);
-        ui->connectButton->setEnabled(true);
-        ui->configButton->setEnabled(true);
-        for (auto selectedItem : selectedItems) {
-            int row = selectedItem->row();
-            bool isConnected = StreamManager::shared().isAccountStreaming(selectedAccount);
-            if (isConnected) {
-                ui->connectButton->setText(tr("Disconnect"));
-            } else {
-                ui->connectButton->setText(tr("Connect"));
-            }
+    ui->deleteAccountButton->setEnabled(true);
+    ui->connectButton->setEnabled(true);
+    ui->configButton->setEnabled(true);
+    for (auto selectedItem : selectedItems) {
+        int row = selectedItem->row();
+        bool isConnected = StreamManager::shared().isAccountStreaming(selectedAccount);
+        if (isConnected) {
+            ui->connectButton->setText(tr("Disconnect"));
+        } else {
+            ui->connectButton->setText(tr("Connect"));
         }
     }
 }
