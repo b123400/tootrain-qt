@@ -355,7 +355,7 @@ void SettingWindow::mastodonSettingUpdated(MastodonAccount *newAccount) {
     qDeleteAll(list);
     list.clear();
     loadAccounts();
-    StreamManager::shared().reconnect(newAccount);
+    StreamManager::shared().reconnect(newAccount, false);
 }
 
 void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
@@ -372,7 +372,7 @@ void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
     qDeleteAll(list);
     list.clear();
     loadAccounts();
-    StreamManager::shared().reconnect(newAccount);
+    StreamManager::shared().reconnect(newAccount, false);
 }
 
 void SettingWindow::misskeyAccountFinished() {

@@ -39,9 +39,24 @@ void StreamManager::stopStreaming(Account *account) {
     delete webSocket;
 }
 
-void StreamManager::reconnect(Account *account) {
+void StreamManager::reconnect(Account *account, bool afterAWhile) {
+    if (afterAWhile) {
+        bool scheduled = reconnectTimers.contains(account->uuid);
+        if (scheduled) return;
+        stopStreaming(account);
+        QTimer *timer = new QTimer(this);
+        timer->setSingleShot(true);
+        connect(timer, &QTimer::timeout, this, &StreamManager::onReconnectTimer);
+        reconnectTimers.insert(account->uuid, timer);
+        timer->start(10000);
+        return;
+    }
     stopStreaming(account);
     startStreaming(account);
+    if (reconnectTimers.contains(account->uuid)) {
+        auto timer = reconnectTimers.take(account->uuid);
+        delete timer;
+    }
 }
 
 bool StreamManager::isAccountStreaming(Account *account) {
@@ -113,7 +128,7 @@ void StreamManager::onWebSocketDisconnected() {
 
     if (closeCode != QWebSocketProtocol::CloseCodeNormal) {
         if (account != nullptr) {
-            reconnect(account);
+            reconnect(account, true);
             delete account;
         }
     }
@@ -185,7 +200,7 @@ void StreamManager::onWebSocketErrorOccurred(QAbstractSocket::SocketError error)
     webSockets.remove(accountUuid);
     auto account = SettingManager::shared().accountWithUuid(accountUuid);
     if (account != nullptr) {
-        reconnect(account);
+        reconnect(account, true);
         delete account;
     }
 }
@@ -201,4 +216,17 @@ void StreamManager::onPingTimer() {
             webSocket->ping();
         }
     }
+}
+
+void StreamManager::onReconnectTimer() {
+    if (qobject_cast<QTimer*>(sender()) == nullptr) {
+        return;
+    }
+    QTimer *timer = (QTimer*)sender();
+    QString accountUuid = reconnectTimers.key(timer);
+    reconnectTimers.remove(accountUuid);
+    disconnect(timer, &QTimer::timeout, this, &StreamManager::onReconnectTimer);
+    delete timer;
+    auto account = SettingManager::shared().accountWithUuid(accountUuid);
+    this->startStreaming(account);
 }

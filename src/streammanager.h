@@ -13,7 +13,7 @@ public:
 
     void startStreaming(Account *account);
     void stopStreaming(Account *account);
-    void reconnect(Account *account);
+    void reconnect(Account *account, bool afterAWhile);
     bool isAccountStreaming(Account *account);
     QList<QString> streamingAccountUuids();
 
@@ -24,7 +24,7 @@ public slots:
     void onWebSocketErrorOccurred(QAbstractSocket::SocketError error);
     void onStatusEmojisLoaded(Status *status);
     void onPingTimer();
-    // void onReconnectTimer();
+    void onReconnectTimer();
 
 signals:
     void gotStatus(Status *status);
@@ -32,6 +32,7 @@ signals:
 private:
     QMap<QString, QWebSocket *> webSockets;
     QSet<QString> rescheduledAccountUuid;
+    QMap<QString, QTimer *> reconnectTimers;
 };
 
 #endif // STREAMMANAGER_H
