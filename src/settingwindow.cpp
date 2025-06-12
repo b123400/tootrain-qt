@@ -29,6 +29,7 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(ui->checkOrUpdateButton, &QAbstractButton::clicked, this, &SettingWindow::checkOrUpdateClicked);
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
     connect(&updateProcess, &QProcess::errorOccurred, this, &SettingWindow::updateErrored);
+    connect(&ImageManager::shared(), &ImageManager::imageFinishedDownloading, this, &SettingWindow::imageFinishedDownloading);
 
     reloadUIFromSettings();
     reloadAccountButtons();
@@ -55,6 +56,8 @@ SettingWindow::~SettingWindow()
 }
 
 void SettingWindow::loadAccounts() {
+    auto selectedItems = ui->accountTable->selectedItems();
+    int selectedIndex = selectedItems.isEmpty() ? -1 : selectedItems[0]->row();
     auto accounts = SettingManager::shared().getAccounts();
 
     ui->accountTable->clearContents();
@@ -82,6 +85,13 @@ void SettingWindow::loadAccounts() {
         i++;
     }
     qDeleteAll(accounts);
+    if (selectedIndex != -1) {
+        if (selectedIndex < accounts.length()) {
+            ui->accountTable->selectRow(selectedIndex);
+        } else if (!accounts.isEmpty()) {
+            ui->accountTable->selectRow(accounts.length() - 1);
+        }
+    }
 }
 
 void SettingWindow::loadScreens() {
@@ -300,7 +310,6 @@ void SettingWindow::connectButtonClicked() {
     }
     qDeleteAll(accounts);
     reloadUIFromSettings();
-    ui->accountTable->selectRow(row);
     reloadAccountButtons();
 }
 
@@ -542,4 +551,8 @@ void SettingWindow::updateFinished(int exitCode, QProcess::ExitStatus exitStatus
     auto started = QProcess::startDetached(QCoreApplication::applicationFilePath(), {}, "", &pid);
     qDebug() << "started:" << started << " pid:" << pid;
     QCoreApplication::exit(0);
+}
+
+void SettingWindow::imageFinishedDownloading(QUrl url) {
+    // TODO
 }

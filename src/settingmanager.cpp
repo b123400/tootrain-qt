@@ -224,8 +224,7 @@ QList<Account *> SettingManager::streamingAccounts() {
 }
 
 void SettingManager::setStreamingAccounts(QList<Account *> newAccounts) {
-    // TODO
-    // emit changed
+    // Can emit changes if needed, but we don't need it now?
     auto currentStreamingAccounts = streamingAccounts();
     QMap<QString, Account *> accountIdsToStop;
     foreach (auto currentStreamingAccount, currentStreamingAccounts) {

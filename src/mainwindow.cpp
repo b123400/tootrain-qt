@@ -148,7 +148,6 @@ void MainWindow::moveToScreen() {
 
 void MainWindow::onStatus(Status *status) {
     showStatus(status);
-    // TODO: delete status;
 }
 
 void MainWindow::onCurrentScreenChanged() {

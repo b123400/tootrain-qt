@@ -59,6 +59,8 @@ public slots:
     void updateFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void updateErrored(QProcess::ProcessError error);
 
+    void imageFinishedDownloading(QUrl url);
+
 private:
     Ui::SettingWindow *ui;
 
