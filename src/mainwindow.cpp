@@ -326,7 +326,10 @@ void MainWindow::showStatus(Status *status) {
     // label->setAutoFillBackground(true);
 
     QFont font = SettingManager::shared().font();
-    int fontSize = font.pixelSize();
+    int fontSize = font.pointSize();
+    if (fontSize == -1) {
+        fontSize = font.pixelSize();
+    }
 
     qsizetype characterCount = 0;
     qsizetype characterCountLimit = SettingManager::shared().textLengthLimit();
