@@ -1,4 +1,3 @@
-#include <QTimer>
 #include "streammanager.h"
 #include "settingmanager.h"
 #include "statusimageloader.h"
@@ -17,13 +16,21 @@ StreamManager::StreamManager(QObject *parent)
 void StreamManager::startStreaming(Account *account) {
     if (webSockets.contains(account->uuid)) return;
     QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
-    QWebSocket *webSocket = new QWebSocket();
+    QWebSocket *webSocket;
+    if (unusedWebSockets.isEmpty()) {
+        webSocket = new QWebSocket();
+        webSocket->setParent(this);
+        connect(webSocket, &QWebSocket::connected, this, &StreamManager::onWebSocketConnected);
+        connect(webSocket, &QWebSocket::textMessageReceived, this, &StreamManager::onWebSocketTextMessageReceived);
+        connect(webSocket, &QWebSocket::errorOccurred, this, &StreamManager::onWebSocketErrorOccurred);
+        connect(webSocket, &QWebSocket::disconnected, this, &StreamManager::onWebSocketDisconnected);
+    } else {
+        // Not sure why, but if we delete the websocket after disconnect, it gets memory error.
+        // It seems like there're still events coming in after the websocket is destroyed, causing segfault.
+        // Working around by never deleting QWebSocket instance, instead reuse them when we need
+        webSocket = unusedWebSockets.takeFirst();
+    }
     webSocket->open(request);
-
-    connect(webSocket, &QWebSocket::connected, this, &StreamManager::onWebSocketConnected);
-    connect(webSocket, &QWebSocket::textMessageReceived, this, &StreamManager::onWebSocketTextMessageReceived);
-    connect(webSocket, &QWebSocket::errorOccurred, this, &StreamManager::onWebSocketErrorOccurred);
-    connect(webSocket, &QWebSocket::disconnected, this, &StreamManager::onWebSocketDisconnected);
 
     webSockets.insert(account->uuid, webSocket);
 }
@@ -31,12 +38,8 @@ void StreamManager::startStreaming(Account *account) {
 void StreamManager::stopStreaming(Account *account) {
     if (!webSockets.contains(account->uuid)) return;
     QWebSocket *webSocket = webSockets.take(account->uuid);
-    disconnect(webSocket, &QWebSocket::connected, this, &StreamManager::onWebSocketConnected);
-    disconnect(webSocket, &QWebSocket::textMessageReceived, this, &StreamManager::onWebSocketTextMessageReceived);
-    disconnect(webSocket, &QWebSocket::errorOccurred, this, &StreamManager::onWebSocketErrorOccurred);
-    disconnect(webSocket, &QWebSocket::disconnected, this, &StreamManager::onWebSocketDisconnected);
     webSocket->close();
-    delete webSocket;
+    unusedWebSockets.append(webSocket);
 }
 
 void StreamManager::reconnect(Account *account, bool afterAWhile) {
@@ -111,26 +114,24 @@ void StreamManager::onWebSocketDisconnected() {
     }
     QWebSocket *webSocket = (QWebSocket*)sender();
     QString accountUuid = webSockets.key(webSocket);
-    webSockets.remove(accountUuid);
+    qDebug() << "StreamManager::onWebSocketDisconnected " << accountUuid;
     auto account = SettingManager::shared().accountWithUuid(accountUuid);
 
-    connect(webSocket, &QWebSocket::connected, this, &StreamManager::onWebSocketConnected);
-    connect(webSocket, &QWebSocket::textMessageReceived, this, &StreamManager::onWebSocketTextMessageReceived);
-    connect(webSocket, &QWebSocket::errorOccurred, this, &StreamManager::onWebSocketErrorOccurred);
-    connect(webSocket, &QWebSocket::disconnected, this, &StreamManager::onWebSocketDisconnected);
-
     auto closeCode = webSocket->closeCode();
-    delete webSocket;
 
     auto s = new DummyStatus(tr("Stream disconnected"), this);
     emit gotStatus(s);
     delete s;
-    if (closeCode != QWebSocketProtocol::CloseCodeNormal) {
-        if (account != nullptr) {
-            reconnect(account, true);
-            delete account;
-        }
+    if (account == nullptr) {
+        // Something strange happened?
+        return;
     }
+    if (closeCode != QWebSocketProtocol::CloseCodeNormal) {
+        reconnect(account, true);
+    } else {
+        stopStreaming(account);
+    }
+    delete account;
 }
 
 QString printSocketError(QAbstractSocket::SocketError error) {
@@ -189,14 +190,13 @@ QString printSocketError(QAbstractSocket::SocketError error) {
 
 void StreamManager::onWebSocketErrorOccurred(QAbstractSocket::SocketError error) {
     QString errorMessage = printSocketError(error);
-    qDebug() << "error" << errorMessage;
+    qDebug() << "onWebSocketErrorOccurred error" << errorMessage;
 
     if (qobject_cast<QWebSocket*>(sender()) == nullptr) {
         return;
     }
     QWebSocket *webSocket = (QWebSocket*)sender();
     QString accountUuid = webSockets.key(webSocket);
-    webSockets.remove(accountUuid);
     auto account = SettingManager::shared().accountWithUuid(accountUuid);
     if (account != nullptr) {
         reconnect(account, true);

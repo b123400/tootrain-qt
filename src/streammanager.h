@@ -2,6 +2,7 @@
 #define STREAMMANAGER_H
 
 #include <QObject>
+#include <QTimer>
 #include "account.h"
 
 class StreamManager : public QObject
@@ -33,6 +34,8 @@ private:
     QMap<QString, QWebSocket *> webSockets;
     QSet<QString> rescheduledAccountUuid;
     QMap<QString, QTimer *> reconnectTimers;
+
+    QList<QWebSocket *> unusedWebSockets;
 };
 
 #endif // STREAMMANAGER_H
