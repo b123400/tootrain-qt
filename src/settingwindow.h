@@ -69,6 +69,7 @@ private:
     MisskeyAuthWindow *misskeyAuthWindow = nullptr;
     MisskeySettingWindow *misskeySettingWindow = nullptr;
     QProcess updateProcess;
+    QSet<QUrl> loadingAccountAvatarUrls;
 
     void loadAccounts();
     void loadScreens();

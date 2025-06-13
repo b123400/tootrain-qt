@@ -60,6 +60,8 @@ void SettingWindow::loadAccounts() {
     int selectedIndex = selectedItems.isEmpty() ? -1 : selectedItems[0]->row();
     auto accounts = SettingManager::shared().getAccounts();
 
+    loadingAccountAvatarUrls.clear();
+
     ui->accountTable->clearContents();
     ui->accountTable->setColumnCount(2);
     ui->accountTable->setRowCount(accounts.size());
@@ -77,8 +79,8 @@ void SettingWindow::loadAccounts() {
         } else {
             avatarItem = new QTableWidgetItem("");
             ImageManager::shared().download(account->avatarUrl);
-            // TODO: after download: reload
         }
+        loadingAccountAvatarUrls.insert(account->avatarUrl);
         bool isStreaming = streamingAccountUuids.contains(account->uuid);
         ui->accountTable->setItem(i, 0, avatarItem);
         ui->accountTable->setItem(i, 1, new QTableWidgetItem(isStreaming ? tr("✅ Connected") : tr("Disconnected")));
@@ -554,5 +556,7 @@ void SettingWindow::updateFinished(int exitCode, QProcess::ExitStatus exitStatus
 }
 
 void SettingWindow::imageFinishedDownloading(QUrl url) {
-    // TODO
+    if (loadingAccountAvatarUrls.contains(url)) {
+        loadAccounts();
+    }
 }
