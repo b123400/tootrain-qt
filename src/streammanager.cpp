@@ -97,7 +97,7 @@ void StreamManager::onWebSocketConnected() {
 
     auto s = new DummyStatus(tr("Stream connected: ") + account->fullUsername() , this);
     emit gotStatus(s);
-    TODO: delete s;
+    delete s;
 
     if (account != nullptr) {
         account->connectedToWebSocket(webSocket);
@@ -124,8 +124,7 @@ void StreamManager::onWebSocketDisconnected() {
 
     auto s = new DummyStatus(tr("Stream disconnected"), this);
     emit gotStatus(s);
-    TODO: delete s;
-
+    delete s;
     if (closeCode != QWebSocketProtocol::CloseCodeNormal) {
         if (account != nullptr) {
             reconnect(account, true);
