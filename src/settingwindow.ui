@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
-    <height>575</height>
+    <width>480</width>
+    <height>362</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,386 +18,453 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
+    <width>340</width>
     <height>300</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
-  <widget class="QGroupBox" name="groupBox">
+  <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>381</width>
-     <height>91</height>
+     <width>460</width>
+     <height>341</height>
     </rect>
    </property>
-   <property name="title">
-    <string>Account</string>
+   <property name="currentIndex">
+    <number>0</number>
    </property>
-   <widget class="QPushButton" name="loginButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>100</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Login</string>
-    </property>
+   <widget class="QWidget" name="Account">
+    <attribute name="title">
+     <string>Accounts</string>
+    </attribute>
+    <widget class="QPushButton" name="configButton">
+     <property name="geometry">
+      <rect>
+       <x>344</x>
+       <y>280</y>
+       <width>101</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Configure...</string>
+     </property>
+    </widget>
+    <widget class="QTableWidget" name="accountTable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>7</y>
+       <width>435</width>
+       <height>271</height>
+      </rect>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>false</bool>
+     </property>
+     <property name="cornerButtonEnabled">
+      <bool>false</bool>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+    </widget>
+    <widget class="QPushButton" name="addAccountButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>280</y>
+       <width>100</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add Account</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="deleteAccountButton">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>280</y>
+       <width>71</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="connectButton">
+     <property name="geometry">
+      <rect>
+       <x>234</x>
+       <y>280</y>
+       <width>101</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Connect</string>
+     </property>
+    </widget>
    </widget>
-   <widget class="QLabel" name="currentAccountName">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>251</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Status</string>
-    </property>
+   <widget class="QWidget" name="Appearance">
+    <attribute name="title">
+     <string>Appearance</string>
+    </attribute>
+    <widget class="QLabel" name="textColorLabel">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>40</y>
+       <width>110</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Text Color</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="opacityLabel">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>160</y>
+       <width>110</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Opacity</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="shadowColorLabel">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>70</y>
+       <width>110</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Shadow Color</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QSlider" name="speedSlider">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>120</y>
+       <width>171</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>20</number>
+     </property>
+     <property name="value">
+      <number>10</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="fontButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>90</y>
+       <width>100</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select...</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="fontLabel">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>100</y>
+       <width>110</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Font</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="ignoreContentWarningCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>280</y>
+       <width>361</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Ignore Content Warning</string>
+     </property>
+    </widget>
+    <widget class="QFrame" name="shadowColorFrame">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>70</y>
+       <width>40</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="shadowColorButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>60</y>
+       <width>100</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select...</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="textColorButton">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>30</y>
+       <width>100</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Select...</string>
+     </property>
+    </widget>
+    <widget class="QFrame" name="textColorFrame">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>40</y>
+       <width>40</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>true</bool>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="lengthLimitCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>220</y>
+       <width>281</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Length Limit</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>130</y>
+       <width>110</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Speed</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="showAvatarCheckBox">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>190</y>
+       <width>281</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Show avatar</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="hideUrlCheckbox">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>250</y>
+       <width>291</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Hide URL</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="opacitySlider">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>150</y>
+       <width>171</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="lengthLimitSpinBox">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>220</y>
+       <width>42</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <number>-1</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="screenComboBox">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>0</y>
+       <width>180</width>
+       <height>32</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>10</y>
+       <width>110</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Screen</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="fontValueLabel">
+     <property name="geometry">
+      <rect>
+       <x>169</x>
+       <y>100</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Arial 40pt</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+    </widget>
    </widget>
-   <widget class="QPushButton" name="configButton">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>50</y>
-      <width>120</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Configure...</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>110</y>
-     <width>381</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Screen</string>
-   </property>
-   <widget class="QComboBox" name="screenComboBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>191</width>
-      <height>32</height>
-     </rect>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>470</y>
-     <width>381</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Updates</string>
-   </property>
-   <widget class="QLabel" name="updateStatusLabel">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>251</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Checking for update...</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="checkOrUpdateButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>179</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Check for Update</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_4">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>190</y>
-     <width>381</width>
-     <height>271</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Appearance</string>
-   </property>
-   <widget class="QCheckBox" name="showAvatarCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>251</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Show avatar</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="textColorButton">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>50</y>
-      <width>100</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select...</string>
-    </property>
-   </widget>
-   <widget class="QFrame" name="textColorFrame">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>50</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>true</bool>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="textColorLabel">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>60</y>
-      <width>101</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Text Color:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="shadowColorLabel">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>100</y>
-      <width>101</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Shadow Color:</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="fontLabel">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>130</y>
-      <width>181</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Font:</string>
-    </property>
-   </widget>
-   <widget class="QFrame" name="shadowColorFrame">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>90</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>true</bool>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Shape::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Shadow::Raised</enum>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="shadowColorButton">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>90</y>
-      <width>100</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select...</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="fontButton">
-    <property name="geometry">
-     <rect>
-      <x>200</x>
-      <y>120</y>
-      <width>100</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select...</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="lengthLimitCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>150</y>
-      <width>161</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Length Limit</string>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="lengthLimitSpinBox">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>150</y>
-      <width>42</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="minimum">
-     <number>-1</number>
-    </property>
-    <property name="maximum">
-     <number>1000</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>175</y>
-      <width>58</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Speed:</string>
-    </property>
-   </widget>
-   <widget class="QSlider" name="speedSlider">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>175</y>
-      <width>161</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>20</number>
-    </property>
-    <property name="value">
-     <number>10</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="hideUrlCheckbox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>220</y>
-      <width>251</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Hide URL</string>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="ignoreContentWarningCheckBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>240</y>
-      <width>361</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Ignore Content Warning</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="opacityLabel">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>200</y>
-      <width>58</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Opacity</string>
-    </property>
-   </widget>
-   <widget class="QSlider" name="opacitySlider">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>200</y>
-      <width>161</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>100</number>
-    </property>
-    <property name="value">
-     <number>100</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Orientation::Horizontal</enum>
-    </property>
+   <widget class="QWidget" name="Updates">
+    <attribute name="title">
+     <string>Updates</string>
+    </attribute>
+    <widget class="QPushButton" name="checkOrUpdateButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>179</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Check for Update</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="updateStatusLabel">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>251</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Checking for update...</string>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

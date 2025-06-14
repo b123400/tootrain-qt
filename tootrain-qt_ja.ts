@@ -61,19 +61,17 @@
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="105"/>
+        <location filename="src/mainwindow.cpp" line="100"/>
         <source>New version available</source>
         <translation>新しいバージョンに更新できます</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="201"/>
         <source>Stream connected</source>
-        <translation>接続しました</translation>
+        <translation type="vanished">接続しました</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="213"/>
         <source>Stream disconnected</source>
-        <translation>接続が切れました</translation>
+        <translation type="vanished">接続が切れました</translation>
     </message>
 </context>
 <context>
@@ -298,144 +296,206 @@
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="38"/>
         <source>Account</source>
-        <translation>アカウント</translation>
+        <translation type="vanished">アカウント</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="50"/>
-        <location filename="src/settingwindow.cpp" line="63"/>
         <source>Login</source>
-        <translation>ログイン</translation>
+        <translation type="vanished">ログイン</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="138"/>
+        <location filename="src/settingwindow.ui" line="452"/>
         <source>Check for Update</source>
         <translation>更新の確認</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="76"/>
+        <location filename="src/settingwindow.ui" line="54"/>
         <source>Configure...</source>
         <translation>チャンネル設定...</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="63"/>
         <source>Status</source>
-        <translation>ログイン状態</translation>
+        <translation type="vanished">ログイン状態</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="90"/>
+        <location filename="src/settingwindow.ui" line="415"/>
         <source>Screen</source>
         <translation>スクリーン</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="113"/>
+        <location filename="src/settingwindow.ui" line="431"/>
+        <source>Arial 40pt</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="440"/>
         <source>Updates</source>
         <translation>アップデート</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="152"/>
+        <location filename="src/settingwindow.ui" line="130"/>
         <source>Appearance</source>
         <translation>見た目</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="164"/>
+        <location filename="src/settingwindow.ui" line="42"/>
+        <source>Accounts</source>
+        <translation>アカウント</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="98"/>
+        <source>Add Account</source>
+        <translation>アカウントを追加</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="111"/>
+        <source>Delete</source>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="124"/>
+        <location filename="src/settingwindow.cpp" line="184"/>
+        <source>Connect</source>
+        <translation>接続</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="142"/>
+        <source>Text Color</source>
+        <translation>文字の色</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="174"/>
+        <source>Shadow Color</source>
+        <translation>影の色</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="222"/>
+        <source>Font</source>
+        <translation>フォント</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="328"/>
+        <source>Speed</source>
+        <translation>スピード</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="344"/>
         <source>Show avatar</source>
         <translation>ユーザーアイコンを表示</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="177"/>
-        <location filename="src/settingwindow.ui" line="267"/>
-        <location filename="src/settingwindow.ui" line="280"/>
+        <location filename="src/settingwindow.ui" line="209"/>
+        <location filename="src/settingwindow.ui" line="270"/>
+        <location filename="src/settingwindow.ui" line="283"/>
         <source>Select...</source>
         <translation>選択...</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="209"/>
         <source>Text Color:</source>
-        <translation>テキストの色</translation>
+        <translation type="vanished">テキストの色</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="222"/>
         <source>Shadow Color:</source>
-        <translation>影の色</translation>
+        <translation type="vanished">影の色</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="235"/>
-        <location filename="src/settingwindow.cpp" line="112"/>
         <source>Font:</source>
-        <translation>フォント</translation>
+        <translation type="vanished">フォント</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="293"/>
+        <location filename="src/settingwindow.ui" line="315"/>
         <source>Length Limit</source>
         <translation>長さ制限</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="322"/>
         <source>Speed:</source>
-        <translation>スピード</translation>
+        <translation type="vanished">スピード</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="354"/>
+        <location filename="src/settingwindow.ui" line="357"/>
         <source>Hide URL</source>
         <translation>URLを隠す</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="367"/>
+        <location filename="src/settingwindow.ui" line="238"/>
         <source>Ignore Content Warning</source>
         <translation>CWを無視する</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="380"/>
+        <location filename="src/settingwindow.ui" line="158"/>
         <source>Opacity</source>
         <translation>透明度</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="56"/>
         <source>Account: </source>
-        <translation>アカウント：</translation>
+        <translation type="vanished">アカウント：</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="57"/>
         <source>Logout</source>
-        <translation>ログアウト</translation>
+        <translation type="vanished">ログアウト</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="62"/>
         <source>Not logged in</source>
-        <translation>ログインしてない</translation>
+        <translation type="vanished">ログインしてない</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="125"/>
-        <location filename="src/settingwindow.cpp" line="334"/>
+        <location filename="src/settingwindow.ui" line="465"/>
+        <location filename="src/settingwindow.cpp" line="495"/>
         <source>Checking for update...</source>
         <translation>更新を確認中</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="342"/>
+        <location filename="src/settingwindow.cpp" line="86"/>
+        <source>✅ Connected</source>
+        <translation>✅ 接続しました</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="86"/>
+        <source>Disconnected</source>
+        <translation>接続してない</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="182"/>
+        <source>Disconnect</source>
+        <translation>接続を切断</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="503"/>
         <source>New version available</source>
         <translation>新しいバージョンに更新できます</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="343"/>
+        <location filename="src/settingwindow.cpp" line="504"/>
         <source>Click here to update</source>
         <translation>新しいバージョンに更新する</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="345"/>
+        <location filename="src/settingwindow.cpp" line="506"/>
         <source>No update available</source>
         <translation>すでに最新のバージョンです</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="379"/>
+        <location filename="src/settingwindow.cpp" line="540"/>
         <source>Updating...</source>
         <translation>更新中...</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="390"/>
+        <location filename="src/settingwindow.cpp" line="551"/>
         <source>Restarting...</source>
         <translation>再起動中</translation>
+    </message>
+</context>
+<context>
+    <name>StreamManager</name>
+    <message>
+        <location filename="src/streammanager.cpp" line="98"/>
+        <source>Stream connected: </source>
+        <translation>接続しました：</translation>
+    </message>
+    <message>
+        <location filename="src/streammanager.cpp" line="126"/>
+        <source>Stream disconnected</source>
+        <translation>接続が切れました：</translation>
     </message>
 </context>
 </TS>

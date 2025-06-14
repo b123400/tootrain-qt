@@ -28,6 +28,7 @@ public:
     virtual QUrl getWebSocketUrl() = 0;
     virtual void connectedToWebSocket(QWebSocket *websocket) = 0;
     virtual StreamEvent* getStreamEventFromWebSocketMessage(QString message) = 0;
+    virtual QString serviceName() = 0;
 signals:
 };
 

@@ -23,6 +23,7 @@ public:
     void connectedToWebSocket(QWebSocket *websocket) override;
     QString fullUsername() override;
     void saveToSettings(QSettings *settings) override;
+    QString serviceName() override;
 
     StreamEvent* getStreamEventFromWebSocketMessage(QString message) override;
 };

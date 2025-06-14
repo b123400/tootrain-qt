@@ -116,8 +116,12 @@ void MisskeyAccount::saveToSettings(QSettings *settings) {
     settings->endArray();
 }
 
+QString MisskeyAccount::serviceName() {
+    return "Misskey";
+}
+
 StreamEvent* MisskeyAccount::getStreamEventFromWebSocketMessage(QString message) {
-    qDebug() << "message: " << message;
+    // qDebug() << "message: " << message;
     QJsonDocument jsonDoc((QJsonDocument::fromJson(message.toUtf8())));
     QJsonObject jsonReply = jsonDoc.object();
     MisskeyStreamEvent *se = new MisskeyStreamEvent(jsonReply, this->baseUrl, this);

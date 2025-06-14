@@ -22,13 +22,16 @@ public:
     ~SettingWindow();
 
 public slots:
-    void loginButtonClicked();
+    void addAccountButtonClicked();
+    void deleteAccountButtonClicked();
+    void accountTableSelectionChanged();
     void loginToMastodon(bool _checked);
     void loginToMisskey(bool _checked);
 
     void configureButtonClicked();
-    void openMastodonSettings();
-    void openMisskeySettings();
+    void connectButtonClicked();
+    void openMastodonSettings(MastodonAccount *account);
+    void openMisskeySettings(MisskeyAccount *account);
 
     void mastodonAccountFinished();
     void mastodonAccountAuthenticated(MastodonAccount *account);
@@ -56,6 +59,8 @@ public slots:
     void updateFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void updateErrored(QProcess::ProcessError error);
 
+    void imageFinishedDownloading(QUrl url);
+
 private:
     Ui::SettingWindow *ui;
 
@@ -63,12 +68,13 @@ private:
     MastodonSettingWindow *mastodonSettingWindow = nullptr;
     MisskeyAuthWindow *misskeyAuthWindow = nullptr;
     MisskeySettingWindow *misskeySettingWindow = nullptr;
-    Account *currentAccount = nullptr;
     QProcess updateProcess;
+    QSet<QUrl> loadingAccountAvatarUrls;
 
-    void loadAccount();
+    void loadAccounts();
     void loadScreens();
     void reloadUIFromSettings();
+    void reloadAccountButtons();
 
     void checkForUpdate();
     void runUpdate();

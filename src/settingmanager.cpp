@@ -6,6 +6,7 @@
 #include <QTimer>
 #include "mastodon/account.h"
 #include "misskey/misskeyaccount.h"
+#include "streammanager.h"
 
 SettingManager::SettingManager(QObject *parent)
     : QObject{parent}
@@ -16,6 +17,23 @@ SettingManager::SettingManager(QObject *parent)
 }
 
 void SettingManager::saveAccounts(QList<Account*> accounts) {
+    auto currentStreamingAccounts = streamingAccounts();
+    for (qsizetype i = currentStreamingAccounts.size() - 1; i >= 0; i--) {
+        auto currentStreamingAccount = currentStreamingAccounts[i];
+        bool found = false;
+        for (auto a : accounts) {
+            if (a->uuid == currentStreamingAccount->uuid) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            // Deleted streaming account
+            currentStreamingAccounts.removeAt(i);
+        }
+    }
+    setStreamingAccounts(currentStreamingAccounts);
+
     settings.remove("accounts");
     settings.beginWriteArray("accounts");
     for (qsizetype i = 0; i < accounts.size(); i++) {
@@ -25,9 +43,23 @@ void SettingManager::saveAccounts(QList<Account*> accounts) {
         a->saveToSettings(&settings);
     }
     settings.endArray();
-    // Assumption: Only 1 account at a time
-    // TODO: Support multiple accounts
-    emit this->currentAccountChanged();
+}
+
+void SettingManager::deleteAccountWithUuid(QString uuid) {
+    auto accounts = this->getAccounts();
+    int index = -1;
+    for (qsizetype i = 0; i < accounts.size(); i++) {
+        Account *a = accounts[i];
+        if (a->uuid == uuid) {
+            index = i;
+            break;
+        }
+    }
+    if (index != -1) {
+        accounts.removeAt(index);
+    }
+    this->saveAccounts(accounts);
+    qDeleteAll(accounts);
 }
 
 QList<Account*> SettingManager::getAccounts() {
@@ -39,9 +71,9 @@ QList<Account*> SettingManager::getAccounts() {
         Account *account = nullptr;
         QString type = settings.value("type").toString();
         if (type == "mastodon") {
-            account = new MastodonAccount(&settings, this);
+            account = new MastodonAccount(&settings);
         } else if (type == "misskey") {
-            account = new MisskeyAccount(&settings, this);
+            account = new MisskeyAccount(&settings);
         }
         accounts.append(account);
     }
@@ -49,9 +81,16 @@ QList<Account*> SettingManager::getAccounts() {
     return accounts;
 }
 
-void SettingManager::clearAccounts() {
-    settings.remove("accounts");
-    emit this->currentAccountChanged();
+Account* SettingManager::accountWithUuid(QString uuid) {
+    Account *result = nullptr;
+    foreach (auto account, this->getAccounts()) {
+        if (account->uuid == uuid) {
+            result = account;
+        } else {
+            delete account;
+        }
+    }
+    return result;
 }
 
 void SettingManager::setScreen(QScreen *screen) {
@@ -158,6 +197,103 @@ void SettingManager::setOpacity(qreal opacity) {
 }
 qreal SettingManager::opacity() {
     return settings.value("opacity", 1.0).toReal();
+}
+
+QList<Account *> SettingManager::streamingAccounts() {
+    // An array is saved as keys with "/" separated string with index
+    // e.g. accounts/1/id, and there's a key "accounts/size" to indicate the size of the entire array
+    // so to check the existence of an array, we cannot just check the raw key, but need to add the "/size" suffix
+    // https://doc.qt.io/qt-6/qsettings.html#beginWriteArray
+    bool hasStreamAccounts = settings.contains("streaming-accounts/size");
+    if (!hasStreamAccounts) {
+        // Migrate from the old single account model
+        auto accounts = getAccounts();
+        if (!accounts.empty()) {
+            settings.beginWriteArray("streaming-accounts");
+            settings.setArrayIndex(0);
+            settings.setValue("uuid", accounts[0]->uuid);
+            settings.endArray();
+        }
+        qDeleteAll(accounts);
+    }
+    // Migration finished
+
+    QSet<QString> streamingUuids;
+    int size = settings.beginReadArray("streaming-accounts");
+    for (int i = 0; i < size; ++i) {
+        settings.setArrayIndex(i);
+        QString uuid = settings.value("uuid").toString();
+        streamingUuids.insert(uuid);
+    }
+    settings.endArray();
+
+    auto accounts = getAccounts();
+
+    QList<Account*> result;
+    foreach (auto account, accounts) {
+        if (streamingUuids.contains(account->uuid)) {
+            result.append(account);
+        } else {
+            delete account;
+        }
+    }
+    return result;
+}
+
+void SettingManager::setStreamingAccounts(QList<Account *> newAccounts) {
+    // Can emit changes if needed, but we don't need it now?
+    auto currentStreamingAccounts = streamingAccounts();
+    QMap<QString, Account *> accountIdsToStop;
+    foreach (auto currentStreamingAccount, currentStreamingAccounts) {
+        accountIdsToStop.insert(currentStreamingAccount->uuid, currentStreamingAccount);
+    }
+
+    foreach (auto newAccount, newAccounts) {
+        StreamManager::shared().startStreaming(newAccount); // No-op if already streaming
+        accountIdsToStop.remove(newAccount->uuid);
+    }
+    for (auto i = accountIdsToStop.cbegin(), end = accountIdsToStop.cend(); i != end; ++i) {
+        auto account = i.value();
+        StreamManager::shared().stopStreaming(account);
+    }
+    auto newStreamingAccountUuids = StreamManager::shared().streamingAccountUuids();
+    settings.remove("streaming-accounts");
+    settings.beginWriteArray("streaming-accounts");
+    for (qsizetype i = 0; i < newStreamingAccountUuids.size(); i++) {
+        settings.setArrayIndex(i);
+
+        QString uuid = newStreamingAccountUuids[i];
+        settings.setValue("uuid", uuid);
+    }
+    settings.endArray();
+
+    qDeleteAll(currentStreamingAccounts);
+}
+
+void SettingManager::startStreaming(Account *account) {
+    QList<Account *> streamingAccounts = this->streamingAccounts();
+
+    streamingAccounts.append(account);
+    this->setStreamingAccounts(streamingAccounts);
+    foreach (auto streamingAccount, streamingAccounts) {
+        if (streamingAccount != account) {
+            delete streamingAccount;
+        }
+    }
+}
+
+void SettingManager::stopStreaming(Account *account) {
+    QList<Account *> streamingAccounts = this->streamingAccounts();
+    QList<Account *> newAccounts;
+    foreach (auto streamingAccount, streamingAccounts) {
+        if (streamingAccount->uuid == account->uuid) {
+            delete streamingAccount;
+        } else {
+            newAccounts.append(streamingAccount);
+        }
+    }
+    this->setStreamingAccounts(newAccounts);
+    qDeleteAll(newAccounts);
 }
 
 QString SettingManager::maintenanceToolPath() {

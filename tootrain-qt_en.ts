@@ -61,18 +61,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="105"/>
+        <location filename="src/mainwindow.cpp" line="100"/>
         <source>New version available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/mainwindow.cpp" line="201"/>
-        <source>Stream connected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/mainwindow.cpp" line="213"/>
-        <source>Stream disconnected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -294,143 +284,165 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="38"/>
-        <source>Account</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.ui" line="50"/>
-        <location filename="src/settingwindow.cpp" line="63"/>
-        <source>Login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.ui" line="138"/>
+        <location filename="src/settingwindow.ui" line="452"/>
         <source>Check for Update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="76"/>
+        <location filename="src/settingwindow.ui" line="54"/>
         <source>Configure...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="63"/>
-        <source>Status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.ui" line="90"/>
+        <location filename="src/settingwindow.ui" line="415"/>
         <source>Screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="113"/>
+        <location filename="src/settingwindow.ui" line="431"/>
+        <source>Arial 40pt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="440"/>
         <source>Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="152"/>
+        <location filename="src/settingwindow.ui" line="130"/>
         <source>Appearance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="164"/>
-        <source>Show avatar</source>
+        <location filename="src/settingwindow.ui" line="42"/>
+        <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="177"/>
-        <location filename="src/settingwindow.ui" line="267"/>
-        <location filename="src/settingwindow.ui" line="280"/>
-        <source>Select...</source>
+        <location filename="src/settingwindow.ui" line="98"/>
+        <source>Add Account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="209"/>
-        <source>Text Color:</source>
+        <location filename="src/settingwindow.ui" line="111"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="124"/>
+        <location filename="src/settingwindow.cpp" line="184"/>
+        <source>Connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="142"/>
+        <source>Text Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="174"/>
+        <source>Shadow Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="222"/>
-        <source>Shadow Color:</source>
+        <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="235"/>
-        <location filename="src/settingwindow.cpp" line="112"/>
-        <source>Font:</source>
+        <location filename="src/settingwindow.ui" line="328"/>
+        <source>Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="293"/>
+        <location filename="src/settingwindow.ui" line="344"/>
+        <source>Show avatar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="209"/>
+        <location filename="src/settingwindow.ui" line="270"/>
+        <location filename="src/settingwindow.ui" line="283"/>
+        <source>Select...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.ui" line="315"/>
         <source>Length Limit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="322"/>
-        <source>Speed:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.ui" line="354"/>
+        <location filename="src/settingwindow.ui" line="357"/>
         <source>Hide URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="367"/>
+        <location filename="src/settingwindow.ui" line="238"/>
         <source>Ignore Content Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.ui" line="380"/>
+        <location filename="src/settingwindow.ui" line="158"/>
         <source>Opacity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="56"/>
-        <source>Account: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.cpp" line="57"/>
-        <source>Logout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.cpp" line="62"/>
-        <source>Not logged in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="src/settingwindow.ui" line="125"/>
-        <location filename="src/settingwindow.cpp" line="334"/>
+        <location filename="src/settingwindow.ui" line="465"/>
+        <location filename="src/settingwindow.cpp" line="495"/>
         <source>Checking for update...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="342"/>
+        <location filename="src/settingwindow.cpp" line="86"/>
+        <source>✅ Connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="86"/>
+        <source>Disconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="182"/>
+        <source>Disconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="503"/>
         <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="343"/>
+        <location filename="src/settingwindow.cpp" line="504"/>
         <source>Click here to update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="345"/>
+        <location filename="src/settingwindow.cpp" line="506"/>
         <source>No update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="379"/>
+        <location filename="src/settingwindow.cpp" line="540"/>
         <source>Updating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="390"/>
+        <location filename="src/settingwindow.cpp" line="551"/>
         <source>Restarting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StreamManager</name>
+    <message>
+        <location filename="src/streammanager.cpp" line="98"/>
+        <source>Stream connected: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/streammanager.cpp" line="126"/>
+        <source>Stream disconnected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
