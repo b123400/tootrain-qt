@@ -176,7 +176,6 @@ void SettingWindow::reloadAccountButtons() {
     ui->connectButton->setEnabled(true);
     ui->configButton->setEnabled(true);
     for (auto selectedItem : selectedItems) {
-        int row = selectedItem->row();
         bool isConnected = StreamManager::shared().isAccountStreaming(selectedAccount);
         if (isConnected) {
             ui->connectButton->setText(tr("Disconnect"));
@@ -256,7 +255,7 @@ void SettingWindow::mastodonAccountAuthenticated(MastodonAccount *newAccount) {
     SettingManager::shared().saveAccounts(newAccounts);
     qDeleteAll(list);
     list.clear();
-    StreamManager::shared().startStreaming(newAccount);
+    SettingManager::shared().startStreaming(newAccount);
     loadAccounts();
 }
 
@@ -288,27 +287,10 @@ void SettingWindow::connectButtonClicked() {
     auto selectedAccount = accounts[row];
     bool isStreaming = StreamManager::shared().isAccountStreaming(selectedAccount);
 
-    QList<Account *> streamingAccounts = SettingManager::shared().streamingAccounts();
-
     if (isStreaming) {
-        QList<Account *> newAccounts;
-        foreach (auto streamingAccount, streamingAccounts) {
-            if (streamingAccount->uuid == selectedAccount->uuid) {
-                delete streamingAccount;
-            } else {
-                newAccounts.append(streamingAccount);
-            }
-        }
-        SettingManager::shared().setStreamingAccounts(newAccounts);
-        qDeleteAll(newAccounts);
+        SettingManager::shared().stopStreaming(selectedAccount);
     } else {
-        streamingAccounts.append(selectedAccount);
-        SettingManager::shared().setStreamingAccounts(streamingAccounts);
-        foreach (auto streamingAccount, streamingAccounts) {
-            if (streamingAccount != selectedAccount) {
-                delete streamingAccount;
-            }
-        }
+        SettingManager::shared().startStreaming(selectedAccount);
     }
     qDeleteAll(accounts);
     reloadUIFromSettings();
@@ -364,7 +346,9 @@ void SettingWindow::mastodonSettingUpdated(MastodonAccount *newAccount) {
     qDeleteAll(list);
     list.clear();
     loadAccounts();
-    StreamManager::shared().reconnect(newAccount, false);
+    if (StreamManager::shared().isAccountStreaming(newAccount)) {
+        StreamManager::shared().reconnect(newAccount, false);
+    }
 }
 
 void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
@@ -381,7 +365,9 @@ void SettingWindow::misskeySettingUpdated(MisskeyAccount *newAccount) {
     qDeleteAll(list);
     list.clear();
     loadAccounts();
-    StreamManager::shared().reconnect(newAccount, false);
+    if (StreamManager::shared().isAccountStreaming(newAccount)) {
+        StreamManager::shared().reconnect(newAccount, false);
+    }
 }
 
 void SettingWindow::misskeyAccountFinished() {
@@ -408,7 +394,7 @@ void SettingWindow::misskeyAccountAuthenticated(MisskeyAccount *newAccount) {
     SettingManager::shared().saveAccounts(newAccounts);
     qDeleteAll(list);
     list.clear();
-    StreamManager::shared().startStreaming(newAccount);
+    SettingManager::shared().startStreaming(newAccount);
     loadAccounts();
 }
 

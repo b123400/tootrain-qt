@@ -53,6 +53,8 @@ public:
 
     QList<Account *>streamingAccounts();
     void setStreamingAccounts(QList<Account *> accounts);
+    void startStreaming(Account *account);
+    void stopStreaming(Account *account);
 
     QString maintenanceToolPath();
     void checkForUpdate(std::function<void (bool)> callback);
@@ -63,6 +65,7 @@ signals:
 private:
     // No idea why but if I use b123400 / tootrain-qt the images doesn't show
     QSettings settings = QSettings("TootRain-qt", "Star Runner");
+    QList<QString> streamingAccountUuids();
 
 signals:
     void currentScreenChanged();

@@ -17,6 +17,23 @@ SettingManager::SettingManager(QObject *parent)
 }
 
 void SettingManager::saveAccounts(QList<Account*> accounts) {
+    auto currentStreamingAccounts = streamingAccounts();
+    for (qsizetype i = currentStreamingAccounts.size() - 1; i >= 0; i--) {
+        auto currentStreamingAccount = currentStreamingAccounts[i];
+        bool found = false;
+        for (auto a : accounts) {
+            if (a->uuid == currentStreamingAccount->uuid) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            // Deleted streaming account
+            currentStreamingAccounts.removeAt(i);
+        }
+    }
+    setStreamingAccounts(currentStreamingAccounts);
+
     settings.remove("accounts");
     settings.beginWriteArray("accounts");
     for (qsizetype i = 0; i < accounts.size(); i++) {
@@ -251,6 +268,32 @@ void SettingManager::setStreamingAccounts(QList<Account *> newAccounts) {
     settings.endArray();
 
     qDeleteAll(currentStreamingAccounts);
+}
+
+void SettingManager::startStreaming(Account *account) {
+    QList<Account *> streamingAccounts = this->streamingAccounts();
+
+    streamingAccounts.append(account);
+    this->setStreamingAccounts(streamingAccounts);
+    foreach (auto streamingAccount, streamingAccounts) {
+        if (streamingAccount != account) {
+            delete streamingAccount;
+        }
+    }
+}
+
+void SettingManager::stopStreaming(Account *account) {
+    QList<Account *> streamingAccounts = this->streamingAccounts();
+    QList<Account *> newAccounts;
+    foreach (auto streamingAccount, streamingAccounts) {
+        if (streamingAccount->uuid == account->uuid) {
+            delete streamingAccount;
+        } else {
+            newAccounts.append(streamingAccount);
+        }
+    }
+    this->setStreamingAccounts(newAccounts);
+    qDeleteAll(newAccounts);
 }
 
 QString SettingManager::maintenanceToolPath() {
