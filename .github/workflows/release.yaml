@@ -113,8 +113,17 @@ jobs:
         cp -R .\bin\bin "${{github.workspace}}\installer-win\net.b123400.tootrainqt\data\"
         ../Qt/Tools/QtInstallerFramework/4.7/bin/binarycreator.exe -c config/config.xml -p installer-win Installer.exe
 
+        ../Qt/Tools/QtInstallerFramework/4.7/bin/repogen.exe -p "${{github.workspace}}\installer-win" "${{github.workspace}}\qt-package-out"
+
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
         artifacts: |
           Installer.exe
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: win
+        path: |
+          ${{github.workspace}}/qt-package-out
+        retention-days: 7

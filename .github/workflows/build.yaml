@@ -147,6 +147,6 @@ jobs:
       with:
         name: win
         path: |
-          ${{github.workspace}}/bin
+          ${{github.workspace}}/bin/bin
           Installer.exe
         retention-days: 7
