@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package>
     <DisplayName>TootRain</DisplayName>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <ReleaseDate>2024-12-12</ReleaseDate>
     <Default>true</Default>
     <Script>installscript.qs</Script>

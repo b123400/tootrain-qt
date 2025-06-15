@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>TootRain</Name>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Title>TootRain Installer</Title>
     <Publisher>b123400</Publisher>
     <StartMenuDir>TootRain</StartMenuDir>

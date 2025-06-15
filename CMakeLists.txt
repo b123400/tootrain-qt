@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(tootrain-qt VERSION 1.1.0 LANGUAGES CXX)
+project(tootrain-qt VERSION 1.2.0 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
