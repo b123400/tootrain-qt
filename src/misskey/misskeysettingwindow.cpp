@@ -36,7 +36,8 @@ MisskeySettingWindow::MisskeySettingWindow(MisskeyAccount *account, QWidget *par
         this->reloadListItems();
     });
 
-    connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &MisskeySettingWindow::acceptClicked);
+    connect(ui->cancelButton, &QAbstractButton::clicked, this, &QWidget::close);
+    connect(ui->okButton, &QAbstractButton::clicked, this, &MisskeySettingWindow::acceptClicked);
     connect(ui->listWidget, &QListWidget::itemChanged, this, &MisskeySettingWindow::listItemChanged);
 }
 

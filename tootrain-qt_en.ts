@@ -228,8 +228,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/misskey/misskeysettingwindow.ui" line="48"/>
+        <location filename="src/misskey/misskeysettingwindow.ui" line="32"/>
         <source>Please see &lt;a href=&quot;https://misskey-hub.net/ja/docs/for-developers/api/streaming/channel/&quot;&gt;here&lt;/a&gt; for more info.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeysettingwindow.ui" line="61"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/misskey/misskeysettingwindow.ui" line="77"/>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -330,7 +340,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="124"/>
-        <location filename="src/settingwindow.cpp" line="184"/>
+        <location filename="src/settingwindow.cpp" line="183"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -388,7 +398,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="465"/>
-        <location filename="src/settingwindow.cpp" line="495"/>
+        <location filename="src/settingwindow.cpp" line="481"/>
         <source>Checking for update...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -403,32 +413,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="182"/>
+        <location filename="src/settingwindow.cpp" line="181"/>
         <source>Disconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="503"/>
+        <location filename="src/settingwindow.cpp" line="489"/>
         <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="504"/>
+        <location filename="src/settingwindow.cpp" line="490"/>
         <source>Click here to update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="506"/>
+        <location filename="src/settingwindow.cpp" line="492"/>
         <source>No update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="540"/>
+        <location filename="src/settingwindow.cpp" line="526"/>
         <source>Updating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="551"/>
+        <location filename="src/settingwindow.cpp" line="537"/>
         <source>Restarting...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -436,12 +446,12 @@
 <context>
     <name>StreamManager</name>
     <message>
-        <location filename="src/streammanager.cpp" line="98"/>
+        <location filename="src/streammanager.cpp" line="101"/>
         <source>Stream connected: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/streammanager.cpp" line="126"/>
+        <location filename="src/streammanager.cpp" line="122"/>
         <source>Stream disconnected</source>
         <translation type="unfinished"></translation>
     </message>
