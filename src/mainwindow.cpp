@@ -6,7 +6,6 @@
 #include <QGraphicsDropShadowEffect>
 #include <QPropertyAnimation>
 #include <QLayout>
-#include <QThread>
 #include <QCoreApplication>
 #include <QTextDocument>
 #include <QTimer>
@@ -192,7 +191,7 @@ void MainWindow::showStatus(Status *status) {
             label->setMovie(mv);
             label->setMargin(0);
             label->adjustSize();
-            qDebug() << "label size: " << label->size();
+            // qDebug() << "label size: " << label->size();
             label->setFixedSize(label->width() * fontSize / label->height(), fontSize);
             label->show();
             box->addWidget(label);
@@ -277,7 +276,7 @@ void MainWindow::onAnimationFinish() {
 }
 
 int MainWindow::yForNewStatus(QSize statusSize) {
-    qDebug() << "New status size: " << statusSize;
+    // qDebug() << "New status size: " << statusSize;
     auto winWidth = this->geometry().width();
     auto winHeight = this->geometry().height();
     int durationForThisStatus = (SettingManager::shared().duration() * 1000) * winWidth / (winWidth + statusSize.width());
@@ -297,10 +296,10 @@ int MainWindow::yForNewStatus(QSize statusSize) {
 
             // Time overlapping
             if (durationLeft > durationForThisStatus) {
-                qDebug() << "time overlapping";
+                // qDebug() << "time overlapping";
                 // Y overlapping
                 if ((currentY >= thisTop && currentY <= thisBottom) || (currentBottom >= thisTop && currentBottom <= thisBottom)) {
-                    qDebug() << "currentY = " << thisBottom + 1;
+                    // qDebug() << "currentY = " << thisBottom + 1;
                     currentY = thisBottom + 1;
                     updated = true;
                 }
