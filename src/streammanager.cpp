@@ -16,6 +16,7 @@ StreamManager::StreamManager(QObject *parent)
 void StreamManager::startStreaming(Account *account) {
     if (webSockets.contains(account->uuid)) return;
     QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
+    request.setHeader(QNetworkRequest::KnownHeaders::UserAgentHeader, "TootRain/" + QCoreApplication::applicationVersion());
     QWebSocket *webSocket;
     if (unusedWebSockets.isEmpty()) {
         webSocket = new QWebSocket();
