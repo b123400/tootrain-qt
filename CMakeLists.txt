@@ -90,6 +90,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         FILES
             images/32x32.png
             images/16x16.png
+            images/slack.png
     )
 
     set_source_files_properties(${qm_files} PROPERTIES

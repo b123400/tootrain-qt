@@ -13,6 +13,9 @@
 #include "settingmanager.h"
 #include "imagemanager.h"
 #include "streammanager.h"
+#include "enterprise/slackchannelselectionwindow.h"
+#include "enterprise/tootrainchannelsubscriptions.h"
+#include "enterprise/tootrainenterpriseclient.h"
 
 SettingWindow::SettingWindow(QWidget *parent)
     : QWidget(parent)
@@ -30,6 +33,13 @@ SettingWindow::SettingWindow(QWidget *parent)
     connect(&updateProcess, &QProcess::finished, this, &SettingWindow::updateFinished);
     connect(&updateProcess, &QProcess::errorOccurred, this, &SettingWindow::updateErrored);
     connect(&ImageManager::shared(), &ImageManager::imageFinishedDownloading, this, &SettingWindow::imageFinishedDownloading);
+    // A Slack workspace changes under this window rather than in it: the
+    // TootRain server lets one go, or takes its channels.
+    connect(&TootRainEnterpriseClient::shared(), &TootRainEnterpriseClient::slackAccountsChanged, this, [this]() {
+        loadAccounts();
+        reloadAccountButtons();
+    });
+    connect(&TootRainChannelSubscriptions::shared(), &TootRainChannelSubscriptions::didChange, this, &SettingWindow::reloadAccountButtons);
 
     reloadUIFromSettings();
     reloadAccountButtons();
@@ -65,8 +75,8 @@ void SettingWindow::loadAccounts() {
     ui->accountTable->clearContents();
     ui->accountTable->setColumnCount(2);
     ui->accountTable->setRowCount(accounts.size());
-    ui->accountTable->setColumnWidth(0, 300);
-    ui->accountTable->setColumnWidth(1, 132);
+    ui->accountTable->setColumnWidth(0, 290);
+    ui->accountTable->setColumnWidth(1, 142);
 
     QList<QString> streamingAccountUuids = StreamManager::shared().streamingAccountUuids();
 
@@ -74,7 +84,9 @@ void SettingWindow::loadAccounts() {
     for (auto account : accounts) {
         bool hasImage = ImageManager::shared().isReady(account->avatarUrl);
         QTableWidgetItem *avatarItem = NULL;
-        if (hasImage) {
+        if (TootRainEnterpriseClient::isAccountUsingTootRainServer(account)) {
+            avatarItem = new QTableWidgetItem(QIcon(":/images/slack.png"), account->fullUsername());
+        } else if (hasImage) {
             avatarItem = new QTableWidgetItem(QIcon(ImageManager::shared().pathForUrl(account->avatarUrl)), account->fullUsername());
         } else {
             avatarItem = new QTableWidgetItem("");
@@ -83,7 +95,11 @@ void SettingWindow::loadAccounts() {
         loadingAccountAvatarUrls.insert(account->avatarUrl);
         bool isStreaming = streamingAccountUuids.contains(account->uuid);
         ui->accountTable->setItem(i, 0, avatarItem);
-        ui->accountTable->setItem(i, 1, new QTableWidgetItem(isStreaming ? tr("✅ Connected") : tr("Disconnected")));
+        QString status = isStreaming ? tr("✅ Connected") : tr("Disconnected");
+        if (TootRainEnterpriseClient::accountNeedsAuthentication(account)) {
+            status = tr("Need authentication");
+        }
+        ui->accountTable->setItem(i, 1, new QTableWidgetItem(status));
         i++;
     }
     qDeleteAll(accounts);
@@ -170,19 +186,22 @@ void SettingWindow::reloadAccountButtons() {
     }
     int row = selectedItems[0]->row();
     auto accounts = SettingManager::shared().getAccounts();
-    if (row >= accounts.count()) return;
-    auto selectedAccount = accounts[row];
-    ui->deleteAccountButton->setEnabled(true);
-    ui->connectButton->setEnabled(true);
-    ui->configButton->setEnabled(true);
-    for (auto selectedItem : selectedItems) {
+    if (row < accounts.count()) {
+        auto selectedAccount = accounts[row];
+        // A Slack workspace the server has let go has nothing to connect to
+        // until it is authorised again, and one whose channels are on their
+        // way to the server is already doing what the button asks.
+        bool needsAuthentication = TootRainEnterpriseClient::accountNeedsAuthentication(selectedAccount);
+        bool isUpdatingChannels = TootRainEnterpriseClient::isAccountUsingTootRainServer(selectedAccount)
+            && TootRainChannelSubscriptions::shared().isStating();
+        ui->deleteAccountButton->setEnabled(true);
+        ui->connectButton->setEnabled(!needsAuthentication && !isUpdatingChannels);
+        ui->configButton->setEnabled(true);
+        ui->configButton->setText(needsAuthentication ? tr("Re-authenticate") : tr("Configure..."));
         bool isConnected = StreamManager::shared().isAccountStreaming(selectedAccount);
-        if (isConnected) {
-            ui->connectButton->setText(tr("Disconnect"));
-        } else {
-            ui->connectButton->setText(tr("Connect"));
-        }
+        ui->connectButton->setText(isConnected ? tr("Disconnect") : tr("Connect"));
     }
+    qDeleteAll(accounts);
 }
 
 void SettingWindow::addAccountButtonClicked() {
@@ -193,6 +212,11 @@ void SettingWindow::addAccountButtonClicked() {
     QAction misskeyAction = QAction("Misskey", this);
     connect(&misskeyAction, &QAction::triggered, this, &SettingWindow::loginToMisskey);
     menu.addAction(&misskeyAction);
+    QAction slackAction = QAction("Slack", this);
+    connect(&slackAction, &QAction::triggered, this, [this]() {
+        loginToSlack();
+    });
+    menu.addAction(&slackAction);
     menu.exec(ui->addAccountButton->cursor().pos());
 }
 
@@ -208,7 +232,11 @@ void SettingWindow::deleteAccountButtonClicked() {
                                                 + tr("TootRain will stop showing comments from this account."),
                                             QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
         if (answer == QMessageBox::Yes) {
-            SettingManager::shared().deleteAccountWithUuid(account->uuid);
+            if (auto slackAccount = qobject_cast<TootRainSlackAccount *>(account)) {
+                slackAccount->remove();
+            } else {
+                SettingManager::shared().deleteAccountWithUuid(account->uuid);
+            }
         }
     }
     qDeleteAll(accounts);
@@ -234,6 +262,47 @@ void SettingWindow::loginToMisskey(bool _checked) {
     connect(this->misskeyAuthWindow, &MisskeyAuthWindow::authenticated, this, &SettingWindow::misskeyAccountAuthenticated);
     this->misskeyAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
     this->misskeyAuthWindow->show();
+}
+
+// Sends the user through the TootRain server's Slack log-in. `teamId` is the
+// workspace to authorise again, when the server has let one go.
+void SettingWindow::loginToSlack(const QString &teamId) {
+    if (slackAuthWindow) return;
+    slackAuthWindow = new TootRainEnterpriseAuthWindow(teamId, this);
+    connect(slackAuthWindow, &TootRainEnterpriseAuthWindow::authenticated, this, [=](TootRainSlackAccount *account) {
+        slackAccountAuthenticated(account, teamId.isEmpty());
+    });
+    connect(slackAuthWindow, &TootRainEnterpriseAuthWindow::failed, this, [this](QString error) {
+        if (!error.isEmpty()) QMessageBox::warning(this, "TootRain", error);
+    });
+    connect(slackAuthWindow, &QDialog::finished, this, [this]() {
+        slackAuthWindow->deleteLater();
+        slackAuthWindow = nullptr;
+    });
+    slackAuthWindow->setWindowModality(Qt::WindowModality::WindowModal);
+    slackAuthWindow->show();
+}
+
+void SettingWindow::slackAccountAuthenticated(TootRainSlackAccount *account, bool isNew) {
+    if (isNew) {
+        SettingManager::shared().startStreaming(account);
+    }
+    // A workspace that was already switched on has a new session to say its
+    // channels on, and a connection to open for it.
+    TootRainEnterpriseClient::shared().startStreaming(account);
+    loadAccounts();
+    reloadAccountButtons();
+    if (!isNew) return;
+
+    // A workspace with no channels picked shows nothing at all, and picking
+    // them is what the user came to do, so the picker opens itself on a
+    // workspace that has just been linked, with its row selected.
+    auto accounts = SettingManager::shared().getAccounts();
+    for (qsizetype i = 0; i < accounts.size(); i++) {
+        if (accounts[i]->uuid == account->uuid) ui->accountTable->selectRow(i);
+    }
+    qDeleteAll(accounts);
+    openSlackChannelSelection(TootRainSlackAccount::accountWithTeamId(account->teamId, this));
 }
 
 void SettingWindow::mastodonAccountFinished() {
@@ -275,6 +344,8 @@ void SettingWindow::configureButtonClicked() {
         openMastodonSettings((MastodonAccount*)selectedAccount);
     } else if (dynamic_cast<MisskeyAccount*>(selectedAccount) != nullptr) {
         openMisskeySettings((MisskeyAccount*)selectedAccount);
+    } else if (auto slackAccount = qobject_cast<TootRainSlackAccount *>(selectedAccount)) {
+        openSlackChannelSelection(slackAccount);
     }
     for (qsizetype i = 0; i < accounts.size(); i++) {
         if (i != row) {
@@ -325,6 +396,21 @@ void SettingWindow::openMisskeySettings(MisskeyAccount *account) {
         this->misskeySettingWindow->setWindowModality(Qt::WindowModality::WindowModal);
         this->misskeySettingWindow->show();
     }
+}
+
+// Takes the account with it. A workspace the server has let go can only be
+// authorised again: there is no session to ask about its channels with.
+void SettingWindow::openSlackChannelSelection(TootRainSlackAccount *account) {
+    if (!account) return;
+    if (account->needsAuthentication) {
+        loginToSlack(account->teamId);
+        delete account;
+        return;
+    }
+    auto picker = new SlackChannelSelectionWindow(account, this);
+    connect(picker, &QDialog::finished, picker, &QObject::deleteLater);
+    picker->setWindowModality(Qt::WindowModality::WindowModal);
+    picker->show();
 }
 
 void SettingWindow::mastodonSettingFinished() {
