@@ -61,7 +61,7 @@
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="100"/>
+        <location filename="src/mainwindow.cpp" line="101"/>
         <source>New version available</source>
         <translation>新しいバージョンに更新できます</translation>
     </message>
@@ -320,6 +320,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="54"/>
+        <location filename="src/settingwindow.cpp" line="200"/>
         <source>Configure...</source>
         <translation>チャンネル設定...</translation>
     </message>
@@ -364,7 +365,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="124"/>
-        <location filename="src/settingwindow.cpp" line="183"/>
+        <location filename="src/settingwindow.cpp" line="202"/>
         <source>Connect</source>
         <translation>接続</translation>
     </message>
@@ -450,62 +451,276 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="465"/>
-        <location filename="src/settingwindow.cpp" line="481"/>
+        <location filename="src/settingwindow.cpp" line="572"/>
         <source>Checking for update...</source>
         <translation>更新を確認中</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="86"/>
+        <location filename="src/settingwindow.cpp" line="98"/>
         <source>✅ Connected</source>
         <translation>✅ 接続しました</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="86"/>
+        <location filename="src/settingwindow.cpp" line="98"/>
         <source>Disconnected</source>
         <translation>接続してない</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="181"/>
+        <location filename="src/settingwindow.cpp" line="100"/>
+        <source>Need authentication</source>
+        <translation>再認証が必要</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="200"/>
+        <source>Re-authenticate</source>
+        <translation>再認証</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="202"/>
         <source>Disconnect</source>
         <translation>接続を切断</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="489"/>
+        <location filename="src/settingwindow.cpp" line="231"/>
+        <source>Remove %1?</source>
+        <translation>%1 を削除しますか？</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="232"/>
+        <source>TootRain will stop showing comments from this account.</source>
+        <translation>このアカウントのコメントは表示されなくなります。</translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="580"/>
         <source>New version available</source>
         <translation>新しいバージョンに更新できます</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="490"/>
+        <location filename="src/settingwindow.cpp" line="581"/>
         <source>Click here to update</source>
         <translation>新しいバージョンに更新する</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="492"/>
+        <location filename="src/settingwindow.cpp" line="583"/>
         <source>No update available</source>
         <translation>すでに最新のバージョンです</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="526"/>
+        <location filename="src/settingwindow.cpp" line="617"/>
         <source>Updating...</source>
         <translation>更新中...</translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="537"/>
+        <location filename="src/settingwindow.cpp" line="628"/>
         <source>Restarting...</source>
         <translation>再起動中</translation>
     </message>
 </context>
 <context>
+    <name>SlackAPIClient</name>
+    <message>
+        <location filename="src/enterprise/slackapiclient.cpp" line="17"/>
+        <location filename="src/enterprise/slackapiclient.cpp" line="45"/>
+        <location filename="src/enterprise/slackapiclient.cpp" line="76"/>
+        <location filename="src/enterprise/slackapiclient.cpp" line="156"/>
+        <source>Slack sent a response TootRain could not read.</source>
+        <translation>Slack のレスポンスを読み取れませんでした。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackapiclient.cpp" line="154"/>
+        <source>Slack answered with %1.</source>
+        <translation>Slack が %1 を返しました。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackapiclient.cpp" line="158"/>
+        <source>Slack refused the request: %1</source>
+        <translation>Slack にリクエストを拒否されました：%1</translation>
+    </message>
+</context>
+<context>
+    <name>SlackChannelSelectionWindow</name>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="21"/>
+        <source>Channels of %1</source>
+        <translation>%1 のチャンネル</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="36"/>
+        <source>Filter channels</source>
+        <translation>チャンネルを絞り込む</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="44"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="48"/>
+        <source>Done</source>
+        <translation>完了</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="78"/>
+        <source>Loading channels…</source>
+        <translation>チャンネルを読み込んでいます…</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="80"/>
+        <source>Updating channels…</source>
+        <translation>チャンネルを更新しています…</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="189"/>
+        <source>No channel matches this filter.</source>
+        <translation>この条件に一致するチャンネルはありません。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="192"/>
+        <source>Checked channels are shown as comments. %1 of %2 selected.</source>
+        <translation>チェックしたチャンネルのコメントが流れます。%1 / %2 件選択中。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="235"/>
+        <source>Saving channels…</source>
+        <translation>チャンネルを保存しています…</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="284"/>
+        <source>%1: %2</source>
+        <translation>%1：%2</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="286"/>
+        <source>Some channels could not be added.</source>
+        <translation>一部のチャンネルを追加できませんでした。</translation>
+    </message>
+</context>
+<context>
+    <name>SlackInfoCache</name>
+    <message>
+        <location filename="src/enterprise/slackinfocache.cpp" line="20"/>
+        <source>This Slack workspace has no access token, please log in again.</source>
+        <translation>この Slack ワークスペースにアクセストークンがありません。もう一度ログインしてください。</translation>
+    </message>
+</context>
+<context>
     <name>StreamManager</name>
     <message>
-        <location filename="src/streammanager.cpp" line="101"/>
+        <location filename="src/streammanager.cpp" line="113"/>
         <source>Stream connected: </source>
         <translation>接続しました：</translation>
     </message>
     <message>
-        <location filename="src/streammanager.cpp" line="122"/>
+        <location filename="src/streammanager.cpp" line="134"/>
         <source>Stream disconnected</source>
         <translation>接続が切れました：</translation>
+    </message>
+</context>
+<context>
+    <name>TootRainChannelSubscriptions</name>
+    <message>
+        <location filename="src/enterprise/tootrainchannelsubscriptions.cpp" line="27"/>
+        <source>TootRain could not tell the server which channels to listen to.</source>
+        <translation>どのチャンネルを受信するかをサーバーに伝えられませんでした。</translation>
+    </message>
+</context>
+<context>
+    <name>TootRainEnterpriseAuthWindow</name>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="18"/>
+        <source>Log in with Slack</source>
+        <translation>Slack でログイン</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="19"/>
+        <source>Please log in with Slack in your browser.</source>
+        <translation>ブラウザで Slack にログインしてください。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="63"/>
+        <source>The TootRain server did not send back a Slack token.</source>
+        <translation>TootRain サーバーから Slack のトークンが返ってきませんでした。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="79"/>
+        <source>The TootRain server refused the log-in: %1</source>
+        <translation>TootRain サーバーにログインを拒否されました：%1</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="93"/>
+        <source>Loading channels…</source>
+        <translation>チャンネルを読み込んでいます…</translation>
+    </message>
+</context>
+<context>
+    <name>TootRainEnterpriseClient</name>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseclient.cpp" line="182"/>
+        <source>TootRain stopped listening to Slack.</source>
+        <translation>TootRain は Slack の受信を停止しました。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseclient.cpp" line="183"/>
+        <source>The TootRain server no longer knows this TootRain session. Please log in with Slack again.</source>
+        <translation>TootRain サーバーはこの TootRain セッションを認識しなくなりました。もう一度 Slack でログインしてください。</translation>
+    </message>
+</context>
+<context>
+    <name>TootRainServerAPI</name>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="97"/>
+        <source>The TootRain server does not know this Slack workspace.</source>
+        <translation>TootRain サーバーはこの Slack ワークスペースを知りません。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="98"/>
+        <source>This Slack workspace is not linked to this TootRain session, please log in again.</source>
+        <translation>この Slack ワークスペースはこの TootRain セッションに連携されていません。もう一度ログインしてください。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="99"/>
+        <source>You are not a member of this Slack channel, please join it in Slack first.</source>
+        <translation>この Slack チャンネルのメンバーではありません。先に Slack で参加してください。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="100"/>
+        <source>Please invite the TootRain bot to this channel first.</source>
+        <translation>まず TootRain の bot をこのチャンネルに招待してください。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="101"/>
+        <source>Slack refused the request: %1</source>
+        <translation>Slack にリクエストを拒否されました：%1</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="102"/>
+        <source>The TootRain server could not reach Slack, please try again later.</source>
+        <translation>TootRain サーバーが Slack に接続できませんでした。しばらくしてからもう一度お試しください。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="106"/>
+        <source>The TootRain server refused the request: %1</source>
+        <translation>TootRain サーバーにリクエストを拒否されました：%1</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="117"/>
+        <source>Please log in to TootRain with Slack first.</source>
+        <translation>まず Slack で TootRain にログインしてください。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="149"/>
+        <source>The server sent a response TootRain could not read.</source>
+        <translation>サーバーのレスポンスを読み取れませんでした。</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="159"/>
+        <source>The TootRain server answered with %1: %2</source>
+        <translation>TootRain サーバーが %1 を返しました：%2</translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="163"/>
+        <source>This TootRain session is no longer valid, please log in again.</source>
+        <translation>この TootRain セッションは無効になりました。もう一度ログインしてください。</translation>
     </message>
 </context>
 </TS>

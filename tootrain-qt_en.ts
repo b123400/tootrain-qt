@@ -61,7 +61,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/mainwindow.cpp" line="100"/>
+        <location filename="src/mainwindow.cpp" line="101"/>
         <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -300,6 +300,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="54"/>
+        <location filename="src/settingwindow.cpp" line="200"/>
         <source>Configure...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -340,7 +341,7 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="124"/>
-        <location filename="src/settingwindow.cpp" line="183"/>
+        <location filename="src/settingwindow.cpp" line="202"/>
         <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
@@ -398,61 +399,275 @@
     </message>
     <message>
         <location filename="src/settingwindow.ui" line="465"/>
-        <location filename="src/settingwindow.cpp" line="481"/>
+        <location filename="src/settingwindow.cpp" line="572"/>
         <source>Checking for update...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="86"/>
+        <location filename="src/settingwindow.cpp" line="98"/>
         <source>✅ Connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="86"/>
+        <location filename="src/settingwindow.cpp" line="98"/>
         <source>Disconnected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="181"/>
+        <location filename="src/settingwindow.cpp" line="100"/>
+        <source>Need authentication</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="200"/>
+        <source>Re-authenticate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="202"/>
         <source>Disconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="489"/>
+        <location filename="src/settingwindow.cpp" line="231"/>
+        <source>Remove %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="232"/>
+        <source>TootRain will stop showing comments from this account.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/settingwindow.cpp" line="580"/>
         <source>New version available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="490"/>
+        <location filename="src/settingwindow.cpp" line="581"/>
         <source>Click here to update</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="492"/>
+        <location filename="src/settingwindow.cpp" line="583"/>
         <source>No update available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="526"/>
+        <location filename="src/settingwindow.cpp" line="617"/>
         <source>Updating...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/settingwindow.cpp" line="537"/>
+        <location filename="src/settingwindow.cpp" line="628"/>
         <source>Restarting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SlackAPIClient</name>
+    <message>
+        <location filename="src/enterprise/slackapiclient.cpp" line="17"/>
+        <location filename="src/enterprise/slackapiclient.cpp" line="45"/>
+        <location filename="src/enterprise/slackapiclient.cpp" line="76"/>
+        <location filename="src/enterprise/slackapiclient.cpp" line="156"/>
+        <source>Slack sent a response TootRain could not read.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackapiclient.cpp" line="154"/>
+        <source>Slack answered with %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackapiclient.cpp" line="158"/>
+        <source>Slack refused the request: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SlackChannelSelectionWindow</name>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="21"/>
+        <source>Channels of %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="36"/>
+        <source>Filter channels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="44"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="48"/>
+        <source>Done</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="78"/>
+        <source>Loading channels…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="80"/>
+        <source>Updating channels…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="189"/>
+        <source>No channel matches this filter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="192"/>
+        <source>Checked channels are shown as comments. %1 of %2 selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="235"/>
+        <source>Saving channels…</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="284"/>
+        <source>%1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/slackchannelselectionwindow.cpp" line="286"/>
+        <source>Some channels could not be added.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SlackInfoCache</name>
+    <message>
+        <location filename="src/enterprise/slackinfocache.cpp" line="20"/>
+        <source>This Slack workspace has no access token, please log in again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StreamManager</name>
     <message>
-        <location filename="src/streammanager.cpp" line="101"/>
+        <location filename="src/streammanager.cpp" line="113"/>
         <source>Stream connected: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/streammanager.cpp" line="122"/>
+        <location filename="src/streammanager.cpp" line="134"/>
         <source>Stream disconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TootRainChannelSubscriptions</name>
+    <message>
+        <location filename="src/enterprise/tootrainchannelsubscriptions.cpp" line="27"/>
+        <source>TootRain could not tell the server which channels to listen to.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TootRainEnterpriseAuthWindow</name>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="18"/>
+        <source>Log in with Slack</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="19"/>
+        <source>Please log in with Slack in your browser.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="63"/>
+        <source>The TootRain server did not send back a Slack token.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="79"/>
+        <source>The TootRain server refused the log-in: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseauthwindow.cpp" line="93"/>
+        <source>Loading channels…</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TootRainEnterpriseClient</name>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseclient.cpp" line="182"/>
+        <source>TootRain stopped listening to Slack.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainenterpriseclient.cpp" line="183"/>
+        <source>The TootRain server no longer knows this TootRain session. Please log in with Slack again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TootRainServerAPI</name>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="97"/>
+        <source>The TootRain server does not know this Slack workspace.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="98"/>
+        <source>This Slack workspace is not linked to this TootRain session, please log in again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="99"/>
+        <source>You are not a member of this Slack channel, please join it in Slack first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="100"/>
+        <source>Please invite the TootRain bot to this channel first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="101"/>
+        <source>Slack refused the request: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="102"/>
+        <source>The TootRain server could not reach Slack, please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="106"/>
+        <source>The TootRain server refused the request: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="117"/>
+        <source>Please log in to TootRain with Slack first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="149"/>
+        <source>The server sent a response TootRain could not read.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="159"/>
+        <source>The TootRain server answered with %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/enterprise/tootrainserver.cpp" line="163"/>
+        <source>This TootRain session is no longer valid, please log in again.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
