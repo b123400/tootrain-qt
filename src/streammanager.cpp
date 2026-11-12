@@ -2,6 +2,7 @@
 #include "settingmanager.h"
 #include "statusimageloader.h"
 #include "dummystatus.h"
+#include "enterprise/tootrainenterpriseclient.h"
 
 StreamManager::StreamManager(QObject *parent)
     : QObject{parent}
@@ -14,6 +15,12 @@ StreamManager::StreamManager(QObject *parent)
 }
 
 void StreamManager::startStreaming(Account *account) {
+    if (TootRainEnterpriseClient::isAccountUsingTootRainServer(account)) {
+        if (tootRainServerAccountUuids.contains(account->uuid)) return;
+        tootRainServerAccountUuids.insert(account->uuid);
+        TootRainEnterpriseClient::shared().startStreaming(account);
+        return;
+    }
     if (webSockets.contains(account->uuid)) return;
     QNetworkRequest request = QNetworkRequest(account->getWebSocketUrl());
     request.setHeader(QNetworkRequest::KnownHeaders::UserAgentHeader, "TootRain/" + QCoreApplication::applicationVersion());
@@ -37,6 +44,10 @@ void StreamManager::startStreaming(Account *account) {
 }
 
 void StreamManager::stopStreaming(Account *account) {
+    if (tootRainServerAccountUuids.remove(account->uuid)) {
+        TootRainEnterpriseClient::shared().stopStreaming(account);
+        return;
+    }
     if (!webSockets.contains(account->uuid)) return;
     QWebSocket *webSocket = webSockets.take(account->uuid);
     webSocket->close();
@@ -64,11 +75,11 @@ void StreamManager::reconnect(Account *account, bool afterAWhile) {
 }
 
 bool StreamManager::isAccountStreaming(Account *account) {
-    return webSockets.contains(account->uuid);
+    return webSockets.contains(account->uuid) || tootRainServerAccountUuids.contains(account->uuid);
 }
 
 QList<QString> StreamManager::streamingAccountUuids() {
-    return webSockets.keys();
+    return webSockets.keys() + tootRainServerAccountUuids.values();
 }
 
 void StreamManager::onWebSocketTextMessageReceived(QString message) {

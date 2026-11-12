@@ -23,6 +23,7 @@
 #include "aboutdialog.h"
 #include <QApplication>
 #include "streammanager.h"
+#include "enterprise/tootrainenterpriseclient.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -85,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     qDeleteAll(streamingAccounts);
     streamingAccounts.clear();
+    TootRainEnterpriseClient::shared().applicationDidFinishLaunching();
 
     auto accounts = SettingManager::shared().streamingAccounts();
     if (!accounts.size()) {

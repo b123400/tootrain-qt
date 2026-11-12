@@ -53,6 +53,12 @@ set(PROJECT_SOURCES
         src/misskey/misskeysettingwindow.h src/misskey/misskeysettingwindow.cpp src/misskey/misskeysettingwindow.ui
         src/misskey/misskeystreamsource.h src/misskey/misskeystreamsource.cpp
         src/enterprise/tootrainserver.h src/enterprise/tootrainserver.cpp
+        src/enterprise/slackapiclient.h src/enterprise/slackapiclient.cpp
+        src/enterprise/slackinfocache.h src/enterprise/slackinfocache.cpp
+        src/enterprise/tootrainslackaccount.h src/enterprise/tootrainslackaccount.cpp
+        src/enterprise/tootrainchannelsubscriptions.h src/enterprise/tootrainchannelsubscriptions.cpp
+        src/enterprise/centrifugoclient.h src/enterprise/centrifugoclient.cpp
+        src/enterprise/tootrainenterpriseclient.h src/enterprise/tootrainenterpriseclient.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)

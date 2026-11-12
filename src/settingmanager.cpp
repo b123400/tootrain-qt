@@ -7,6 +7,8 @@
 #include "mastodon/account.h"
 #include "misskey/misskeyaccount.h"
 #include "streammanager.h"
+#include "enterprise/tootrainenterpriseclient.h"
+#include "enterprise/tootrainslackaccount.h"
 
 SettingManager::SettingManager(QObject *parent)
     : QObject{parent}
@@ -74,6 +76,8 @@ QList<Account*> SettingManager::getAccounts() {
             account = new MastodonAccount(&settings);
         } else if (type == "misskey") {
             account = new MisskeyAccount(&settings);
+        } else if (type == "slack") {
+            account = new TootRainSlackAccount(&settings);
         }
         accounts.append(account);
     }
@@ -280,6 +284,9 @@ void SettingManager::startStreaming(Account *account) {
             delete streamingAccount;
         }
     }
+    // The user asked for this one, so what the TootRain server makes of it is
+    // worth saying out loud rather than only logging.
+    TootRainEnterpriseClient::shared().accountStreamingStateChanged(account);
 }
 
 void SettingManager::stopStreaming(Account *account) {
@@ -294,6 +301,7 @@ void SettingManager::stopStreaming(Account *account) {
     }
     this->setStreamingAccounts(newAccounts);
     qDeleteAll(newAccounts);
+    TootRainEnterpriseClient::shared().accountStreamingStateChanged(account);
 }
 
 QVariant SettingManager::value(const QString &key) {
