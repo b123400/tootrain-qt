@@ -59,6 +59,9 @@ set(PROJECT_SOURCES
         src/enterprise/tootrainchannelsubscriptions.h src/enterprise/tootrainchannelsubscriptions.cpp
         src/enterprise/centrifugoclient.h src/enterprise/centrifugoclient.cpp
         src/enterprise/tootrainenterpriseclient.h src/enterprise/tootrainenterpriseclient.cpp
+        src/enterprise/tootrainurlscheme.h src/enterprise/tootrainurlscheme.cpp
+        src/enterprise/tootrainenterpriseauthwindow.h src/enterprise/tootrainenterpriseauthwindow.cpp
+        src/enterprise/slackchannelselectionwindow.h src/enterprise/slackchannelselectionwindow.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
