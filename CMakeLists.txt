@@ -141,3 +141,17 @@ install(TARGETS tootrain-qt
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(tootrain-qt)
 endif()
+
+# The checks for the TootRain server integration. Left out where this Qt was
+# built without its test library.
+find_package(Qt${QT_VERSION_MAJOR} QUIET COMPONENTS Test)
+if(Qt${QT_VERSION_MAJOR}Test_FOUND)
+    enable_testing()
+    qt_add_executable(enterprise_test
+        tests/enterprise_test.cpp
+        src/enterprise/centrifugoclient.h src/enterprise/centrifugoclient.cpp
+        src/enterprise/slackapiclient.h src/enterprise/slackapiclient.cpp
+    )
+    target_link_libraries(enterprise_test PRIVATE Qt6::Network Qt6::WebSockets Qt6::Test)
+    add_test(NAME enterprise_test COMMAND enterprise_test)
+endif()
