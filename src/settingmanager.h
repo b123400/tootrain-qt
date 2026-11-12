@@ -56,6 +56,11 @@ public:
     void startStreaming(Account *account);
     void stopStreaming(Account *account);
 
+    // Settings that have no accessor of their own: the TootRain server's app
+    // session token and its URL overrides. An invalid value removes the key.
+    QVariant value(const QString &key);
+    void setValue(const QString &key, const QVariant &value);
+
     QString maintenanceToolPath();
     void checkForUpdate(std::function<void (bool)> callback);
 

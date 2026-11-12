@@ -11,6 +11,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    // What the TootRain server is told this app is.
+    a.setApplicationVersion(TOOTRAIN_VERSION);
     QTranslator translator;
 
     QLocale sysLocale = QLocale::system();

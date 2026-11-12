@@ -52,6 +52,7 @@ set(PROJECT_SOURCES
         src/misskey/misskeyemoji.h src/misskey/misskeyemoji.cpp
         src/misskey/misskeysettingwindow.h src/misskey/misskeysettingwindow.cpp src/misskey/misskeysettingwindow.ui
         src/misskey/misskeystreamsource.h src/misskey/misskeystreamsource.cpp
+        src/enterprise/tootrainserver.h src/enterprise/tootrainserver.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
@@ -103,6 +104,7 @@ else()
     endif()
 endif()
 
+target_compile_definitions(tootrain-qt PRIVATE TOOTRAIN_VERSION="${PROJECT_VERSION}")
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Network)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::NetworkAuth)

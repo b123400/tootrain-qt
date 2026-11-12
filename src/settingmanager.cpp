@@ -296,6 +296,18 @@ void SettingManager::stopStreaming(Account *account) {
     qDeleteAll(newAccounts);
 }
 
+QVariant SettingManager::value(const QString &key) {
+    return settings.value(key);
+}
+
+void SettingManager::setValue(const QString &key, const QVariant &value) {
+    if (value.isValid()) {
+        settings.setValue(key, value);
+    } else {
+        settings.remove(key);
+    }
+}
+
 QString SettingManager::maintenanceToolPath() {
     QString maintenanceToolPath =
 #if defined(Q_OS_WIN)
