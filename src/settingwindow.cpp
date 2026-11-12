@@ -200,10 +200,15 @@ void SettingWindow::deleteAccountButtonClicked() {
     auto selectedItems = ui->accountTable->selectedItems();
     if (selectedItems.empty()) return;
     auto accounts = SettingManager::shared().getAccounts();
-    for (auto item : selectedItems) {
-        int selectedRow = item->row();
-        if (selectedRow < accounts.size()) {
-            SettingManager::shared().deleteAccountWithUuid(accounts[selectedRow]->uuid);
+    int selectedRow = selectedItems[0]->row();
+    if (selectedRow < accounts.size()) {
+        Account *account = accounts[selectedRow];
+        auto answer = QMessageBox::question(this, "TootRain",
+                                            tr("Remove %1?").arg(account->fullUsername()) + "\n\n"
+                                                + tr("TootRain will stop showing comments from this account."),
+                                            QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
+        if (answer == QMessageBox::Yes) {
+            SettingManager::shared().deleteAccountWithUuid(account->uuid);
         }
     }
     qDeleteAll(accounts);
