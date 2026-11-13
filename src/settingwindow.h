@@ -8,6 +8,7 @@
 #include "mastodon/mastodonsettingwindow.h"
 #include "misskey/misskeyauthwindow.h"
 #include "misskey/misskeysettingwindow.h"
+#include "enterprise/tootrainenterpriseauthwindow.h"
 
 namespace Ui {
 class SettingWindow;
@@ -27,11 +28,13 @@ public slots:
     void accountTableSelectionChanged();
     void loginToMastodon(bool _checked);
     void loginToMisskey(bool _checked);
+    void loginToSlack(const QString &teamId = QString());
 
     void configureButtonClicked();
     void connectButtonClicked();
     void openMastodonSettings(MastodonAccount *account);
     void openMisskeySettings(MisskeyAccount *account);
+    void openSlackChannelSelection(TootRainSlackAccount *account);
 
     void mastodonAccountFinished();
     void mastodonAccountAuthenticated(MastodonAccount *account);
@@ -42,6 +45,8 @@ public slots:
     void misskeyAccountAuthenticated(MisskeyAccount *account);
     void misskeySettingFinished();
     void misskeySettingUpdated(MisskeyAccount *account);
+
+    void slackAccountAuthenticated(TootRainSlackAccount *account, bool isNew);
 
     void screenIndexChanged(int index);
     void showAvatarCheckBoxChanged(Qt::CheckState checkState);
@@ -68,6 +73,7 @@ private:
     MastodonSettingWindow *mastodonSettingWindow = nullptr;
     MisskeyAuthWindow *misskeyAuthWindow = nullptr;
     MisskeySettingWindow *misskeySettingWindow = nullptr;
+    TootRainEnterpriseAuthWindow *slackAuthWindow = nullptr;
     QProcess updateProcess;
     QSet<QUrl> loadingAccountAvatarUrls;
 

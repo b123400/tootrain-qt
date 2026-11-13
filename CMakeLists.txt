@@ -52,6 +52,16 @@ set(PROJECT_SOURCES
         src/misskey/misskeyemoji.h src/misskey/misskeyemoji.cpp
         src/misskey/misskeysettingwindow.h src/misskey/misskeysettingwindow.cpp src/misskey/misskeysettingwindow.ui
         src/misskey/misskeystreamsource.h src/misskey/misskeystreamsource.cpp
+        src/enterprise/tootrainserver.h src/enterprise/tootrainserver.cpp
+        src/enterprise/slackapiclient.h src/enterprise/slackapiclient.cpp
+        src/enterprise/slackinfocache.h src/enterprise/slackinfocache.cpp
+        src/enterprise/tootrainslackaccount.h src/enterprise/tootrainslackaccount.cpp
+        src/enterprise/tootrainchannelsubscriptions.h src/enterprise/tootrainchannelsubscriptions.cpp
+        src/enterprise/centrifugoclient.h src/enterprise/centrifugoclient.cpp
+        src/enterprise/tootrainenterpriseclient.h src/enterprise/tootrainenterpriseclient.cpp
+        src/enterprise/tootrainurlscheme.h src/enterprise/tootrainurlscheme.cpp
+        src/enterprise/tootrainenterpriseauthwindow.h src/enterprise/tootrainenterpriseauthwindow.cpp
+        src/enterprise/slackchannelselectionwindow.h src/enterprise/slackchannelselectionwindow.cpp
 )
 
 qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES en ja)
@@ -80,6 +90,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         FILES
             images/32x32.png
             images/16x16.png
+            images/slack.png
     )
 
     set_source_files_properties(${qm_files} PROPERTIES
@@ -103,6 +114,7 @@ else()
     endif()
 endif()
 
+target_compile_definitions(tootrain-qt PRIVATE TOOTRAIN_VERSION="${PROJECT_VERSION}")
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::Network)
 target_link_libraries(tootrain-qt PRIVATE Qt${QT_VERSION_MAJOR}::NetworkAuth)
@@ -132,4 +144,18 @@ install(TARGETS tootrain-qt
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(tootrain-qt)
+endif()
+
+# The checks for the TootRain server integration. Left out where this Qt was
+# built without its test library.
+find_package(Qt${QT_VERSION_MAJOR} QUIET COMPONENTS Test)
+if(Qt${QT_VERSION_MAJOR}Test_FOUND)
+    enable_testing()
+    qt_add_executable(enterprise_test
+        tests/enterprise_test.cpp
+        src/enterprise/centrifugoclient.h src/enterprise/centrifugoclient.cpp
+        src/enterprise/slackapiclient.h src/enterprise/slackapiclient.cpp
+    )
+    target_link_libraries(enterprise_test PRIVATE Qt6::Network Qt6::WebSockets Qt6::Test)
+    add_test(NAME enterprise_test COMMAND enterprise_test)
 endif()

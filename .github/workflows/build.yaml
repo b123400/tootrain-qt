@@ -58,6 +58,9 @@ jobs:
       # Build your program with the given configuration
       run: CMAKE_PREFIX_PATH="../qt-static" cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
+    - name: Test
+      run: ctest --test-dir ${{github.workspace}}/build --output-on-failure
+
     - name: Install
       run: |
         cmake --install ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --prefix="$(pwd)/bin"
@@ -72,7 +75,7 @@ jobs:
         retention-days: 7
 
   build-mac:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
     - uses: actions/checkout@v4
     - name: Install Qt
@@ -90,6 +93,9 @@ jobs:
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Test
+      run: ctest --test-dir ${{github.workspace}}/build --output-on-failure
 
     - name: Install
       run: |
@@ -142,6 +148,9 @@ jobs:
         mkdir "${{github.workspace}}\installer-win\net.b123400.tootrainqt\data\"
         cp -R .\bin\bin "${{github.workspace}}\installer-win\net.b123400.tootrainqt\data\"
         ../Qt/Tools/QtInstallerFramework/4.7/bin/binarycreator.exe -c config/config.xml -p installer-win Installer.exe
+
+    - name: Test
+      run: ctest --test-dir ${{github.workspace}}/build -C ${{env.BUILD_TYPE}} --output-on-failure
 
     - uses: actions/upload-artifact@v4
       with:

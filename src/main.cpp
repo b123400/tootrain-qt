@@ -8,9 +8,16 @@
 #include <QTranslator>
 #include <QLocale>
 
+#include "enterprise/tootrainurlscheme.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    // What the TootRain server is told this app is.
+    a.setApplicationVersion(TOOTRAIN_VERSION);
+    // Started by a tootrain:// link, which belongs to the copy of the app that
+    // is waiting for it.
+    if (TootRainUrlScheme::handOverToRunningApp(a.arguments())) return 0;
     QTranslator translator;
 
     QLocale sysLocale = QLocale::system();

@@ -36,6 +36,10 @@ private:
     QMap<QString, QTimer *> reconnectTimers;
 
     QList<QWebSocket *> unusedWebSockets;
+
+    // The Slack workspaces that are switched on. They have no WebSocket of
+    // their own: the TootRain server has one connection for all of them.
+    QSet<QString> tootRainServerAccountUuids;
 };
 
 #endif // STREAMMANAGER_H
